@@ -1,0 +1,91 @@
+body {
+    font-family: sans-serif;
+    background-color: white;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+
+.header {
+    background-color: #000000;
+    align-items: left;
+    margin-bottom: 20px;
+}
+
+main {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+.container {
+    width: 100%;
+    max-width: 800px;
+  
+    background: white;
+    padding: 30px;
+}
+
+
+
+.logo {
+    height: 30px;
+    /* ロゴのサイズを調整 */
+    margin-right: auto;
+}
+
+.title {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.register-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff6347;
+    /* 画像のボタンの色に近い赤系 */
+    color: white;
+    border: none;
+    border-radius: 3px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.login-link a {
+    color: #1e90ff;
+    /* 青系のリンク色 */
+    text-decoration: none;
+    font-size: 0.9rem;
+}
