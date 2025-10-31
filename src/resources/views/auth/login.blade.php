@@ -12,7 +12,6 @@
 <header>
 {{-- ヘッダーとロゴ --}}
     <div class="header">
-        {{-- img/logo.svg を読み込みます --}}
         <img src="{{ asset('img/logo.svg') }}" alt="COACHTECH Logo" class="logo">
     </div>
 </header>
@@ -22,23 +21,11 @@
     
 
     {{-- フォームタイトル --}}
-    <h1 class="title">会員登録</h1>
+    <h1 class="title">ログイン</h1>
 
     {{-- 登録フォーム --}}
-    <form method="POST" action="/register">
+    <form method="POST" action="/login">
         @csrf
-
-        {{-- ユーザー名 --}}
-        <div class="form-group">
-            <label for="name">ユーザー名</label>
-            <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus>
-            {{-- エラー表示の例 --}}
-            @error('name')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
 
         {{-- メールアドレス --}}
         <div class="form-group">
@@ -62,23 +49,17 @@
             @enderror
         </div>
 
-        {{-- 確認用パスワード --}}
-        <div class="form-group">
-            <label for="password-confirm">確認用パスワード</label>
-            <input id="password-confirm" type="password" name="password_confirmation" required autocomplete="new-password">
-        </div>
-
-        {{-- 登録ボタン --}}
+        {{-- ログインボタン --}}
         <div class="form-group">
             <button type="submit" class="register-button">
-                登録する
+                ログインする
             </button>
         </div>
     </form>
 
     {{-- ログインリンク --}}
     <div class="login-link">
-        <a href="{{ route('login') }}">ログインはこちら</a>
+        <a href="{{ route('register') }}">会員登録はこちら</a>
     </div>
 
 </div>
