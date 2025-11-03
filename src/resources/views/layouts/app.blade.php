@@ -16,7 +16,7 @@
         <div class="header-content">
             {{-- ロゴエリア (画像上部の黒帯部分) --}}
             <div class="logo-area">
-                <a href="">
+                <a href="/">
                     <img src="{{ asset('img/logo.svg') }}" alt="COACHTECH Logo" class="logo">
                 </a>
             </div>
@@ -28,7 +28,10 @@
 
             {{-- ナビゲーションエリア --}}
             <div class="nav-area">
-                <a href="{{ route('logout') }}" class="nav-link">ログアウト</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+                </form>
+                <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
                 <a href="" class="nav-link">マイページ</a>
                 <a href="" class="submit-button">出品</a>
             </div>
