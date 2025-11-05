@@ -30,7 +30,7 @@
         {{-- メールアドレス --}}
         <div class="form-group">
             <label for="email">メールアドレス</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" required>
+            <input id="email"  name="email" value="{{ old('email') }}" >
             @error('email')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -41,7 +41,7 @@
         {{-- パスワード --}}
         <div class="form-group">
             <label for="password">パスワード</label>
-            <input id="password" type="password" name="password" required autocomplete="new-password">
+            <input id="password" type="password" name="password"  autocomplete="new-password">
             @error('password')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

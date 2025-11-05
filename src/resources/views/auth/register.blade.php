@@ -30,7 +30,7 @@
         {{-- ユーザー名 --}}
         <div class="form-group">
             <label for="name">ユーザー名</label>
-            <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus>
+            <input id="name" type="text" name="name" value="{{ old('name') }}" >
             {{-- エラー表示の例 --}}
             @error('name')
                 <span class="invalid-feedback" role="alert">
@@ -42,7 +42,7 @@
         {{-- メールアドレス --}}
         <div class="form-group">
             <label for="email">メールアドレス</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" required>
+            <input id="email"  name="email" value="{{ old('email') }}">
             @error('email')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -53,7 +53,7 @@
         {{-- パスワード --}}
         <div class="form-group">
             <label for="password">パスワード</label>
-            <input id="password" type="password" name="password" required autocomplete="new-password">
+            <input id="password" type="password" name="password"  autocomplete="new-password">
             @error('password')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -64,7 +64,7 @@
         {{-- 確認用パスワード --}}
         <div class="form-group">
             <label for="password-confirm">確認用パスワード</label>
-            <input id="password-confirm" type="password" name="password_confirmation" required autocomplete="new-password">
+            <input id="password-confirm" type="password" name="password_confirmation"  autocomplete="new-password">
         </div>
 
         {{-- 登録ボタン --}}
