@@ -26,8 +26,8 @@
 
             {{-- フォーム項目 --}}
             <div class="form-group">
-                <label for="username">ユーザー名</label>
-                <input type="text" id="username" name="username" class="form-input">
+                <label for="name">ユーザー名</label>
+                <input type="text" id="name" name="name" class="form-input">
             </div>
 
             <div class="form-group">
@@ -41,8 +41,8 @@
             </div>
 
             <div class="form-group">
-                <label for="building_name">建物名</label>
-                <input type="text" id="building_name" name="building_name" class="form-input">
+                <label for="building">建物名</label>
+                <input type="text" id="building" name="building" class="form-input">
             </div>
 
             <div class="form-action">

@@ -16,11 +16,11 @@ class CreateSellsTable extends Migration
         Schema::create('sells', function (Blueprint $table) {
             $table->id();
             $table->string('sell');
-            $table->image('image');
-            $table->numbric('price');
+            $table->binary('image');
+            $table->integer('price');
             $table->integer('entry_id')->constrained()->cascadeOnDelete();
-            $table->integer('coment_id')->constrained()->cascadeOnDelete();
-            $table->integer('favorite_id')->constrained()->cascadeOnDelete();
+            $table->integer('coment_id')->constrained()->cascadeOnDelete()->nullable();
+            $table->integer('favorite_id')->constrained()->cascadeOnDelete()->nullable();
             $table->integer('category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

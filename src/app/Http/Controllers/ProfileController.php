@@ -26,28 +26,35 @@ public function edit(Request $request){
     {
         $user = Auth::user();
 
-        // 1. バリデーションとデータ保存処理を追加
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'postcode' => 'required|string|max:8',
-            'address' => 'required|string|max:255',
-            // 画像やその他の項目もここに追加
-        ]);
-
-        // 2. ユーザー情報（またはプロフィールテーブル）を更新
-        $dataToUpdate = [
-            'username' => $request->username,
-            'postcode' => $request->postcode,
-            'address' => $request->address,
-            'building_name' => $request->building_name,
+        // =========================================================
+        // ★修正1: usersテーブル（ユーザー名とフラグ）の更新処理
+        // =========================================================
+        $dataToUpdateUser = [
+            'name' => $request->username, // usersテーブルの name カラムを更新
         ];
         
         // 初回設定完了の場合のみ、完了フラグをセット
         if (!$user->profile_setup_completed) {
-            $dataToUpdate['profile_setup_completed'] = true;
+            $dataToUpdateUser['profile_setup_completed'] = true;
         }
 
-        $user->update($dataToUpdate);
+        $user->update($dataToUpdateUser);
+
+        // =========================================================
+        // ★修正2: mypageテーブル（住所情報）の保存/更新処理
+        // =========================================================
+        $dataToUpdateMypage = [
+            'postcode' => $request->postcode,
+            'address' => $request->address,
+            'building_name' => $request->building_name, // mypageテーブルのカラム名に一致
+        ];
+        
+        // mypage レコードが存在すれば更新、存在しなければ user_id をつけて新規作成
+        // $user->mypage() は User モデルで定義したリレーションを利用
+        $user->mypage()->updateOrCreate(
+            ['user_id' => $user->id], // 検索条件（この user_id のレコードを探す）
+            $dataToUpdateMypage         // 更新/作成するデータ
+        );
 
         return redirect()->route('auth.index')->with('success', 'プロフィールが更新されました。');
     }

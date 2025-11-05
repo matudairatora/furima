@@ -15,8 +15,9 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->integer('sell_id')->constrained()->cascadeOnDelete();
-            $table->boolean('profile_setup');
+            $table->integer('sell_id')->constrained()->cascadeOnDelete()->nullable();
+            $table->boolean('profile_setup')->default(false);
+            $table->integer('mypage_id')->constrained()->cascadeOnDelete()->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
