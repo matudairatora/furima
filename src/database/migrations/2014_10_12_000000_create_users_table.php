@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->integer('sell_id')->constrained()->cascadeOnDelete()->nullable();
+            $table->integer('item_id')->constrained()->cascadeOnDelete()->nullable();
             $table->boolean('profile_setup_flag')->default(false);
             $table->integer('mypage_id')->constrained()->cascadeOnDelete()->nullable();
             $table->string('name');

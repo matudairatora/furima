@@ -22,6 +22,14 @@ public function edit(Request $request){
         
     }
     
+    public function item(Request $request){
+       
+        
+        
+        
+        return view('auth.item'); 
+        
+    }
     
     public function update(Request $request)
     {
