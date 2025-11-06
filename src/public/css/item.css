@@ -1,0 +1,179 @@
+/*
+ * item_create.css 
+ * 商品出品ページ専用のスタイル
+ */
+
+.item-create-container {
+    max-width: 700px;
+    /* フォーム全体を中央に寄せる */
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    /* 画像では、ページタイトルと最初のセクションの間隔が広い */
+    margin-bottom: 40px;
+    border-bottom: 3px solid #000;
+    padding-bottom: 5px;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.subsection-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    /* 価格入力の「¥」はインライン要素として使用 */
+    display: inline;
+}
+
+.form-section {
+    /* セクションごとに明確な区切り（画像では上部にグレーのライン） */
+    border-top: 1px solid #ccc;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+/* 商品画像エリア */
+.image-upload-area {
+    /* 画像のプレースホルダー部分の再現 */
+    height: 150px;
+    border: 1px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-select-button {
+    /* 画像の「画像を選択する」ボタンの再現 */
+    background-color: #ffffff;
+    color: #ff0000;
+    border: 1px solid #ff0000;
+    padding: 8px 15px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+/* フォーム共通スタイル */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 1rem;
+    border-radius: 0;
+    /* 角丸なし */
+    /* ブランド名や商品名のフォームと、商品の状態のフォームに適用 */
+}
+
+.form-textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+/* カテゴリータグ */
+.category-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag-label {
+    /* label全体をボタンとして機能させる */
+    cursor: pointer;
+}
+
+.tag-label input[type="checkbox"] {
+    /* チェックボックス自体は非表示 */
+    display: none;
+}
+
+/* ★ 未選択時のスタイル (赤文字、白背景、赤枠) ★ */
+.tag-label span {
+    display: inline-block;
+    padding: 5px 10px;
+    /* 未選択時: 赤枠 */
+    border: 1px solid #ff0000;
+    border-radius: 20px;
+    /* 未選択時: 赤文字 */
+    color: #ff0000;
+    /* 未選択時: 白背景 */
+    background-color: #ffffff;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+/* ★ 選択時のスタイル (白文字、赤背景) ★ */
+.tag-label input[type="checkbox"]:checked+span {
+    /* 選択時: 白文字 */
+    color: white;
+    /* 選択時: 赤背景 */
+    background-color: #ff0000;
+}
+
+
+
+
+/* セレクトボックスのラッパー */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.form-select {
+    /* ドロップダウン矢印をブラウザデフォルトに */
+    appearance: menulist;
+}
+
+
+/* 販売価格セクション */
+.price-input-group {
+    display: flex;
+    align-items: center;
+    /* 「¥」と入力フィールドの間隔 */
+    gap: 10px;
+}
+
+.price-input-group .subsection-title {
+    /* 「¥」の文字の高さ調整 */
+    padding-top: 5px;
+}
+
+.price-input {
+    /* 価格入力フィールドは幅を小さく */
+    width: calc(100% - 30px);
+}
+
+/* 大きな出品ボタン */
+.submit-area {
+    padding-top: 30px;
+    padding-bottom: 60px;
+    text-align: center;
+}
+
+.submit-button-large {
+    width: 100%;
+    padding: 15px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 0;
+    font-size: 1.1rem;
+    cursor: pointer;
+}

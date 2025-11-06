@@ -20,7 +20,7 @@ class CreateItemsTable extends Migration
             $table->integer('price');
             $table->string('brand');
             $table->string('explanation');
-            $table->integer('entry_id')->constrained()->cascadeOnDelete();
+            $table->integer('condition_id')->constrained()->cascadeOnDelete();
             $table->integer('coment_id')->constrained()->cascadeOnDelete()->nullable();
             $table->integer('favorite_id')->constrained()->cascadeOnDelete()->nullable();
             $table->integer('category_id')->constrained()->cascadeOnDelete();
