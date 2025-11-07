@@ -17,7 +17,6 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->integer('item_id')->constrained()->cascadeOnDelete()->nullable();
             $table->boolean('profile_setup_flag')->default(false);
-            $table->integer('mypage_id')->constrained()->cascadeOnDelete()->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

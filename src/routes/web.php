@@ -16,8 +16,8 @@ use App\Http\Controllers\ProfileController;
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
  Route::get('/', [ProfileController::class, 'index'])->name('auth.index');
- Route::get('/item/edit', [ProfileController::class, 'item'])->name('auth.item');
- Route::post('/item', [ProfileController::class, 'item_update'])->name('item.update');
+ Route::get('/item/edit', [AuthController::class, 'item'])->name('auth.item');
+ Route::post('/item', [AuthController::class, 'item_create'])->name('item.create');
 });
 
 

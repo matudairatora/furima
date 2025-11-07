@@ -49,4 +49,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(Mypage::class);
     }
+    public function items(){
+        return $this->hasMany('App\Models\item');
+    }
 }

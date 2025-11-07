@@ -8,7 +8,7 @@
 <div class="item-create-container">
     <h1 class="page-title">商品の出品</h1>
 
-    <form action="/items" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('item.create') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         {{-- 商品画像 --}}
@@ -31,20 +31,9 @@
                 <h3 class="subsection-title">カテゴリー</h3>
                 <div class="category-tags">
                     {{-- 画像にあるカテゴリーのタグを再現 --}}
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="ファッション"><span>ファッション</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="家電"><span>家電</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="インテリア"><span>インテリア</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="レディース"><span>レディース</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="メンズ"><span>メンズ</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="コスメ"><span>コスメ</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="本"><span>本</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="ゲーム"><span>ゲーム</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="スポーツ"><span>スポーツ</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="キッチン"><span>キッチン</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="ハンドメイド"><span>ハンドメイド</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="アクセサリー"><span>アクセサリー</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="おもちゃ"><span>おもちゃ</span></label>
-                    <label class="tag-label"><input type="checkbox" name="categories[]" value="ベビー・キッズ"><span>ベビー・キッズ</span></label>
+                    @foreach($categories as $category)
+                    <label class="tag-label"><input type="checkbox" name="categories[]" value="{{ $category->id }}" {{ old('category_id')==$category->id ? 'selected' : '' }}><span>{{$category->content }}</span></label>
+                    @endforeach
                 </div>
             </div>
 
@@ -54,10 +43,9 @@
                 <div class="select-wrapper">
                     <select name="condition" class="form-select">
                         <option value="">選択してください</option>
-                        <option value="new">良好</option>
-                        <option value="used_like_new">目立った汚れなし</option>
-                        <option value="used_good">やや傷や汚れあり</option>
-                        <option value="used_fair">状態が悪い</option>
+                        @foreach($conditions as $condition)
+                        <option value="{{ $condition->id }}" {{ old('condition_id')==$condition->id ? 'selected' : '' }}>{{$condition->condition }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -77,7 +65,7 @@
             {{-- ブランド名 --}}
             <div class="form-group">
                 <h3 class="subsection-title">ブランド名</h3>
-                <input type="text" name="brand" class="form-input" value="{{ old('brand') }}" placeholder="任意">
+                <input type="text" name="brand" class="form-input" value="{{ old('brand') }}" >
             </div>
 
             {{-- 商品の説明 --}}
