@@ -21,6 +21,7 @@
 7. `php artisan db:seed`
 8. `exit`
 9. `sudo chmod -R 777 *`
+10. `php artisan storage:link`
 
 ### 使用技術
 - PHP 8.0

@@ -8,25 +8,26 @@
 
     {{-- カテゴリタブ --}}
     <div class="category-tabs">
-        <a href="" class="tab-item">おすすめ</a>
+        <a href="" class="tab-item active">おすすめ</a>
         {{-- 画像に合わせて「マイリスト」をアクティブにします --}}
-        <a href="" class="tab-item active">マイリスト</a>
+        <a href="" class="tab-item ">マイリスト</a>
     </div>
 
     {{-- 商品一覧 --}}
     <div class="item-grid">
-        @for ($i = 0; $i < 3; $i++)
+        @foreach ($items as $item)
         <div class="item-card">
-            <a href="">
+            <a href="/item/{{ $item->id }}">
                 {{-- 商品画像プレースホルダー --}}
-                <div class="item-image-placeholder">
-                    <span>商品画像</span>
+                <div class="item-image">
+                <img src="{{asset($item->image)}}" alt="商品画像" class="item-image-placeholder">    
+                
                 </div>
             </a>
             {{-- 商品名 --}}
-            <a href="" class="item-name">商品名</a>
+            <a href="/item/{{ $item->id }}" class="item-name">{{$item->name}}</a>
         </div>
-        @endfor
+        @endforeach
     </div>
 
 @endsection

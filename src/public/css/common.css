@@ -136,7 +136,7 @@ body {
 
 .item-image-placeholder {
     width: 100%;
-    padding-top: 100%;
+
     background-color: #e0e0e0;
     display: flex;
     justify-content: center;

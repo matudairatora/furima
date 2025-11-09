@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\item;
+use App\Models\Item;
 use App\Models\Condition;
 use App\Models\Category;
+use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -19,21 +21,31 @@ class AuthController extends Controller
     }
     public function item_create(Request $request){
     
+        $imagePath = $request->file('image')->store('public/images/item');
+        $imageUrl = Storage::url($imagePath);
 
-        $item = $request->only([
+        $itemData = $request->only([
         'name',
-        'image',
         'price',
         'brand',
         'explanation',
-        'condition_id',
-        'coment_id',
-        'favorite_id',
-        'category_id',]);
+        ]);
+// フォームからの condition の値を condition_id として設定
+        $itemData['condition_id'] = $request->input('condition'); 
+        // ログインユーザーのIDを設定（認証済みであることが前提）
+        $itemData['user_id'] = Auth::id(); 
+        // 保存した画像のパスを追加
+        $itemData['image'] = $imageUrl; 
+        
+        // item モデルにリレーションのためのメソッド（categories()など）が定義されている必要があります。
+        
+        // 4. itemレコードの作成
+        $item = Item::create($itemData);
 
-        $conditionId = $request->input('condition');
-        $contact['category_id'] = $new_category->id;
-        item::create($item);
-        return view('auth.index');
+        // 5. カテゴリー（多対多）の保存
+        // 'categories[]' で送られてきたIDの配列を取得し、リレーションの中間テーブルに保存 (sync)
+        $item->categories()->sync($request->input('categories'));
+        // 6. 完了後のリダイレクト (ここでは仮に index に戻る)
+        return redirect()->route('auth.index');
     }
 }
