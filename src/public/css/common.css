@@ -19,7 +19,7 @@ body {
 
 .header-content {
     /* 画像のコンテンツが中央揃えに見えるため、最大幅を設定 */
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -71,8 +71,8 @@ body {
 .submit-button {
     padding: 8px 15px;
     /* 画像の「出品」ボタンは白地ではなく、赤色の四角 */
-    background-color: #ff0000;
-    color: white;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
     border: none;
     border-radius: 0;
     /* 角丸なし */
@@ -85,7 +85,7 @@ body {
 /* --- メインコンテンツ関連のスタイル --- */
 
 .main-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
     /* ヘッダーの左右と揃える */
@@ -159,4 +159,41 @@ body {
     text-decoration: none;
     display: block;
     margin-top: 5px;
+}
+
+@media (max-width: 850px) {
+
+    /* ヘッダーコンテンツの左右パディングを調整 */
+    .header-content {
+        padding: 10px 15px;
+    }
+
+    /* 検索エリアを狭くするか非表示にする */
+    .search-area {
+        /* 非表示にして、ヘッダーに余裕を持たせる */
+        display: none;
+        /* または、幅を大幅に狭くする: max-width: 200px; margin: 0 10px; */
+    }
+
+    /* ナビゲーションのアイテム間隔を詰める */
+    .nav-area {
+        gap: 10px;
+    }
+
+    .nav-link,
+    .submit-button {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+    }
+
+    /* 商品一覧を2列表示に変更 (index.blade.php) */
+    .item-grid {
+        gap: 15px;
+    }
+
+    /* 2列表示のカード幅に修正 */
+    .item-card {
+        /* 2列表示: (100% - 1 * gap) / 2 */
+        width: calc(50% - 7.5px);
+    }
 }

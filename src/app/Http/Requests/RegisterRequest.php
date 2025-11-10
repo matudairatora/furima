@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
+use Laravel\Fortify\Http\Requests\RegisterRequest as FortifyRegisterRequest;
 
-class RegisterRequest extends FortifyLoginRequest
+class RegisterRequest extends FortifyRegisterRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,8 @@ class RegisterRequest extends FortifyLoginRequest
     public function rules()
     {
         return [
-             'email' => 'required'| 'email',
-            'password' =>'required'|'min:8'
+             'email' => ['required', 'email'],
+            'password' => ['required', 'min:8']
         ];
     }
     

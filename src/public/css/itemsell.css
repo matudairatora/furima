@@ -84,6 +84,11 @@
     color: #555;
 }
 
+.favorite-button {
+    background-color: #ffffff;
+    color: #ff4500;
+    border: none;
+}
 .interaction-status {
     display: flex;
     gap: 20px;
@@ -92,6 +97,7 @@
     font-size: 16px;
     margin-bottom: 25px;
 }
+
 
 .interaction-status i {
     margin-right: 5px;
@@ -221,4 +227,35 @@
 
 .comment-submit-button:hover {
     background-color: #e03c00;
+}
+
+@media (max-width: 850px) {
+    .item-content-wrap {
+        /* 左右の並びから縦積みに変更 */
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* 商品画像の最大幅を調整 */
+    .item-image-area {
+        max-width: 100%;
+        /* 全幅を使用 */
+        min-width: 100%;
+        margin: 0 auto;
+    }
+
+    /* 画像プレースホルダーの縦横比を維持 */
+    .product-image-placeholder {
+        padding-top: 75%;
+        /* 4:3の縦横比に変更 (画像が正方形である必要がなくなる) */
+    }
+
+    /* テキストやボタンのサイズを調整 */
+    .item-name {
+        font-size: 24px;
+    }
+
+    .price {
+        font-size: 28px;
+    }
 }

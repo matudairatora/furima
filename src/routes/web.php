@@ -13,16 +13,22 @@ use App\Http\Controllers\ItemController;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/Route::middleware('auth','profile_check')->group(function () {
+*/
+Route::get('/', [ProfileController::class, 'index'])->name('auth.index'); // トップページ
+Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('item.show'); // 商品詳細
+
+
+Route::middleware('auth','profile_check')->group(function () {
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
- Route::get('/', [ProfileController::class, 'index'])->name('auth.index');
+
  
  Route::get('/item/edit', [AuthController::class, 'item'])->name('auth.item');
  Route::post('/item', [AuthController::class, 'item_create'])->name('item.create');
 
-Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('item.show');
 Route::post('/item/{item_id}/comment', [ItemController::class, 'addComment'])->name('item.comment');
+
+Route::post('/item/{itemId}/favorite', [ItemController::class, 'toggleFavorite'])->name('item.toggle_favorite');
 
 
 });

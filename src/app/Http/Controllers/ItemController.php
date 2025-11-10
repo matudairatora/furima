@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Condition;
 use App\Models\Category;
 use App\Models\User;
@@ -11,15 +12,37 @@ use App\Models\Comment;
 
 class ItemController extends Controller
 {
-   public function show($item_id){
-    $item = Item::findOrFail($item_id);
-   $comments = Comment::where('item_id', $item_id)->get();
-    return view('auth.itemsell', compact('item', 'comments'));
+   public function show($id){
+
+    
+    $item = Item::with(['comments.user', 'condition', 'categories','favorites'])
+                ->findOrFail($id);
+    return view('auth.itemsell', compact('item'));
    } 
    
-   public function addComment(Request $request, $item_id)
+   public function addComment(Request $request, $id)
     {
+        $commentData = [
+            
+            'item_id' => $id, 
+            'user_id' => Auth::id(),
+            'comment' => $request->input('comment'), 
+        ];
+
         
-        return redirect()->route('auth.itemsell', ['item_id' => $item_id]);
+        $comment = Comment::create($commentData);
+
+        return redirect()->route('item.show',['item_id' => $id]);
+    }
+
+    public function toggleFavorite(Request $request, $itemId)
+    {
+        $user = Auth::user();
+        $item = Item::findOrFail($itemId);
+
+        // 多対多リレーションのtoggle()メソッドでお気に入り登録/解除を自動で切り替え
+        $user->favorites()->toggle($item->id);
+
+        return back(); // 前のページに戻る
     }
 }

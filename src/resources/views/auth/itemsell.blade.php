@@ -31,11 +31,28 @@
 
             {{-- いいねとコメント数 --}}
             <div class="interaction-status">
-                <span class="likes">
-                    <i class="far fa-heart"></i> {{ $item->favorite_count ?? 3 }}
+                <form action="{{ route('item.toggle_favorite', ['itemId' => $item->id]) }}" method="POST" class="favorite-form">
+                    @csrf
+                    
+                    {{-- 認証ユーザーがお気に入り登録しているかチェック --}}
+                    @php
+                        // $item->favoritesコレクションに現在のユーザーIDが含まれているか確認
+                        $isFavorite = Auth::check() && $item->favorites->contains(Auth::id()); 
+                        $iconClass = $isFavorite ? 'fas fa-heart' : 'far fa-heart'; // fas: 塗りつぶし (お気に入り済み), far: 枠線 (未登録)
+                    @endphp
+
+                    {{-- ボタンをクリックするとPOSTリクエストが送信され、toggleFavoriteメソッドが実行される --}}
+                    <button type="submit" class="favorite-button {{ $isFavorite ? 'favorited' : '' }}">
+                        <i class="{{ $iconClass }}"></i>
+                    </button>
+                </form>
+                
+                <span class="likes-count">
+                    {{-- お気に入り数 (favoritesリレーションの要素数をカウント) --}}
+                    {{ $item->favorites->count() }}
                 </span>
                 <span class="comments">
-                    <i class="far fa-comment"></i> {{ $item->comments_count ?? 1 }}
+                    <i class="far fa-comment"></i> {{ $item->comments->count()}}
                 </span>
             </div>
 
@@ -54,7 +71,11 @@
             <section class="info-section">
                 <h2 class="section-title">商品の情報</h2>
                 <div class="info-details">
-                    <p>カテゴリ： <span class="tag">洋服</span><span class="tag">メンズ</span></p>
+                <p>カテゴリ：
+                @foreach($item->categories as $category)    
+                <span class="tag">{{$category->content}}</span>
+                @endforeach
+                </p>
                     <p>商品の状態：{{$item->condition->condition}}</p>
                 </div>
             </section>
@@ -63,25 +84,29 @@
 
     {{-- コメントセクション --}}
     <div class="comment-section">
-        <h2 class="section-title comment-title">コメント({{ $item->comments_count ?? 1 }})</h2>
+        <h2 class="section-title comment-title">コメント({{ $item->comments->count() }})</h2>
         
         {{-- コメント一覧 (ここでは1つのみ表示) --}}
         <div class="comment-list">
+            {{-- コントローラーで取得したコメントコレクションをループ --}}
+            @foreach($item->comments as $comment)
             <div class="comment-item">
                 <div class="comment-header">
-                    <span class="comment-user">admin</span>
+                    {{-- ★ ユーザー名を表示する ★ --}}
+                    <span class="comment-user">{{ $comment->user->name ?? '退会済みユーザー' }}</span>
                 </div>
-                {{-- コメント入力エリアのプレースホルダーを再現 --}}
                 <div class="comment-text-placeholder">
-                    こちらにコメントが入ります。
+                    {{-- ★ 実際のコメント内容を表示する ★ --}}
+                    {{ $comment->comment }}
                 </div>
             </div>
+            @endforeach
         </div>
 
         {{-- コメント投稿フォーム --}}
         <h2 class="section-title comment-form-title">商品へのコメント</h2>
         <form action="/item/{{ $item->id }}/comment" method="POST" class="comment-form">
-            {{-- @csrf --}}
+             @csrf 
             <textarea name="comment" rows="5" placeholder="コメントを入力してください..." class="comment-textarea"></textarea>
             <button type="submit" class="comment-submit-button">コメントを送信する</button>
         </form>

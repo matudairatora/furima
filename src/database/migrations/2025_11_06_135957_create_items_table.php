@@ -23,7 +23,7 @@ class CreateItemsTable extends Migration
             $table->string('explanation');
             $table->integer('condition_id')->constrained()->cascadeOnDelete();
             $table->integer('coment_id')->constrained()->cascadeOnDelete()->nullable();
-            $table->integer('favorite_id')->constrained()->cascadeOnDelete()->nullable();
+          
             
             $table->timestamps();
         });

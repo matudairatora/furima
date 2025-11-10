@@ -177,3 +177,30 @@
     font-size: 1.1rem;
     cursor: pointer;
 }
+
+@media (max-width: 850px) {
+
+    /* フォーム全体を画面幅いっぱいまで広げる */
+    .item-create-container {
+        max-width: 100%;
+        padding: 0 15px;
+        /* 画面端の余白を確保 */
+        margin: 20px auto;
+    }
+
+    /* セクション間の区切りを調整 */
+    .form-section {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .page-title {
+        margin-bottom: 30px;
+    }
+
+    /* ボタンサイズ調整 */
+    .submit-button-large {
+        padding: 12px;
+        font-size: 1rem;
+    }
+}
