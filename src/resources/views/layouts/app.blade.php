@@ -32,7 +32,7 @@
                 @csrf
                 </form>
                 <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
-                <a href="" class="nav-link">マイページ</a>
+                <a href="/mypage" class="nav-link">マイページ</a>
                 <a href="/item/edit" class="submit-button">出品</a>
             </div>
         </div>

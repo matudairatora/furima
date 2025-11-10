@@ -9,7 +9,7 @@ use App\Models\Item;
 
 class ProfileController extends Controller
 {
-        public function index()
+public function index()
 {
     $items = Item::all();
   return view('auth.index',compact('items',));
@@ -17,10 +17,10 @@ class ProfileController extends Controller
     
 public function edit(Request $request){
        
+        $user = Auth::user();
         
         
-        
-        return view('auth.profile'); 
+        return view('auth.profile',compact('user')); 
         
     }
     
@@ -53,5 +53,12 @@ public function edit(Request $request){
         );
 
         return redirect()->route('auth.index')->with('success', 'プロフィールが更新されました。');
+    }
+
+    public function mypage()
+    {
+    $items = Item::all();
+    return view('auth.mypage',compact('items',));
+
     }
 }

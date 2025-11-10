@@ -23,14 +23,13 @@ Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.e
 Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
  
- Route::get('/item/edit', [AuthController::class, 'item'])->name('auth.item');
- Route::post('/item', [AuthController::class, 'item_create'])->name('item.create');
+Route::get('/item/edit', [AuthController::class, 'item'])->name('auth.item');
+Route::post('/item', [AuthController::class, 'item_create'])->name('item.create');
 
 Route::post('/item/{item_id}/comment', [ItemController::class, 'addComment'])->name('item.comment');
-
 Route::post('/item/{itemId}/favorite', [ItemController::class, 'toggleFavorite'])->name('item.toggle_favorite');
 
-
+Route::get('/mypage', [ProfileController::class, 'mypage'])->name('auth.mypage');
 });
 
 

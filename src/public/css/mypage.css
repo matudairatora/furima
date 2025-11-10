@@ -1,0 +1,156 @@
+/*
+ * mypage.css
+ * マイページ (mypage.blade.php) のみに適用されるスタイル
+ */
+
+/* ======================================================
+   メインコンテンツエリア
+   ====================================================== */
+.main-container {
+    max-width: 1000px;
+    /* マイページ全体の幅を調整 */
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* ======================================================
+   マイページ固有スタイル
+   ====================================================== */
+
+/* プロフィールセクション */
+.profile-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 20px 0;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    background-color: #e0e0e0;
+    /* 画像の薄いグレーの円を再現 */
+    border-radius: 50%;
+    margin-right: 30px;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.username {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+}
+
+.edit-button {
+    padding: 8px 20px;
+    color: #e3342f;
+    /* 赤い文字 */
+    border: 1px solid #e3342f;
+    /* 赤い枠線 */
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.edit-button:hover {
+    background-color: #ffeeee;
+}
+
+/* タブセクション */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 30px;
+}
+
+.tab-item {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.tab-item:hover {
+    color: #000;
+}
+
+.tab-item.active {
+    color: #000;
+    border-bottom: 3px solid #e3342f;
+    /* アクティブタブの下線は赤 */
+    font-weight: bold;
+}
+
+/* 商品一覧セクション */
+
+.item-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.item-card {
+    width: calc(33.333% - 13.333px);
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.item-image-placeholder {
+    width: 100%;
+
+    background-color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+    margin-bottom: 5px;
+    position: relative;
+}
+
+.item-image-placeholder span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.item-name {
+    font-size: 14px;
+    color: #333;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 850px) {
+    /* app.blade.phpのヘッダー関連スタイルは common.css に残します */
+
+    .main-container {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    .profile-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .profile-info {
+        width: 100%;
+    }
+
+    .item-list {
+        grid-template-columns: repeat(2, 1fr);
+        /* モバイルでは2列 */
+    }
+}
