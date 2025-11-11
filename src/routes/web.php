@@ -14,13 +14,14 @@ use App\Http\Controllers\ItemController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 Route::get('/', [ProfileController::class, 'index'])->name('auth.index'); // トップページ
-
-
 
 Route::middleware('auth','profile_check')->group(function () {
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
 
 });
 Route::middleware('auth')->group(function () {
@@ -33,5 +34,6 @@ Route::post('/item/{itemId}/favorite', [ItemController::class, 'toggleFavorite']
 
 Route::get('/mypage', [ProfileController::class, 'mypage'])->name('auth.mypage');
 });
+
 
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('item.show'); // 商品詳細

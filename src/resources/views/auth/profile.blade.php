@@ -57,16 +57,3 @@
     </form>
 </div>
 @endsection
-@section('js')
-<script>
-    // 画像選択時にプレビューを表示する関数
-    function previewImage(event) {
-        const reader = new FileReader();
-        reader.onload = function(){
-            const output = document.getElementById('current_mypage');
-            output.src = reader.result;
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
-</script>
-@endsection
