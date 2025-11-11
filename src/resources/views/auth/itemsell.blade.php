@@ -79,37 +79,50 @@
                     <p>商品の状態：{{$item->condition->condition}}</p>
                 </div>
             </section>
-        </div>
-    </div>
+       
+   
 
-    {{-- コメントセクション --}}
-    <div class="comment-section">
-        <h2 class="section-title comment-title">コメント({{ $item->comments->count() }})</h2>
-        
-        {{-- コメント一覧 (ここでは1つのみ表示) --}}
-        <div class="comment-list">
-            {{-- コントローラーで取得したコメントコレクションをループ --}}
-            @foreach($item->comments as $comment)
-            <div class="comment-item">
-                <div class="comment-header">
-                    {{-- ★ ユーザー名を表示する ★ --}}
-                    <span class="comment-user">{{ $comment->user->name ?? '退会済みユーザー' }}</span>
+            {{-- コメントセクション --}}
+            <div class="comment-section">
+                <h2 class="section-title comment-title">コメント({{ $item->comments->count() }})</h2>
+                
+                {{-- コメント一覧 (ここでは1つのみ表示) --}}
+                <div class="comment-list">
+                    {{-- コントローラーで取得したコメントコレクションをループ --}}
+                    @foreach($item->comments as $comment)
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            {{-- ★ ユーザー名を表示する ★ --}}
+                            <div class="comment-mypage">
+                                @if ($comment->user->mypage && $comment->user->mypage->profile_image)
+                                {{-- 画像パスがあれば画像を表示 --}}
+                                    <img src="{{ asset($comment->user->mypage->profile_image) }}" 
+                                    alt="{{ $comment->user->name ?? 'User' }}のプロフィール画像" 
+                                    class="profile-avatar-image">
+                                 @else
+                                {{-- 画像がない場合のデフォルトのプレースホルダーなどを表示 (CSSで装飾してください) --}}
+                                <div class="default-avatar-placeholder"></div>
+                                @endif
+                            </div>
+                            <span class="comment-user">{{ $comment->user->name ?? '退会済みユーザー' }}</span>
+                        </div>
+                        <div class="comment-text-placeholder">
+                            {{-- ★ 実際のコメント内容を表示する ★ --}}
+                            {{ $comment->comment }}
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
-                <div class="comment-text-placeholder">
-                    {{-- ★ 実際のコメント内容を表示する ★ --}}
-                    {{ $comment->comment }}
-                </div>
+
+                {{-- コメント投稿フォーム --}}
+                <h2 class="section-title comment-form-title">商品へのコメント</h2>
+                <form action="/item/{{ $item->id }}/comment" method="POST" class="comment-form">
+                    @csrf 
+                    <textarea name="comment" rows="5" placeholder="コメントを入力してください..." class="comment-textarea"></textarea>
+                    <button type="submit" class="comment-submit-button">コメントを送信する</button>
+                </form>
             </div>
-            @endforeach
-        </div>
-
-        {{-- コメント投稿フォーム --}}
-        <h2 class="section-title comment-form-title">商品へのコメント</h2>
-        <form action="/item/{{ $item->id }}/comment" method="POST" class="comment-form">
-             @csrf 
-            <textarea name="comment" rows="5" placeholder="コメントを入力してください..." class="comment-textarea"></textarea>
-            <button type="submit" class="comment-submit-button">コメントを送信する</button>
-        </form>
-    </div>
+         </div>
+     </div>
 </div>
 @endsection

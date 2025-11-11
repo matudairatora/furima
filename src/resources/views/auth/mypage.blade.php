@@ -11,10 +11,17 @@
     {{-- ユーザープロフィールセクション --}}
     <div class="profile-section">
         <div class="profile-avatar">
-            {{-- ここにユーザーのアバター画像が入ります。画像がなければグレーの円を表示 --}}
+            
+            @if ($user->mypage && $user->mypage->profile_image)
+                                
+            <img src="{{ asset($user->mypage->profile_image) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
+            @else
+            {{-- 画像がない場合のデフォルトのプレースホルダーなどを表示 (CSSで装飾してください) --}}
+            <div class="default-avatar-placeholder"></div>
+            @endif
         </div>
         <div class="profile-info">
-            <span class="username">ユーザー名</span>
+            <span class="username">{{ $user->name ?? ''}}</span>
             <a href="{{ route('profile.edit') }}" class="edit-button">プロフィールを編集</a>
         </div>
     </div>

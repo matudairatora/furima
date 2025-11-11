@@ -159,9 +159,6 @@
     max-width: 800px;
     margin: 40px 0 0;
     padding: 20px;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    background-color: #f9f9f9;
 }
 
 .comment-title {
@@ -176,10 +173,15 @@
 .comment-item {
     padding: 15px;
     background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
 }
-
+.comment-mypage {
+    width: 50px;
+    height: 50px;
+    background-color: #e0e0e0;
+    /* 画像の薄いグレーの円を再現 */
+    border-radius: 50%;
+    margin-right: 30px;
+}
 .comment-header {
     margin-bottom: 5px;
 }
@@ -214,7 +216,7 @@
 }
 
 .comment-submit-button {
-    float: right;
+    width: 100%;
     padding: 10px 20px;
     background-color: #ff4500;
     color: white;

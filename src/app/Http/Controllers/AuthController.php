@@ -30,7 +30,7 @@ class AuthController extends Controller
         'brand',
         'explanation',
         ]);
-// フォームからの condition の値を condition_id として設定
+        // フォームからの condition の値を condition_id として設定
         $itemData['condition_id'] = $request->input('condition'); 
         // ログインユーザーのIDを設定（認証済みであることが前提）
         $itemData['user_id'] = Auth::id(); 

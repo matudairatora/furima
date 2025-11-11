@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Mypage;
 use App\Models\Item;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -45,7 +46,17 @@ public function edit(Request $request){
             'address' => $request->address,
             'building' => $request->building, 
         ];
+        if ($request->hasFile('profile_image') && $request->file('profile_image')->isValid()) {
+        // 画像をストレージに保存（例：storage/app/public/profiles フォルダ）
+        // storeメソッドは保存先のパスを返します
+        $path = $request->file('profile_image')->store('public/profiles'); 
         
+        // asset()ヘルパーでアクセスできるように 'storage/' から始まる公開パスに変換
+        $profileImagePath = str_replace('public/', 'storage/', $path);
+        
+        // Mypageデータに画像パスを追加（このキー名がデータベースのカラム名と一致する必要があります）
+        $dataToUpdateMypage['profile_image'] = $profileImagePath;
+    }
        
         $user->mypage()->updateOrCreate(
             ['user_id' => $user->id], 
@@ -57,8 +68,10 @@ public function edit(Request $request){
 
     public function mypage()
     {
-    $items = Item::all();
-    return view('auth.mypage',compact('items',));
-
+        $user = Auth::user();
+        $items = Item::all();
+        
+    return view('auth.mypage',compact('user','items',));
     }
+    
 }

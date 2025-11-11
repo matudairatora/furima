@@ -15,13 +15,15 @@ use App\Http\Controllers\ItemController;
 |
 */
 Route::get('/', [ProfileController::class, 'index'])->name('auth.index'); // トップページ
-Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('item.show'); // 商品詳細
+
 
 
 Route::middleware('auth','profile_check')->group(function () {
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
+});
+Route::middleware('auth')->group(function () {
  
 Route::get('/item/edit', [AuthController::class, 'item'])->name('auth.item');
 Route::post('/item', [AuthController::class, 'item_create'])->name('item.create');
@@ -32,4 +34,4 @@ Route::post('/item/{itemId}/favorite', [ItemController::class, 'toggleFavorite']
 Route::get('/mypage', [ProfileController::class, 'mypage'])->name('auth.mypage');
 });
 
-
+Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('item.show'); // 商品詳細
