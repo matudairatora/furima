@@ -16,7 +16,7 @@ class CreateMypageTable extends Migration
         Schema::create('mypage', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->unique();
-            $table->binary('mypage')->nullable();
+            $table->string('mypage')->nullable();
             $table->string('postcode');
             $table->string('address');
             $table->string('building')->nullable();

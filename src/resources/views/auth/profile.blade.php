@@ -16,12 +16,17 @@
         <div class="profile-content">
             {{-- 画像アップロードエリア --}}
             <div class="image-upload-area">
-                <div class="profile-image-placeholder"></div>
-                <label for="profile_image" class="image-select-button">
+                {{-- 修正: 現在の画像を表示 --}}
+                <img id="current_mypage" 
+                     src="{{ asset($user->mypage->mypage ?? 'placeholder-image-path') }}" 
+                     alt="プロフィール画像"
+                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                
+                <label for="mypage" class="image-select-button">
                     画像を<br>選択する
                 </label>
                 {{-- 実際には非表示のinput[type="file"] --}}
-                <input type="file" id="profile_image" name="profile_image" style="display:none;">
+                <input type="file" id="mypage" name="mypage" style="display:none;" onchange="previewImage(event);">
             </div>
 
             {{-- フォーム項目 --}}
@@ -51,4 +56,17 @@
         </div>
     </form>
 </div>
+@endsection
+@section('js')
+<script>
+    // 画像選択時にプレビューを表示する関数
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function(){
+            const output = document.getElementById('current_mypage');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 @endsection
