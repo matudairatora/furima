@@ -18,10 +18,12 @@
             <div class="image-upload-area">
                 {{-- 修正: 現在の画像を表示 --}}
                 <img id="current_mypage" 
-                     src="{{ asset($user->mypage->mypage ?? 'placeholder-image-path') }}" 
-                     alt="プロフィール画像"
-                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
-                
+                     src="{{ $user->mypage && $user->mypage->mypage 
+                ? Storage::url($user->mypage->mypage) 
+                : asset('placeholder-image-path') }}" 
+         alt="プロフィール画像"
+         style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+         
                 <label for="mypage" class="image-select-button">
                     画像を<br>選択する
                 </label>

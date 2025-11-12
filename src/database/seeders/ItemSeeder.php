@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+
 class ItemSeeder extends Seeder
 {
     /**
@@ -22,7 +23,7 @@ class ItemSeeder extends Seeder
         'brand' => 'Rolax',
         'explanation' => 'スタイリッシュなデザインのメンズ腕時計',
         'condition_id' => 1,
-        'image' => 'img/image/1.Armani+Mens+Clock.jpg',
+        'image' => 'images/item/1.Armani+Mens+Clock.jpg',
         'user_id' => 1,
         ],
            ['name' => 'HDD',
@@ -30,7 +31,7 @@ class ItemSeeder extends Seeder
         'brand' => '西芝',
         'explanation' => '高速で信頼性の高いハードディスク',
         'condition_id' => 2,
-        'image' => 'img/image/2.HDD+Hard+Disk.jpg',
+        'image' => 'images/item/2.HDD+Hard+Disk.jpg',
         'user_id' => 1,
         ],
         ['name' => '玉ねぎ３束',
@@ -38,7 +39,7 @@ class ItemSeeder extends Seeder
         'brand' => 'なし',
         'explanation' => '新鮮な玉ねぎ３束セット',
         'condition_id' => 3,
-        'image' => 'img/image/3.iLoveIMG+d.jpg',
+        'image' => 'images/item/3.iLoveIMG+d.jpg',
         'user_id' => 1,
         ],
         ['name' => '革靴',
@@ -46,7 +47,7 @@ class ItemSeeder extends Seeder
         'brand' => '',
         'explanation' => 'クラシックなデザインの革靴',
         'condition_id' => 4,
-        'image' => 'img/image/4.Leather+Shoes+Product+Photo.jpg',
+        'image' => 'images/item/4.Leather+Shoes+Product+Photo.jpg',
         'user_id' => 1,
         ],
         ['name' => 'ノートＰＣ',
@@ -54,7 +55,7 @@ class ItemSeeder extends Seeder
         'brand' => '',
         'explanation' => '高性能なノートパソコン',
         'condition_id' => 1,
-        'image' => 'img/image/5.Living+Room+Laptop.jpg',
+        'image' => 'images/item/5.Living+Room+Laptop.jpg',
         'user_id' => 1,
         ],
         ['name' => 'マイク',
@@ -62,7 +63,7 @@ class ItemSeeder extends Seeder
         'brand' => 'なし',
         'explanation' => '高音質のレコーディング用マイク',
         'condition_id' => 2,
-        'image' => 'img/image/6.Music+Mic+4632231.jpg',
+        'image' => 'images/item/6.Music+Mic+4632231.jpg',
         'user_id' => 1,
         ],
         ['name' => 'ショルダーバッグ',
@@ -70,7 +71,7 @@ class ItemSeeder extends Seeder
         'brand' => '',
         'explanation' => 'おしゃれなショルダーバッグ',
         'condition_id' => 3,
-        'image' => 'img/image/7.Purse+fashion+pocket.jpg',
+        'image' => 'images/item/7.Purse+fashion+pocket.jpg',
         'user_id' => 1,
         ],
         ['name' => 'タンブラー',
@@ -78,7 +79,7 @@ class ItemSeeder extends Seeder
         'brand' => 'なし',
         'explanation' => '使いやすいタンブラー',
         'condition_id' => 4,
-        'image' => 'img/image/8.Tumbler+souvenir.jpg',
+        'image' => 'images/item/8.Tumbler+souvenir.jpg',
         'user_id' => 1,
         ],
         ['name' => 'コーヒーミル',
@@ -86,7 +87,7 @@ class ItemSeeder extends Seeder
         'brand' => 'Starbacks',
         'explanation' => '手動のコーヒーミル',
         'condition_id' => 1,
-        'image' => 'img/image/9.Waitress+with+Coffee+Grinder.jpg',
+        'image' => 'images/item/9.Waitress+with+Coffee+Grinder.jpg',
         'user_id' => 1,
         ],
         ['name' => 'メイクセット',
@@ -94,7 +95,7 @@ class ItemSeeder extends Seeder
         'brand' => '',
         'explanation' => '便利なメイクアップセット',
         'condition_id' => 2,
-        'image' => 'img/image/10.外出メイクアップセット.jpg',
+        'image' => 'images/item/10.外出メイクアップセット.jpg',
         'user_id' => 1,
         ], 
         ];

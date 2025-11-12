@@ -21,8 +21,7 @@ class AuthController extends Controller
     }
     public function item_create(Request $request){
     
-        $imagePath = $request->file('image')->store('public/images/item');
-        $imageUrl = Storage::url($imagePath);
+        $imagePath = $request->file('image')->store('images/item', 'public');
 
         $itemData = $request->only([
         'name',
@@ -35,7 +34,7 @@ class AuthController extends Controller
         // ログインユーザーのIDを設定（認証済みであることが前提）
         $itemData['user_id'] = Auth::id(); 
         // 保存した画像のパスを追加
-        $itemData['image'] = $imageUrl; 
+        $itemData['image'] = $imagePath;
         
         // item モデルにリレーションのためのメソッド（categories()など）が定義されている必要があります。
         

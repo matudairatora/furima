@@ -20,7 +20,8 @@
             <a href="/item/{{ $item->id }}">
                 {{-- 商品画像プレースホルダー --}}
                 <div class="item-image">
-                <img src="{{asset($item->image)}}" alt="商品画像" class="item-image-placeholder">    
+                    
+                <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" class="item-image-placeholder">
                 
                 </div>
             </a>

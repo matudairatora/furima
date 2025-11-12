@@ -14,8 +14,8 @@
         <div class="item-image-area">
             {{-- 添付画像のレイアウトに合わせ、placeholderを使用 --}}
             <div class="product-image-placeholder">
-                <img src="{{ asset($item->image) }}" alt="商品画像" onerror="this.onerror=null;this.src='https://placehold.co/400x400/eeeeee/333333?text=商品画像';" class="product-image">
-            </div>
+            <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" class="product-image">    
+            
         </div>
 
         {{-- 右側: 商品情報 --}}
@@ -94,12 +94,11 @@
                         <div class="comment-header">
                             {{-- ★ ユーザー名を表示する ★ --}}
                             <div class="comment-mypage">
-                                @if ($comment->user->mypage && $comment->user->mypage->profile_image)
-                                {{-- 画像パスがあれば画像を表示 --}}
-                                    <img src="{{ asset($comment->user->mypage->profile_image) }}" 
-                                    alt="{{ $comment->user->name ?? 'User' }}のプロフィール画像" 
-                                    class="profile-avatar-image">
-                                 @else
+                           
+                                @if ($comment->user->mypage && $comment->user->mypage->mypage)
+                                
+                                <img src="{{ Storage::url($comment->user->mypage->mypage) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
+                                @else
                                 {{-- 画像がない場合のデフォルトのプレースホルダーなどを表示 (CSSで装飾してください) --}}
                                 <div class="default-avatar-placeholder"></div>
                                 @endif

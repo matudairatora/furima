@@ -12,9 +12,9 @@
     <div class="profile-section">
         <div class="profile-avatar">
             
-            @if ($user->mypage && $user->mypage->profile_image)
+            @if ($user->mypage && $user->mypage->mypage)
                                 
-            <img src="{{ asset($user->mypage->profile_image) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
+            <img src="{{ Storage::url($user->mypage->mypage) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
             @else
             {{-- 画像がない場合のデフォルトのプレースホルダーなどを表示 (CSSで装飾してください) --}}
             <div class="default-avatar-placeholder"></div>
@@ -42,7 +42,7 @@
             <a href="/item/{{ $item->id }}">
                 {{-- 商品画像プレースホルダー --}}
                 <div class="item-image">
-                <img src="{{asset($item->image)}}" alt="商品画像" class="item-image-placeholder">    
+                <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" class="item-image-placeholder">   
                 
                 </div>
             </a>
