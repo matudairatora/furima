@@ -115,6 +115,8 @@ public function showPurchaseForm($itemId)
             case 'card':
                 // '2'が選択されたらユーザープロフィールページへ
                 return redirect()->route('auth.index');
+                //カードルート完成版
+                //return redirect()->route('item.aftercard');
             
             default:
                 // 予期しない値の場合は、トップページなどにリダイレクト
@@ -122,4 +124,10 @@ public function showPurchaseForm($itemId)
         }
     }
     
+    public function afterpurchasecard()
+    {
+        // カード払い完了後の処理やビューの表示
+        return view('item.aftercard');
+    }
+
 }

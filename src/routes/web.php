@@ -40,8 +40,6 @@ Route::get('/purchase/{itemId}', [ItemController::class, 'showPurchaseForm'])->n
 Route::post('/purchase/{itemId}', [ItemController::class, 'processPurchase'])->name('item.process_purchase');
 
 // 遷移先のGETルート
-//Route::get('/', [ItemController::class, 'afterpurchaseconvenience'])->name('item.afterconvenience');
-
 //Route::get('/', [ItemController::class, 'afterpurchasecard'])->name('item.aftercard');
 
 

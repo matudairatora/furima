@@ -48,6 +48,6 @@
     
     @yield('content')
 </main>
- @yield('js')
+ @stack('scripts')
 </body>
 </html>

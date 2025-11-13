@@ -12,10 +12,27 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-public function index()
+public function index(Request $request)
 {
-    $items = Item::all();
-  return view('auth.index',compact('items',));
+   $tab = $request->query('tab', 'recommend');
+        $items = collect(); // 商品リストの初期化
+
+        // ログインしていて、'tab'が'mylist'の場合のみお気に入り商品を取得
+        if ($tab === 'mylist' && Auth::check()) {
+            $user = Auth::user();
+            // 認証ユーザーのお気に入りリレーションを通じて商品を取得
+            $items = $user->favorites()->latest()->get(); 
+            
+        } else { 
+            // 'recommend'（おすすめ）またはログインしていない場合、全ての商品を取得
+            $items = Item::latest()->get();
+        }
+
+        // ビューに現在のタブの状態と商品リストを渡す
+        return view('auth.index', [
+            'items' => $items,
+            'currentTab' => $tab, 
+        ]);
 }
     
 public function edit(Request $request){
@@ -65,12 +82,32 @@ public function edit(Request $request){
         return redirect()->route('auth.index')->with('success', 'プロフィールが更新されました。');
     }
 
-    public function mypage()
+    public function mypage(Request $request)
     {
         $user = Auth::user();
-        $items = Item::all();
+       // クエリパラメータ 'page' を取得。指定がなければ 'sell' をデフォルトとする
+        $page = $request->query('page', 'sell');
+
+        // 商品データを取得するロジックを分岐
+        if ($page === 'buy') {
+            // ★ 購入した商品を取得 ★
+            // Itemモデルの buyer_id が現在のユーザーIDと一致するものを取得
+            $items = Item::where('buyer_id', $user->id)
+                         ->latest()
+                         ->get();
+
+        } elseif($page === 'sell') { // 'sell' またはその他の値の場合
+            // ★ 出品した商品を取得 (デフォルトの挙動) ★
+            // Itemモデルの user_id が現在のユーザーIDと一致するものを取得
+            $items = Item::where('user_id', $user->id)
+                         ->latest()
+                         ->get();
+        }
         
-    return view('auth.mypage',compact('user','items',));
+    return view('auth.mypage', [
+            'user' => $user,
+            'items' => $items, 
+        ]);
     }
     
 

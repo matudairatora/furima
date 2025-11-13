@@ -28,10 +28,16 @@
 
     {{-- タブセクション --}}
     <div class="tabs">
+        <?php 
+    // 現在のクエリパラメータを取得（デフォルトは 'sell'）
+    $currentTab = request()->query('page', 'sell'); 
+    ?>
         {{-- アクティブなタブ (出品した商品) --}}
-        <a href="#" class="tab-item active">出品した商品</a>
+        <a href="{{ route('auth.mypage', ['page' => 'sell']) }}" 
+       class="tab-item {{ $currentTab === 'sell' ? 'active' : '' }}">出品した商品</a>
         {{-- 非アクティブなタブ (購入した商品) --}}
-        <a href="#" class="tab-item">購入した商品</a>
+        <a href="{{ route('auth.mypage', ['page' => 'buy']) }}" 
+       class="tab-item {{ $currentTab === 'buy' ? 'active' : '' }}">購入した商品</a>
     </div>
 
     {{-- 商品一覧セクション --}}
@@ -43,7 +49,13 @@
                 {{-- 商品画像プレースホルダー --}}
                 <div class="item-image">
                 <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" class="item-image-placeholder">   
-                
+                @if (request()->query('page', 'sell') === 'buy' && $item->is_sold && $item->buyer_id == $user->id)
+                        {{-- 「購入した商品」タブで、is_soldがtrueかつ自分が購入者の場合に「SOLD」と表示 --}}
+                        <div class="item-sold-overlay">SOLD</div>
+                    @elseif (request()->query('page', 'sell') === 'sell' && $item->is_sold)
+                        {{-- 「出品した商品」タブで、is_soldがtrueの場合に「SOLD」と表示 --}}
+                        <div class="item-sold-overlay">SOLD</div>
+                    @endif
                 </div>
             </a>
             {{-- 商品名 --}}
