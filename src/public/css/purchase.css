@@ -1,0 +1,202 @@
+/* ==================================
+    購入ページ (purchase.blade.php) 用
+================================== */
+
+.purchase-page-container {
+    max-width: 1200px;
+    /* ページの最大幅を設定 */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* --- メインコンテンツのラップ --- */
+.purchase-content-wrap {
+    display: flex;
+    gap: 50px;
+    /* 左と右のエリア間のスペース */
+}
+
+/* 左側エリア (商品詳細、支払い、配送) */
+.purchase-info-area {
+    flex: 2;
+    /* 左側を広く */
+}
+
+/* 右側エリア (決済概要) */
+.payment-summary-area {
+    flex: 1;
+    /* 右側を狭く */
+}
+
+/* --- 商品詳細サマリー --- */
+.product-summary {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.product-image-placeholder {
+    width: 100px;
+    height: 100px;
+    background-color: #e0e0e0;
+    /* 画像のプレースホルダーの色 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+    font-size: 12px;
+    margin-right: 20px;
+}
+
+.product-image{
+    width: 100px;
+    height: 100px;
+}
+
+.product-details {
+    /* 商品名と価格 */
+}
+
+.product-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product-price {
+    font-size: 18px;
+    font-weight: normal;
+}
+
+/* --- 各セクションのタイトルと区切り線 --- */
+.separator {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 30px 0;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* --- 支払い方法セクション --- */
+.payment-method-section {
+    position: relative;
+}
+
+/* スクリーンショットのドロップダウン風デザインを再現 */
+.payment-selection-wrap {
+    /* 選択要素を囲むラッパー */
+}
+
+.payment-dropdown {
+    width: 200px;
+    /* 幅を調整 */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    -webkit-appearance: none;
+    /* デフォルトのドロップダウン矢印を非表示 */
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7%2010L12%2015L17%2010H7Z%22%20fill%3D%22%23333333%22%2F%3E%0A%3C%2Fsvg%3E");
+    /* カスタム矢印 */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    cursor: pointer;
+}
+
+/* --- 配送先セクション --- */
+.shipping-address-section {
+    position: relative;
+}
+
+.shipping-address-section .section-title {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.change-link {
+    color: #007bff;
+    /* リンクの色 */
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.change-link:hover {
+    text-decoration: underline;
+}
+
+.address-details {
+    margin-top: 10px;
+    line-height: 1.5;
+}
+
+/* --- 決済概要エリア (右側) --- */
+.order-summary-item{
+    margin-bottom: 20px;
+
+}
+
+.order-summary-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 0px;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.summary-label {
+    font-weight: normal;
+}
+
+.summary-value {
+    font-weight: bold;
+}
+
+/* --- 購入ボタン --- */
+.purchase-action-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #ff6347;
+    /* 赤系の色 (Tomato) */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.purchase-action-button:hover {
+    background-color: #e55338;
+}
+
+/* ==================================
+    レスポンシブ対応 (必要に応じて)
+================================== */
+@media (max-width: 768px) {
+    .purchase-content-wrap {
+        flex-direction: column;
+    }
+
+    .payment-summary-area {
+        order: -1;
+        /* スマホで概要を上に持ってくる場合 */
+    }
+}

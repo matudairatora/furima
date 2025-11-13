@@ -15,7 +15,7 @@
             {{-- 添付画像のレイアウトに合わせ、placeholderを使用 --}}
             <div class="product-image-placeholder">
             <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" class="product-image">    
-            
+            </div>
         </div>
 
         {{-- 右側: 商品情報 --}}
@@ -57,8 +57,9 @@
             </div>
 
             {{-- 購入手続きボタン --}}
+            <a href="{{ route('item.purchase', ['itemId' => $item->id]) }}" class="purchase-button-link">
             <button class="purchase-button">購入手続きへ</button>
-
+            </a>
             {{-- 商品説明 --}}
             <section class="description-section">
                 <h2 class="section-title">商品説明</h2>

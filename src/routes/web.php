@@ -31,6 +31,14 @@ Route::post('/item/{item_id}/comment', [ItemController::class, 'addComment'])->n
 Route::post('/item/{itemId}/favorite', [ItemController::class, 'toggleFavorite'])->name('item.toggle_favorite');
 
 Route::get('/mypage', [ProfileController::class, 'mypage'])->name('auth.mypage');
+
+
+Route::get('/purchase/{itemId}', [ItemController::class, 'showPurchaseForm'])->name('item.purchase');
+
+
+
+
+
 });
 
 

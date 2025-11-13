@@ -45,4 +45,45 @@ class ItemController extends Controller
 
         return back(); // 前のページに戻る
     }
+
+public function showPurchaseForm($itemId)
+    {
+        // 認証ユーザーのチェック
+        if (!Auth::check()) {
+            return redirect()->route('login'); // ログインページにリダイレクト
+        }
+
+        // 商品IDに基づいてデータを取得
+        $item = Item::findOrFail($itemId); 
+        
+        // ★ 認証ユーザーのマイページ情報を取得 ★
+        // Userモデルにmypageリレーションが定義されていることを前提とします
+        $userMypage = Auth::user()->mypage;
+
+        // 配送先情報
+        $userAddress = null;
+        if ($userMypage) {
+            $userAddress = [
+                // mypageテーブルのカラム名に合わせてキーを設定
+                'postcode' => $userMypage->postcode,
+                // addressとbuildingを結合して表示用のアドレスを作成
+                'address_line' => $userMypage->address . ($userMypage->building ? ' ' . $userMypage->building : ''),
+            ];
+        } else {
+             // マイページ情報がない場合のデフォルト値 (任意)
+             $userAddress = [
+                'postcode' => '未登録',
+                'address_line' => '配送先情報が登録されていません。',
+            ];
+        }
+
+        return view('auth.purchase', [
+            'item' => $item, 
+            'userAddress' => $userAddress, // 配送先情報をビューに渡す
+        ]);
+    }
+
+    
+
+
 }

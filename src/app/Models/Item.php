@@ -21,6 +21,10 @@ class item extends Model
         'condition_id',
         'coment_id',
         'user_id',
+
+        'is_sold', 
+        'buyer_id',
+
     ];
     public function categories()
     {
