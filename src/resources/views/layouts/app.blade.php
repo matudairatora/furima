@@ -28,12 +28,17 @@
 
             {{-- ナビゲーションエリア --}}
             <div class="nav-area">
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-                </form>
-                <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
-                <a href="{{ route('auth.mypage') }}" class="nav-link">マイページ</a>
-                <a href="{{ route('auth.item') }}" class="submit-button">出品</a>
+                @auth
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                    </form>
+                    <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
+                    <a href="{{ route('auth.mypage') }}" class="nav-link">マイページ</a>
+                @else
+                    <a href="{{ route('login') }}" class="nav-link" onclick="event.">ログイン</a>
+                    <a href="{{ route('auth.mypage') }}" class="nav-link">マイページ</a>
+                @endauth    
+                    <a href="{{ route('auth.item') }}" class="submit-button">出品</a>
             </div>
         </div>
     </div>

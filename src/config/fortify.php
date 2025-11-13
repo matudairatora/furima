@@ -4,6 +4,11 @@ use App\Providers\RouteServiceProvider;
 use Laravel\Fortify\Features;
 
 return [
+    'redirects' => [
+        'login' => null,
+        'logout' => null,
+        'register' => '/profile/edit', // 👈 設定ファイルで定義
+    ],
 
     /*
     |--------------------------------------------------------------------------

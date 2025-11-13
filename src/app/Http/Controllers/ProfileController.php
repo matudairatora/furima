@@ -37,9 +37,7 @@ public function edit(Request $request){
         ];
         
         // 初回設定完了の場合のみ、完了フラグをセット
-        if (!$user->profile_setup_completed) {
-            $dataToUpdateUser['profile_setup_completed'] = true;
-        }
+        
 
         $user->update($dataToUpdateUser);
 

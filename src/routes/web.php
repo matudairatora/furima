@@ -15,16 +15,14 @@ use App\Http\Controllers\ItemController;
 |
 */
 
-
 Route::get('/', [ProfileController::class, 'index'])->name('auth.index'); // トップページ
 
-Route::middleware('auth','profile_check')->group(function () {
+Route::middleware('auth')->group(function () {
+
+
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-
-});
-Route::middleware('auth')->group(function () {
  
 Route::get('/item/edit', [AuthController::class, 'item'])->name('auth.item');
 Route::post('/item', [AuthController::class, 'item_create'])->name('item.create');
