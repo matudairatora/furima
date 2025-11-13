@@ -83,7 +83,43 @@ public function showPurchaseForm($itemId)
         ]);
     }
 
+    public function processPurchase(Request $request, $itemId)
+    {   
+        // 1. 認証チェック
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        // 2. 商品を取得
+        $item = Item::findOrFail($itemId);
+
+        // 3. 既にソールドアウトでないか確認 (任意: 二重購入防止)
+        if ($item->is_sold) {
+            return back()->with('error', 'この商品は既に売り切れました。');
+        }
+
+        // 4. 購入者IDとソールドアウトフラグを設定
+        $item->buyer_id = Auth::id(); // 認証ユーザーを購買者として設定
+        $item->is_sold = true;        // ソールドアウトに設定
+        $item->save();                // データベースに保存
+
+        
+
+
+        // プルダウンで選択された値を取得
+        $paymentMethod = $request->input('payment_method');
+        
+        switch ($paymentMethod) {
+            case 'convenience':
+                // '1'が選択されたら商品一覧ページへ
+                return redirect()->route('auth.index');
+            case 'card':
+                // '2'が選択されたらユーザープロフィールページへ
+                return redirect()->route('auth.index');
+            
+            default:
+                // 予期しない値の場合は、トップページなどにリダイレクト
+                return redirect()->route('auth.index');
+        }
+    }
     
-
-
 }

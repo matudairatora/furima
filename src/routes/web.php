@@ -36,7 +36,13 @@ Route::get('/mypage', [ProfileController::class, 'mypage'])->name('auth.mypage')
 Route::get('/purchase/{itemId}', [ItemController::class, 'showPurchaseForm'])->name('item.purchase');
 
 
+// 共通のPOSTルート（プルダウンの選択を受け取る）
+Route::post('/purchase/{itemId}', [ItemController::class, 'processPurchase'])->name('item.process_purchase');
 
+// 遷移先のGETルート
+//Route::get('/', [ItemController::class, 'afterpurchaseconvenience'])->name('item.afterconvenience');
+
+//Route::get('/', [ItemController::class, 'afterpurchasecard'])->name('item.aftercard');
 
 
 });

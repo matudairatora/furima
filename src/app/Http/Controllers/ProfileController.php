@@ -73,4 +73,7 @@ public function edit(Request $request){
     return view('auth.mypage',compact('user','items',));
     }
     
+
+
+
 }
