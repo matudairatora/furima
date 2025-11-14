@@ -19,10 +19,9 @@
 5. `php artisan key:generate`
 6. `php artisan migrate:fresh`
 7. `php artisan db:seed`
-8. `exit`
-9. `sudo chmod -R 777 *`
-10. `php artisan storage:link`
-
+8. `php artisan storage:link`
+9. `exit`
+10. `sudo chmod -R 777 *`
 ### 使用技術
 - PHP 8.0
 - Laravel 10.0

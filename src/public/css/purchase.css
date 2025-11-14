@@ -186,7 +186,9 @@
 .purchase-action-button:hover {
     background-color: #e55338;
 }
-
+.invalid-feedback {
+    color: #ff6347;
+}
 /* ==================================
     レスポンシブ対応 (必要に応じて)
 ================================== */

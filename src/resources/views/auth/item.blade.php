@@ -20,6 +20,11 @@
                 </label>
                 <input type="file" id="image-upload" name="image" style="display: none;">
             </div>
+            @error('image')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </section>
 
         {{-- 商品の詳細 --}}
@@ -35,6 +40,11 @@
                     <label class="tag-label"><input type="checkbox" name="categories[]" value="{{ $category->id }}" {{ old('category_id')==$category->id ? 'selected' : '' }}><span>{{$category->content }}</span></label>
                     @endforeach
                 </div>
+                @error('content')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
             </div>
 
             {{-- 商品の状態 --}}
@@ -47,6 +57,11 @@
                         <option value="{{ $condition->id }}" {{ old('condition_id')==$condition->id ? 'selected' : '' }}>{{$condition->condition }}</option>
                         @endforeach
                     </select>
+                    @error('condition')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                     @enderror
                 </div>
             </div>
         </section>
@@ -61,6 +76,11 @@
                 {{-- old() ヘルパーを使用してエラー時に値を保持 (Laravelの慣例) --}}
                 <input type="text" name="name" class="form-input" value="{{ old('name') }}">
             </div>
+            @error('name')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
 
             {{-- ブランド名 --}}
             <div class="form-group">
@@ -73,6 +93,11 @@
                 <h3 class="subsection-title">商品の説明</h3>
                 <textarea name="explanation" class="form-textarea">{{ old('explanation') }}</textarea>
             </div>
+            @error('explanation')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </section>
 
         {{-- 販売価格 --}}
@@ -82,6 +107,11 @@
                 <h3 class="subsection-title">¥</h3>
                 <input type="number" name="price" class="form-input price-input" value="{{ old('price') }}" placeholder="100">
             </div>
+            @error('price')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </section>
 
         <div class="submit-area">

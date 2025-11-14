@@ -120,6 +120,11 @@
                     @csrf 
                     <textarea name="comment" rows="5" placeholder="コメントを入力してください..." class="comment-textarea"></textarea>
                     <button type="submit" class="comment-submit-button">コメントを送信する</button>
+                    @error('comment')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                     @enderror
                 </form>
             </div>
          </div>

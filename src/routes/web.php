@@ -39,9 +39,10 @@ Route::get('/purchase/{itemId}', [ItemController::class, 'showPurchaseForm'])->n
 // 共通のPOSTルート（プルダウンの選択を受け取る）
 Route::post('/purchase/{itemId}', [ItemController::class, 'processPurchase'])->name('item.process_purchase');
 
-// 遷移先のGETルート
-//Route::get('/', [ItemController::class, 'afterpurchasecard'])->name('item.aftercard');
-
+Route::get('/address/edit', [ItemController::class, 'showAddressEditForm'])->name('address.edit');
+    
+// 住所情報を更新するPOSTルート (新しいルート)
+Route::post('/address', [ItemController::class, 'updateAddress'])->name('address.update');
 
 });
 

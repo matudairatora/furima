@@ -8,7 +8,7 @@ use App\Models\Mypage;
 use App\Models\Item;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
-
+use App\Http\Requests\ProfileRequest;
 
 class ProfileController extends Controller
 {
@@ -45,7 +45,7 @@ public function edit(Request $request){
     }
     
  
-    public function update(Request $request)
+    public function update(ProfileRequest $request)
     {
         $user = Auth::user();
 

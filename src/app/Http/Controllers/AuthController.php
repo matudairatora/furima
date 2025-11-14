@@ -9,6 +9,8 @@ use App\Models\Condition;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\ExhibitionRequest;
+
 
 class AuthController extends Controller
 {
@@ -19,7 +21,7 @@ class AuthController extends Controller
 
         return view('auth.item',compact('conditions','categories'));  
     }
-    public function item_create(Request $request){
+    public function item_create(ExhibitionRequest $request){
     
         $imagePath = $request->file('image')->store('images/item', 'public');
 

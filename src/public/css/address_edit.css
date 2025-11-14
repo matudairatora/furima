@@ -1,0 +1,86 @@
+/* address_edit.css */
+
+/* コンテナ全体: 画面中央にフォームを配置 */
+.address-edit-container {
+    max-width: 600px;
+    /* フォームの最大幅を制限 */
+    margin: 50px auto;
+    /* 上下にスペースを開け、左右は中央寄せ */
+    padding: 20px;
+}
+
+/* ページのタイトル */
+.address-edit-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 50px;
+    /* タイトルとフォームの間にスペース */
+    font-weight: bold;
+}
+
+/* フォーム項目全体 */
+.address-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    /* 項目間のスペース */
+}
+
+/* 各フォームグループ（ラベルと入力欄） */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ラベルのスタイル */
+.form-group label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #000;
+    /* 黒字 */
+}
+
+/* 入力欄（テキストボックス）のスタイル */
+.form-input {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 更新ボタンのラッパー */
+.form-action {
+    margin-top: 50px;
+    /* ボタンとフォーム項目の間にスペース */
+}
+
+/* 更新ボタンのスタイル */
+.update-button {
+    background-color: #ff6961;
+    /* 画像の明るい赤色を再現 */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 0;
+    /* 上下により広いパディング */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    /* 親要素の幅いっぱいに広げる */
+    transition: background-color 0.3s ease;
+}
+
+.update-button:hover {
+    background-color: #e55e56;
+}
+
+/* エラーメッセージ（profile.blade.phpで使われていたクラス） */
+.invalid-feedback {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}

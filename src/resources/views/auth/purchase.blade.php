@@ -39,6 +39,11 @@
                             <option value="card">カード払い</option>
                         </select>
                     </div>
+                    @error('payment_method')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                     @enderror
                 </section>
 
                 <hr class="separator">
@@ -46,11 +51,17 @@
                 {{-- 配送先情報 --}}
                 <section class="shipping-address-section">
                     <h2 class="section-title">配送先</h2>
-                    <a href="#" class="change-link">変更する</a>
+                    <a href="{{route('address.edit',['itemId' => $item->id])}}" class="change-link">変更する</a>
                     <div class="address-details">
                         <p>〒 {{ $userAddress['postcode'] ?? '未登録' }}</p>
                         <p>{{ $userAddress['address_line'] ?? '配送先情報がありません' }}</p>
                     </div>
+                    <input type="hidden" name="user_address" value="{{ $userAddress['address_line'] ?? '' }}">
+                     @error('user_address')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                     @enderror
                 </section>
 
                 <hr class="separator">

@@ -94,3 +94,6 @@
 .update-button:hover {
     background-color: #c0392b;
 }
+.invalid-feedback {
+    color: #ff6347;
+}
