@@ -158,7 +158,7 @@
 }
 
 /* レスポンシブ対応 */
-@media (max-width: 850px) {
+@media screen and (min-width: 768px) and (max-width: 850px) {
     /* app.blade.phpのヘッダー関連スタイルは common.css に残します */
 
     .main-container {

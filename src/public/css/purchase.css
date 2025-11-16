@@ -192,13 +192,22 @@
 /* ==================================
     レスポンシブ対応 (必要に応じて)
 ================================== */
-@media (max-width: 768px) {
-    .purchase-content-wrap {
-        flex-direction: column;
+@media screen and (min-width: 768px) and (max-width: 850px) {
+
+    /* ページの最大幅を画面幅に合わせて調整 */
+    .purchase-page-container {
+        max-width: 820px;
     }
 
-    .payment-summary-area {
-        order: -1;
-        /* スマホで概要を上に持ってくる場合 */
+    /* メインコンテンツのラップ */
+    .purchase-content-wrap {
+        /* 左右のエリア間のスペースを狭くする */
+        gap: 20px;
+    }
+
+    /* 左側エリア (商品詳細、支払い、配送) */
+    .purchase-info-area {
+        /* flex: 2; は維持しつつ、最小幅を確保 */
+        min-width: 450px;
     }
 }

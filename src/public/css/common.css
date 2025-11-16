@@ -183,7 +183,7 @@ body {
     /* ソールドアウトの文字を中央に配置 */
     z-index: 10;
 }
-@media (max-width: 850px) {
+@media screen and (min-width: 768px) and (max-width: 850px) {
 
     /* ヘッダーコンテンツの左右パディングを調整 */
     .header-content {

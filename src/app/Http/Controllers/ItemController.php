@@ -156,9 +156,7 @@ public function updateAddress(AddressRequest $request)
         }
 
         // 4. 購入者IDとソールドアウトフラグを設定
-        $item->buyer_id = Auth::id(); // 認証ユーザーを購買者として設定
-        $item->is_sold = true;        // ソールドアウトに設定
-        $item->save();                // データベースに保存
+                       // データベースに保存
 
         
 
@@ -169,12 +167,16 @@ public function updateAddress(AddressRequest $request)
         switch ($paymentMethod) {
             case 'convenience':
                 // '1'が選択されたら商品一覧ページへ
+                $item->buyer_id = Auth::id(); // 認証ユーザーを購買者として設定
+                $item->is_sold = true;        // ソールドアウトに設定
+                $item->save(); 
                 return redirect()->route('auth.index');
             case 'card':
                 // '2'が選択されたらユーザープロフィールページへ
-                return redirect()->route('auth.index');
-                //カードルート完成版
-                //return redirect()->route('item.aftercard');
+                //return redirect()->route('auth.index');
+                return redirect()->route('checkout', [
+                    'itemId' => $item->id,
+                ]);
             
             default:
                 // 予期しない値の場合は、トップページなどにリダイレクト

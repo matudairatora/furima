@@ -15,24 +15,38 @@ class ProfileController extends Controller
 public function index(Request $request)
 {
    $tab = $request->query('tab', 'recommend');
-        $items = collect(); // 商品リストの初期化
+    $keyword = $request->input('keyword'); // ★ キーワードを取得 ★
+    
+    // 1. タブに基づいてベースとなる商品クエリを構築
+    $query = Item::query(); 
 
-        // ログインしていて、'tab'が'mylist'の場合のみお気に入り商品を取得
-        if ($tab === 'mylist' && Auth::check()) {
-            $user = Auth::user();
-            // 認証ユーザーのお気に入りリレーションを通じて商品を取得
-            $items = $user->favorites()->latest()->get(); 
-            
-        } else { 
-            // 'recommend'（おすすめ）またはログインしていない場合、全ての商品を取得
-            $items = Item::latest()->get();
-        }
+    // 'mylist'タブが選択されており、かつログインしている場合
+    if ($tab === 'mylist' && Auth::check()) {
+        $user = Auth::user();
+        // 認証ユーザーのお気に入りリレーションを通じてクエリを構築
+        // whereHas()を使って、Itemがお気に入りを持っている（favoritesテーブルにレコードがある）ことを条件にする
+        $query->whereHas('favorites', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        });
+        
+    } 
+    // 'recommend'（おすすめ）またはログインしていない場合は、ベースの$query (Item::query()) のまま
 
-        // ビューに現在のタブの状態と商品リストを渡す
-        return view('auth.index', [
-            'items' => $items,
-            'currentTab' => $tab, 
-        ]);
+    // 2. キーワードが存在する場合、検索条件を既存のクエリに追加
+    if (!empty($keyword)) {
+        // 商品の'name'カラムに対して部分一致検索を実行
+        $query->where('name', 'LIKE', '%' . $keyword . '%'); 
+    }
+
+    // 3. 結果を取得
+    $items = $query->latest()->get(); // 最終的なクエリから結果を最新順で取得
+
+    // ビューに現在のタブの状態、商品リスト、およびキーワードを渡す
+    return view('auth.index', [
+        'items' => $items,
+        'currentTab' => $tab, 
+        'keyword' => $keyword, // ★ キーワードをビューに渡す ★
+    ]);
 }
     
 public function edit(Request $request){
@@ -108,8 +122,10 @@ public function edit(Request $request){
             'user' => $user,
             'items' => $items, 
         ]);
+
     }
     
+
 
 
 

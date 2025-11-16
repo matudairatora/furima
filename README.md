@@ -16,12 +16,14 @@
     DB_USERNAME=laravel_user
     DB_PASSWORD=laravel_pass
     ```
-5. `php artisan key:generate`
-6. `php artisan migrate:fresh`
-7. `php artisan db:seed`
-8. `php artisan storage:link`
-9. `exit`
-10. `sudo chmod -R 777 *`
+5. `composer require stripe/stripe-php:17.0.0`
+6. `php artisan key:generate`
+7. `php artisan migrate:fresh`
+8. `php artisan db:seed`
+9. `php artisan storage:link`
+10. `exit`
+11. `sudo chmod -R 777 *`
+
 ### 使用技術
 - PHP 8.0
 - Laravel 10.0

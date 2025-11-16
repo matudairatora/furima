@@ -23,7 +23,16 @@
 
             {{-- 検索エリア --}}
             <div class="search-area">
-                <input type="text" placeholder="なにをお探しですか？" class="search-input">
+                <form action="{{ route('auth.index') }}" method="GET">
+                
+                    {{-- value属性を追加し、リクエストにキーワードがあれば表示する --}}
+                    <input type="text" 
+                        name="keyword" 
+                        placeholder="なにをお探しですか？" 
+                        class="search-input" 
+                        value="{{ request('keyword') }}"
+                    >
+                </form>
             </div>
 
             {{-- ナビゲーションエリア --}}

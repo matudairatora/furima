@@ -181,7 +181,7 @@
     color: #ff6347;
 }
 
-@media (max-width: 850px) {
+@media screen and (min-width: 768px) and (max-width: 850px) {
 
     /* フォーム全体を画面幅いっぱいまで広げる */
     .item-create-container {

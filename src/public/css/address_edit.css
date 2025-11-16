@@ -84,3 +84,32 @@
     font-size: 14px;
     margin-top: 5px;
 }
+
+@media screen and (min-width: 768px) and (max-width: 850px) {
+
+    /* コンテナ全体: 画面中央にフォームを配置 */
+    .address-edit-container {
+        /* フォームの最大幅を画面幅に合わせて少し広げる */
+        max-width: 700px;
+        /* 左右のマージンは中央寄せの 'auto' を維持 */
+        margin: 40px auto;
+    }
+
+    /* ページのタイトル */
+    .address-edit-title {
+        /* タイトル下のマージンを少し減らしてスペースを詰める */
+        margin-bottom: 40px;
+    }
+
+    /* フォーム項目全体 */
+    .address-form-content {
+        /* 項目間のスペースを微調整 */
+        gap: 25px;
+    }
+
+    /* 更新ボタンのラッパー */
+    .form-action {
+        /* ボタン上のマージンを微調整 */
+        margin-top: 40px;
+    }
+}

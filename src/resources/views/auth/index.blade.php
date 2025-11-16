@@ -10,11 +10,14 @@
     <div class="category-tabs">
         <?php 
         $currentTab = $currentTab ?? request()->query('tab', 'recommend'); 
+        $keyword = request()->query('keyword');
         ?>
-        <a href="{{ route('auth.index', ['tab' => 'recommend']) }}" 
+        {{-- おすすめタブ：現在のキーワードをパラメータに含める --}}
+        <a href="{{ route('auth.index', ['tab' => 'recommend', 'keyword' => $keyword]) }}" 
            class="tab-item {{ $currentTab === 'recommend' ? 'active' : '' }}">おすすめ</a>
-        {{-- 画像に合わせて「マイリスト」をアクティブにします --}}
-        <a href="{{ route('auth.index', ['tab' => 'mylist']) }}" 
+           
+        {{-- マイリストタブ：現在のキーワードをパラメータに含める --}}
+        <a href="{{ route('auth.index', ['tab' => 'mylist', 'keyword' => $keyword]) }}" 
            class="tab-item {{ $currentTab === 'mylist' ? 'active' : '' }}">マイリスト</a>
     </div>
 
