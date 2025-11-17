@@ -10,13 +10,17 @@
 <div class="purchase-page-container">
     <h1 class="page-title">購入</h1>
     
-    <div class="purchase-content-wrap">
-        <form method="POST" action="{{ route('item.process_purchase', ['itemId' => $item->id]) }}">
-            @csrf
-        {{-- 左側: 商品詳細と支払い・配送先情報 --}}
+    {{-- 修正1: formタグを wrap の外側に移動 --}}
+    <form method="POST" action="{{ route('item.process_purchase', ['itemId' => $item->id]) }}" class="purchase-form">
+        @csrf
+        
+        {{-- ここがFlexコンテナになります --}}
+        <div class="purchase-content-wrap">
+            
+            {{-- 左側: 商品詳細と支払い・配送先情報 --}}
             <div class="purchase-info-area">
                 
-                {{-- 商品詳細エリア (商品画像、商品名、価格) --}}
+                {{-- 商品詳細エリア --}}
                 <div class="product-summary">
                     <div class="product-image-placeholder">
                         <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" class="product-image"> 
@@ -33,7 +37,6 @@
                 <section class="payment-method-section">
                     <h2 class="section-title">支払い方法</h2>
                     <div class="payment-selection-wrap">
-                        {{-- 添付画像のように、ドロップダウン風に選択肢を配置 --}}
                         <select class="payment-dropdown" name="payment_method" id="payment-method-select">
                             <option value="convenience" selected>コンビニ払い</option>
                             <option value="card">カード払い</option>
@@ -50,8 +53,11 @@
 
                 {{-- 配送先情報 --}}
                 <section class="shipping-address-section">
-                    <h2 class="section-title">配送先</h2>
-                    <a href="{{route('address.edit',['itemId' => $item->id])}}" class="change-link">変更する</a>
+                    <div class="section-header">
+                        <h2 class="section-title">配送先</h2>
+                        <a href="{{route('address.edit',['itemId' => $item->id])}}" class="change-link">変更する</a>
+                    </div>
+                    
                     <div class="address-details">
                         <p>〒 {{ $userAddress['postcode'] ?? '未登録' }}</p>
                         <p>{{ $userAddress['address_line'] ?? '配送先情報がありません' }}</p>
@@ -69,26 +75,24 @@
 
             {{-- 右側: 決済エリア (注文内容の確認) --}}
             <div class="payment-summary-area">
-            <div class="order-summary-item">
+                
+                {{-- 修正2: ボックスを1つにまとめ、内部を分割 --}}
                 <div class="order-summary-box">
-                    <div class="summary-line">
-                        <span class="summary-label">{{ $item->name }}</span>
+                    <div class="summary-line border-bottom">
+                        <span class="summary-label">商品代金</span>
                         <span class="summary-value">¥{{ number_format($item->price) }}</span>
                     </div>
-                </div>
-                <div class="order-summary-box">
                     <div class="summary-line">
                         <span class="summary-label">支払い方法</span>
                         <span class="summary-value" id="selected-payment-display">コンビニ払い</span>
                     </div>
                 </div>
-                </div>
+
                 {{-- 購入ボタン --}}
                 <button type="submit" class="purchase-action-button">購入する</button>
-
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 @endsection
 

@@ -40,7 +40,7 @@
                     <label class="tag-label"><input type="checkbox" name="categories[]" value="{{ $category->id }}" {{ old('category_id')==$category->id ? 'selected' : '' }}><span>{{$category->content }}</span></label>
                     @endforeach
                 </div>
-                @error('content')
+                @error('categories')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>

@@ -4,160 +4,159 @@
 
 .purchase-page-container {
     max-width: 1200px;
-    /* ページの最大幅を設定 */
+    /* 少し狭めてバランス調整 */
     margin: 0 auto;
-    padding: 20px;
+    padding: 40px 20px;
 }
 
 .page-title {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 30px;
+    text-align: center;
+    /* タイトルは中央寄せが一般的ですが、左寄せなら削除してください */
 }
 
 /* --- メインコンテンツのラップ --- */
 .purchase-content-wrap {
     display: flex;
-    gap: 50px;
-    /* 左と右のエリア間のスペース */
+    gap: 80px;
+    /* 画像に合わせて間隔を広めに */
+    align-items: flex-start;
+    /* 上揃え */
 }
 
-/* 左側エリア (商品詳細、支払い、配送) */
+/* 左側エリア */
 .purchase-info-area {
-    flex: 2;
-    /* 左側を広く */
+    flex: 3;
+    /* 比率調整 */
 }
 
-/* 右側エリア (決済概要) */
+/* 右側エリア */
 .payment-summary-area {
-    flex: 1;
-    /* 右側を狭く */
+    flex: 2;
+    /* 比率調整 */
 }
 
 /* --- 商品詳細サマリー --- */
 .product-summary {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 20px;
 }
 
 .product-image-placeholder {
-    width: 100px;
-    height: 100px;
-    background-color: #e0e0e0;
-    /* 画像のプレースホルダーの色 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #666;
-    font-size: 12px;
-    margin-right: 20px;
+    width: 120px;
+    height: 120px;
+    margin-right: 30px;
+    /* 画像があるため背景色は不要または画像の裏として残す */
+    background-color: #f0f0f0;
 }
 
-.product-image{
-    width: 100px;
-    height: 100px;
-}
-
-.product-details {
-    /* 商品名と価格 */
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 画像を枠いっぱいに表示 */
 }
 
 .product-name {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .product-price {
-    font-size: 18px;
-    font-weight: normal;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 /* --- 各セクションのタイトルと区切り線 --- */
 .separator {
     border: none;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #ccc;
     margin: 30px 0;
 }
 
 .section-title {
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 /* --- 支払い方法セクション --- */
-.payment-method-section {
-    position: relative;
-}
-
-/* スクリーンショットのドロップダウン風デザインを再現 */
 .payment-selection-wrap {
-    /* 選択要素を囲むラッパー */
+    margin-top: 10px;
 }
 
 .payment-dropdown {
-    width: 200px;
-    /* 幅を調整 */
-    padding: 10px;
+    width: 100%;
+    /* 幅を親要素に合わせる、あるいは固定幅 */
+    max-width: 300px;
+    padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    -webkit-appearance: none;
-    /* デフォルトのドロップダウン矢印を非表示 */
-    -moz-appearance: none;
+    border-radius: 6px;
+    font-size: 16px;
+    /* カスタム矢印は維持 */
     appearance: none;
+    -webkit-appearance: none;
     background-color: #fff;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7%2010L12%2015L17%2010H7Z%22%20fill%3D%22%23333333%22%2F%3E%0A%3C%2Fsvg%3E");
-    /* カスタム矢印 */
     background-repeat: no-repeat;
     background-position: right 10px center;
     cursor: pointer;
 }
 
 /* --- 配送先セクション --- */
-.shipping-address-section {
-    position: relative;
+/* タイトルと変更リンクを横並びにするためのラッパー */
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* 必要なら調整 */
+    margin-bottom: 15px;
 }
 
-.shipping-address-section .section-title {
-    display: inline-block;
-    margin-right: 15px;
+.section-header .section-title {
+    margin-bottom: 0;
+    margin-right: 20px;
 }
 
 .change-link {
     color: #007bff;
-    /* リンクの色 */
     text-decoration: none;
     font-size: 14px;
 }
 
-.change-link:hover {
-    text-decoration: underline;
-}
-
-.address-details {
-    margin-top: 10px;
-    line-height: 1.5;
+.address-details p {
+    margin: 5px 0;
+    font-size: 16px;
 }
 
 /* --- 決済概要エリア (右側) --- */
-.order-summary-item{
-    margin-bottom: 20px;
 
-}
-
+/* 修正: 1つのボックス内にまとめるスタイル */
 .order-summary-box {
     border: 1px solid #ddd;
-    padding: 20px;
-    margin-bottom: 0px;
+    padding: 0;
+    /* paddingを0にして内部で調整 */
+    margin-bottom: 30px;
+    background-color: #fff;
 }
 
 .summary-line {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px;
+    padding: 20px;
+    /* ここで余白を取る */
     font-size: 16px;
+    align-items: center;
+}
+
+/* 上の行だけに線を引く */
+.summary-line.border-bottom {
+    border-bottom: 1px solid #ddd;
 }
 
 .summary-label {
@@ -165,49 +164,49 @@
 }
 
 .summary-value {
-    font-weight: bold;
+    font-weight: normal;
+    /* 画像に合わせてnormalに調整、boldでも可 */
 }
 
 /* --- 購入ボタン --- */
 .purchase-action-button {
     width: 100%;
-    padding: 15px;
-    background-color: #ff6347;
-    /* 赤系の色 (Tomato) */
+    padding: 18px;
+    background-color: #ff5555;
+    /* 少し明るい赤 */
     color: white;
     font-size: 18px;
     font-weight: bold;
     border: none;
-    border-radius: 5px;
+    border-radius: 0;
+    /* 画像のように角丸なしにする場合 */
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: opacity 0.3s;
+    margin-top: 30px;
 }
 
 .purchase-action-button:hover {
-    background-color: #e55338;
+    opacity: 0.8;
 }
+
 .invalid-feedback {
     color: #ff6347;
+    display: block;
+    margin-top: 5px;
 }
+
 /* ==================================
-    レスポンシブ対応 (必要に応じて)
+    レスポンシブ対応
 ================================== */
-@media screen and (min-width: 768px) and (max-width: 850px) {
-
-    /* ページの最大幅を画面幅に合わせて調整 */
-    .purchase-page-container {
-        max-width: 820px;
-    }
-
-    /* メインコンテンツのラップ */
+@media screen and (max-width: 768px) {
     .purchase-content-wrap {
-        /* 左右のエリア間のスペースを狭くする */
-        gap: 20px;
+        flex-direction: column;
+        /* スマホでは縦並び */
+        gap: 40px;
     }
 
-    /* 左側エリア (商品詳細、支払い、配送) */
-    .purchase-info-area {
-        /* flex: 2; は維持しつつ、最小幅を確保 */
-        min-width: 450px;
+    .purchase-info-area,
+    .payment-summary-area {
+        width: 100%;
     }
 }

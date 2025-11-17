@@ -12,6 +12,7 @@ use App\Models\Comment;
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Requests\AddressRequest;
+use App\Models\ShippingAddress;
 
 class ItemController extends Controller
 {
@@ -51,29 +52,29 @@ class ItemController extends Controller
 
 public function showPurchaseForm($itemId)
     {
-        // 認証ユーザーのチェック
         if (!Auth::check()) {
-            return redirect()->route('login'); // ログインページにリダイレクト
+            return redirect()->route('login');
         }
 
-        // 商品IDに基づいてデータを取得
-        $item = Item::findOrFail($itemId); 
-        
-        // ★ 認証ユーザーのマイページ情報を取得 ★
-        // Userモデルにmypageリレーションが定義されていることを前提とします
-        $userMypage = Auth::user()->mypage;
+        $item = Item::findOrFail($itemId);
+        $user = Auth::user();
+
+        // ★ 修正: まず「この商品用の配送先」が保存されているか確認
+        $shipping = ShippingAddress::where('user_id', $user->id)->where('item_id', $itemId)->first();
 
         // 配送先情報
-        $userAddress = null;
-        if ($userMypage) {
+        // shipping_addresses にデータがあればそれを優先、なければ mypage を使用
+        if ($shipping) {
             $userAddress = [
-                // mypageテーブルのカラム名に合わせてキーを設定
-                'postcode' => $userMypage->postcode,
-                // addressとbuildingを結合して表示用のアドレスを作成
-                'address_line' => $userMypage->address . ($userMypage->building ? ' ' . $userMypage->building : ''),
+                'postcode' => $shipping->postcode,
+                'address_line' => $shipping->address . ($shipping->building ? ' ' . $shipping->building : ''),
+            ];
+        } elseif ($user->mypage) {
+            $userAddress = [
+                'postcode' => $user->mypage->postcode,
+                'address_line' => $user->mypage->address . ($user->mypage->building ? ' ' . $user->mypage->building : ''),
             ];
         } else {
-             // マイページ情報がない場合のデフォルト値 (任意)
              $userAddress = [
                 'postcode' => '',
                 'address_line' => '',
@@ -81,66 +82,62 @@ public function showPurchaseForm($itemId)
         }
 
         return view('auth.purchase', [
-            'item' => $item, 
-            'userAddress' => $userAddress, // 配送先情報をビューに渡す
+            'item' => $item,
+            'userAddress' => $userAddress,
         ]);
     }
 
 
-    public function showAddressEditForm(Request $request)
-{
-    
-    // itemIdをクエリパラメータから取得（例: /address/edit?itemId=123）
+   public function showAddressEditForm(Request $request)
+    {
         $itemId = $request->query('itemId');
-    // 認証ユーザーのマイページ情報を取得
-    $user = Auth::user()->load('mypage');
-    
-    // 住所変更画面のビューを返す
-    return view('auth.address_edit', [
-        'user' => $user,'itemId' => $itemId,
-    ]);
-}
+        $user = Auth::user();
 
-// 住所情報を更新するメソッド
-public function updateAddress(AddressRequest $request)
-{
-    // 1. 認証ユーザーを取得
-   $user = Auth::user();
-    
-    // 1. 既存の Mypage モデルを取得 (存在しなければ null)
-    $mypage = $user->mypage; 
-
-    // リクエストから更新データを配列で取得
-    // building は AddressRequest にはないため、個別に追加
-    $updateData = $request->validated();
-    $updateData['building'] = $request->input('building');
-    
-    if (is_null($mypage)) {
-        // 2. mypage が null の場合（初回登録）、新規作成する
-        // create() に $updateData を渡すことで、NOT NULL 制約のエラーを回避
-        $user->mypage()->create($updateData); 
-        
-    } else {
-        // 3. mypage が存在する場合、データを更新し保存する
-        // fill() でデータを一括設定し、save() で保存
-        $mypage->fill($updateData)->save();
-    }
-    // -----------------------------------------------------------------
-        // ★ 修正点: リダイレクト処理で item_id を取得し利用する ★
-        // -----------------------------------------------------------------
-        
-        // address_edit.blade.php から hidden input で渡された item_id を取得
-        $itemId = $request->input('item_id'); 
-        
-        // itemId が取得できたら購入画面へリダイレクト
+        // ★ 修正: 初期値を決定するロジック
+        // item_id があり、かつ既に配送先設定があるならそれをロード
+        $address = null;
         if ($itemId) {
+            $address = ShippingAddress::where('user_id', $user->id)->where('item_id', $itemId)->first();
+        }
+        
+        // なければプロフィールの住所を使用
+        if (!$address) {
+            $address = $user->mypage; 
+        }
+
+        return view('auth.address_edit', [
+            'address' => $address, // $user ではなく $address を渡すように変更
+            'itemId' => $itemId,
+        ]);
+    }
+
+public function updateAddress(AddressRequest $request)
+    {
+        $user = Auth::user();
+        $itemId = $request->input('item_id');
+        $updateData = $request->validated();
+        $updateData['building'] = $request->input('building');
+
+        // ★ 修正: itemId がある場合は「配送先テーブル」を保存/更新
+        if ($itemId) {
+            ShippingAddress::updateOrCreate(
+                ['user_id' => $user->id, 'item_id' => $itemId],
+                $updateData
+            );
+            
             return redirect()->route('item.purchase', ['itemId' => $itemId]);
         }
 
-        // itemId が取得できなかった場合のフォールバック処理 (例: マイページ)
+        // itemId がない場合（プロフィール編集など）は従来の処理
+        $mypage = $user->mypage;
+        if (is_null($mypage)) {
+            $user->mypage()->create($updateData);
+        } else {
+            $mypage->fill($updateData)->save();
+        }
+
         return redirect()->route('auth.mypage');
-    
-}
+    }
     public function processPurchase(PurchaseRequest $request, $itemId)
     {   
         // 1. 認証チェック

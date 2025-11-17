@@ -43,86 +43,65 @@
     </form>
 
  <script>
-    // ----------------------------------------------------
-    // グローバル変数として定義
-    // ----------------------------------------------------
     let stripe;
     let elements;
-    // メタタグからCSRFトークンを取得
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    const public_key = '{{ $stripePublicKey }}';
 
-    // ページロード時に初期化を実行
-    initialize();
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. Stripeオブジェクトの初期化
+        stripe = Stripe(public_key);
 
+        // ページロード時に初期化関数を呼び出す
+        initialize(); 
+    });
+    
+    /**
+     * Payment Intentの clientSecret を取得し、Stripe Elementsを初期化する関数
+     * ★この関数が、前のエラー (405 Method Not Allowed) を解消します。
+     */
     async function initialize() {
-        // ボタンを無効化し、メッセージを表示
-        document.getElementById('submit').disabled = true;
-        showMessage("決済情報を準備中...");
+        const itemId = document.getElementById('item-id').value;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        
+        // POSTルート（/create-payment-intent/{itemId}）に対応したURLを生成
+        const clientSecretUrl = `/create-payment-intent/${itemId}`; 
 
         try {
-            const itemId = document.getElementById('item-id').value;
-            
-            // 1. Stripeクライアントの初期化
-            stripe = Stripe('{{ $stripePublicKey }}'); 
-
-            // Laravelのルート定義に基づいて、正しいPOSTリクエストURLを生成
-            const sessionCreationUrl = '{{ route('create-payment-intent', ['itemId' => ':itemId']) }}'.replace(':itemId', itemId);
-
-            // 2. サーバーサイドから client_secret を取得
-            const response = await fetch(sessionCreationUrl, {
-                method: "POST",
+            // サーバー側APIへPOSTリクエストを送信し、clientSecretを取得
+            const response = await fetch(clientSecretUrl, {
+                method: "POST", 
                 headers: { 
                     "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrfToken, // CSRFトークンを送信
+                    "X-CSRF-TOKEN": csrfToken // CSRFトークンの付与
                 },
             });
             
-            let data = {};
-            
             if (!response.ok) {
-                try {
-                    data = await response.json();
-                    throw new Error(data.error || `リクエストが失敗しました（ステータス: ${response.status}）。`);
-                } catch (e) {
-                    throw new Error(`リクエストが失敗しました（ステータス: ${response.status}）。`);
-                }
+                // HTTPエラーの場合
+                throw new Error(`Payment Intentの作成に失敗しました（ステータス: ${response.status}）。`);
             }
-            
-            data = await response.json(); 
-            if (!data.clientSecret) {
-                throw new Error('サーバーから決済情報（clientSecret）が取得できませんでした。');
-            }
-            
-            // ★★★ 修正箇所: decodeURIComponent()を削除する ★★★
-            // JSONレスポンスの文字列（エスケープされていてもJavaScriptのJSONパーサーが自動処理済み）を
-            // そのまま使用します。
-            const clientSecret = data.clientSecret; // 修正後の正しいコード
-            
-            // ----------------------------------------------------
-            // elements() APIを使用し、Payment Elementをマウント
-            // ----------------------------------------------------
-            const appearance = {
-                theme: 'stripe',
-            };
-            
-            elements = stripe.elements({ appearance, clientSecret });
-            
-            const paymentElement = elements.create("payment");
-            paymentElement.mount("#payment-element");
 
-            showMessage("カード情報を入力してください。"); 
+            const { clientSecret } = await response.json();
+
+            // 2. clientSecret を使って Stripe Elements を初期化
+            const appearance = { theme: 'stripe' };
+            elements = stripe.elements({ appearance, clientSecret }); 
+            
+            // 3. Payment Elementを表示し、ボタンを有効化
+            const paymentElement = elements.create('payment');
+            paymentElement.mount('#payment-element');
+            
             document.getElementById('submit').disabled = false;
 
         } catch (error) {
-            console.error("Error during initialization:", error);
-            // ユーザーに具体的なエラー内容を伝える
-            showMessage(error.message || '決済準備中に予期せぬエラーが発生しました。');
-            document.getElementById('submit').disabled = true;
+            showMessage(`初期化エラー: ${error.message}`);
         }
     }
 
-    document.getElementById('payment-form').addEventListener('submit', async function(event) {
-        event.preventDefault();
+
+    // フォーム送信時の処理 (お客様の既存のコード)
+    document.querySelector("#payment-form").addEventListener("submit", async function(e) {
+        e.preventDefault();
         
         if (!stripe || !elements) {
             showMessage('初期化が完了していません。ページを再読み込みしてください。');
@@ -147,13 +126,17 @@
                             email: email,
                         },
                     },
-                    return_url: '{{ config('app.url') }}/stripe/complete?item_id=' + itemId, 
+                    // 支払い完了後のリダイレクト先 (web.phpの /stripe/complete ルートを参照)
+                    return_url: "{{ route('stripe.complete') }}" + '?item_id=' + itemId, 
                 }
             });
 
             if (error) {
+                // エラー発生時はメッセージを表示し、フォームを再有効化
                 throw new Error(error.message);
             }
+            
+            // 成功時は return_url へリダイレクトされるため、この後のコードは通常実行されない
 
         } catch (error) {
             showMessage(error.message || '支払い処理中に予期せぬエラーが発生しました。');
@@ -162,6 +145,9 @@
         }
     });
 
+    /**
+     * ユーザーにメッセージを表示するヘルパー関数
+     */
     function showMessage(messageText) {
         document.getElementById('payment-message').textContent = messageText;
     }
