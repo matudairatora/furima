@@ -30,7 +30,7 @@
 - MySQL 8.0
 
 ### ER図
-- ![ER図](image/ER.png)
+- ![ER図](image/ER図.png)
 ### URL
 - 開発環境 http://localhost/
 - phpMyAdmin http://localhost:8080/
