@@ -15,7 +15,8 @@ use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Responses\LoginResponse;
-
+use Laravel\Fortify\Contracts\VerifyEmailResponse;
+use Laravel\Fortify\Contracts\RegisterResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -24,7 +25,20 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        //  会員登録成功後のリダイレクト先
+       $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
+            public function toResponse($request)
+            {
+                return redirect()->route('profile.edit');
+            }
+        });
+        // メール認証成功後のリダイレクト先
+        $this->app->instance(VerifyEmailResponse::class, new class implements VerifyEmailResponse {
+            public function toResponse($request)
+            {
+                return redirect()->route('profile.edit');
+            }
+        });
     }
 
     /**
@@ -42,6 +56,10 @@ class FortifyServiceProvider extends ServiceProvider
      Fortify::loginView(function () {
          return view('auth.login');
      });
+
+     Fortify::verifyEmailView(function () {
+            return view('auth.verify-email'); 
+        });
 
      RateLimiter::for('login', function (Request $request) {
          $email = (string) $request->email;

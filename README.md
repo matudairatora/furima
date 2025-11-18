@@ -15,6 +15,16 @@
     DB_DATABASE=laravel_db
     DB_USERNAME=laravel_user
     DB_PASSWORD=laravel_pass
+
+    MAIL_MAILER=smtp
+    MAIL_HOST=mailhog
+    MAIL_PORT=1025
+    MAIL_USERNAME=null
+    MAIL_PASSWORD=null
+    MAIL_ENCRYPTION=null
+    MAIL_FROM_ADDRESS=hello@example.com
+    MAIL_FROM_NAME="${APP_NAME}"
+
     ```
 5. `composer require stripe/stripe-php:17.0.0`
 6. `php artisan key:generate`
@@ -22,12 +32,16 @@
 8. `php artisan db:seed`
 9. `php artisan storage:link`
 10. `exit`
-11. `sudo chmod -R 777 *`
+11. `brew install mailhog`
+12. `brew services start mailhog`
+12. `sudo chmod -R 777 *`
 
 ### 使用技術
 - PHP 8.0
 - Laravel 10.0
 - MySQL 8.0
+- mailhog
+- Fortify
 
 ### ER図
 - ![ER図](image/ER図.png)

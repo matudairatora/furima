@@ -24,7 +24,7 @@
     <h1 class="title">会員登録</h1>
 
     {{-- 登録フォーム --}}
-    <form method="POST" action="/register">
+    <form method="POST" action="{{ route('register') }}">
         @csrf
 
         {{-- ユーザー名 --}}

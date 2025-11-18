@@ -21,7 +21,7 @@ use App\Models\Item;
 
 Route::get('/', [ProfileController::class, 'index'])->name('auth.index'); // トップページ
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
 
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

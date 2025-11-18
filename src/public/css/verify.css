@@ -1,0 +1,60 @@
+/* 全体のコンテナ */
+.verify-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    /* 画面の高さに対して中央あたりに表示 */
+    text-align: center;
+}
+
+.verify-content {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+}
+
+/* メッセージテキスト */
+.verify-message {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+/* 「認証はこちらから」ボタン（画像に合わせたグレーのスタイル） */
+.verify-button {
+    display: inline-block;
+    background-color: #d3d3d3;
+    /* 薄いグレー */
+    color: #333;
+    /* 文字色 */
+    padding: 15px 60px;
+    /* 横幅を広めに */
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    border: 1px solid #999;
+    margin-bottom: 30px;
+    transition: background-color 0.3s;
+}
+
+.verify-button:hover {
+    background-color: #c0c0c0;
+}
+
+/* 再送信リンク（ボタンの見た目をリンク風にする） */
+.resend-link {
+    background: none;
+    border: none;
+    color: #007bff;
+    /* 青色 */
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.resend-link:hover {
+    text-decoration: underline;
+}

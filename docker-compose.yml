@@ -39,3 +39,10 @@ services:
       - mysql
     ports:
       - 8080:80
+  
+  mailhog:
+    image: 'mailhog/mailhog:latest'
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+
