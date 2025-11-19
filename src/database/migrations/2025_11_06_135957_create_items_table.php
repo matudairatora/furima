@@ -23,10 +23,7 @@ class CreateItemsTable extends Migration
             $table->string('explanation');
             $table->integer('condition_id')->constrained()->cascadeOnDelete();
             $table->integer('coment_id')->constrained()->cascadeOnDelete()->nullable();
-          
-            // is_sold カラムを追加し、デフォルト値を false (未販売) に設定
             $table->boolean('is_sold')->default(false); 
-            // 誰が購入したかを記録する buyer_id (任意だが推奨)
             $table->foreignId('buyer_id')->nullable()->constrained('users')->after('is_sold');
 
             $table->timestamps();

@@ -1,141 +1,206 @@
-/* checkout.css */
+/* 全体のリセットと基本設定 */
+* {
+    box-sizing: border-box;
+}
 
-/* ページ全体のコンテナとフォント設定 */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f7f6;
+    font-family: 'Noto Sans JP', Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
-    margin: 0;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
 }
 
-h1 {
-    color: #333;
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 1.8em;
-    /* H1のサイズを調整 */
-    font-weight: 600;
-}
-
-/* フォーム全体を囲むコンテナ */
-#payment-form {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* メインのラッパー（カード全体） */
+.checkout-wrapper {
+    display: flex;
     width: 100%;
-    max-width: 450px;
+    max-width: 900px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    min-height: 600px;
 }
 
-/* 商品情報エリア */
-.product-info {
-    /* 画像に合わせてボーダーと背景を調整 */
-    border: none;
-    padding: 0;
-    margin-bottom: 25px;
-    border-radius: 0;
-    background-color: transparent;
-    border-bottom: 1px dashed #e0e0e0;
-    /* 商品情報とフォームの区切り */
-    padding-bottom: 20px;
+/* --- 左側：商品情報エリア（黒背景） --- */
+.product-section {
+    flex: 1;
+    /* 1の比率 */
+    background-color: #1a1a1a;
+    /* 高級感のある黒 */
+    color: #ffffff;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
 }
 
-.product-info h2 {
-    font-size: 1.2em;
-    color: #2c3e50;
-    margin: 0 0 5px 0;
-}
-
-.product-info p {
-    font-size: 1.1em;
+.header-logo {
+    position: absolute;
+    top: 30px;
+    left: 40px;
     font-weight: bold;
-    color: #e74c3c;
-    margin: 0;
+    letter-spacing: 2px;
+    opacity: 0.7;
 }
 
-/* フォーム要素 (Eメール入力) */
+.product-content h1 {
+    font-size: 1.8rem;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+
+/* 商品画像 */
+.product-image-box {
+    width: 100%;
+    height: 200px;
+    background-color: #333;
+    /* 画像がない場合の背景 */
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 価格表示 */
+.price-tag {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.price-tag .currency {
+    font-size: 1.2rem;
+    vertical-align: top;
+    margin-right: 5px;
+}
+
+.description {
+    color: #a0a0a0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* --- 右側：決済フォームエリア（白背景） --- */
+.payment-section {
+    flex: 1.2;
+    /* 左側より少し広く */
+    background-color: #ffffff;
+    padding: 40px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.payment-section h2 {
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 1.4rem;
+}
+
+/* フォーム要素 */
+.form-group {
+    margin-bottom: 24px;
+}
+
 label {
     display: block;
     margin-bottom: 8px;
-    margin-top: 15px;
     font-weight: 600;
     color: #555;
-    font-size: 0.95em;
-    /* ラベルのサイズを調整 */
+    font-size: 0.9rem;
 }
 
 input[type="email"] {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
     font-size: 16px;
-    transition: border-color 0.3s;
+    background-color: #f9f9f9;
+    transition: all 0.3s;
 }
 
 input[type="email"]:focus {
-    border-color: #3498db;
+    border-color: #1a1a1a;
+    background-color: #fff;
     outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
-/* 支払い情報セクションのタイトル */
-h4 {
-    /* 画像に合わせて、よりシンプルな区切り線に変更 */
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 8px;
-    margin-top: 25px;
-    margin-bottom: 15px;
-    color: #333;
-    font-size: 1.1em;
-    font-weight: 600;
-}
-
-/* Stripe Payment Elementがマウントされるエリア */
+/* Stripe Elementのコンテナ */
 #payment-element {
-    /* Stripe Elements自体がスタイルを持つため、コンテナはシンプルに */
-    padding: 10px 0;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
-/* 支払うボタン */
+/* ボタン */
 #submit {
-    /* 画像に合わせて黒色に設定 */
-    background-color: #2c3e50;
-    /* 暗めの色 */
+    background-color: #1a1a1a;
     color: white;
-    padding: 12px 20px;
+    padding: 16px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 1.1em;
+    font-size: 1rem;
     width: 100%;
-    transition: background-color 0.3s ease;
     font-weight: bold;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 #submit:hover:not(:disabled) {
-    background-color: #34495e;
+    background-color: #333;
+    transform: translateY(-1px);
 }
 
 #submit:disabled {
-    background-color: #a0a0a0;
+    background-color: #ccc;
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 /* エラーメッセージ */
 #payment-message {
     color: #e74c3c;
-    /* 赤色 */
-    text-align: center;
     margin-top: 15px;
     font-size: 0.9em;
-    padding: 10px;
-    border: 1px solid #e74c3c;
-    border-radius: 4px;
-    background-color: #fdeae7;
+    text-align: center;
+    display: none;
+    /* 初期状態は非表示 */
+}
+
+/* モバイル対応：画面が狭いときは縦並びにする */
+@media (max-width: 768px) {
+    .checkout-wrapper {
+        flex-direction: column;
+    }
+
+    .product-section {
+        padding: 30px;
+        text-align: center;
+    }
+
+    .payment-section {
+        padding: 30px;
+    }
 }

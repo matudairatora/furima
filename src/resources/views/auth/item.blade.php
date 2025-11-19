@@ -1,5 +1,4 @@
-@extends('layouts.app') {{-- app.blade.php を継承 --}}
-
+@extends('layouts.app')
 @section('css')
 <link href="{{ asset('css/item.css') }}" rel="stylesheet">
 @endsection
@@ -35,7 +34,6 @@
             <div class="form-group">
                 <h3 class="subsection-title">カテゴリー</h3>
                 <div class="category-tags">
-                    {{-- 画像にあるカテゴリーのタグを再現 --}}
                     @foreach($categories as $category)
                     <label class="tag-label"><input type="checkbox" name="categories[]" value="{{ $category->id }}" {{ old('category_id')==$category->id ? 'selected' : '' }}><span>{{$category->content }}</span></label>
                     @endforeach
@@ -73,7 +71,6 @@
             {{-- 商品名 --}}
             <div class="form-group">
                 <h3 class="subsection-title">商品名</h3>
-                {{-- old() ヘルパーを使用してエラー時に値を保持 (Laravelの慣例) --}}
                 <input type="text" name="name" class="form-input" value="{{ old('name') }}">
             </div>
             @error('name')
@@ -105,7 +102,7 @@
             <h2 class="section-title">販売価格</h2>
             <div class="form-group price-input-group">
                 <h3 class="subsection-title">¥</h3>
-                <input type="number" name="price" class="form-input price-input" value="{{ old('price') }}" placeholder="100">
+                <input type="number" name="price" class="form-input price-input" value="{{ old('price') }}" >
             </div>
             @error('price')
                 <span class="invalid-feedback" role="alert">

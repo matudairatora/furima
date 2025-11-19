@@ -10,11 +10,11 @@
 <div class="purchase-page-container">
     <h1 class="page-title">購入</h1>
     
-    {{-- 修正1: formタグを wrap の外側に移動 --}}
+    
     <form method="POST" action="{{ route('item.process_purchase', ['itemId' => $item->id]) }}" class="purchase-form">
         @csrf
         
-        {{-- ここがFlexコンテナになります --}}
+        
         <div class="purchase-content-wrap">
             
             {{-- 左側: 商品詳細と支払い・配送先情報 --}}

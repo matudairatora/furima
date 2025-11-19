@@ -11,25 +11,24 @@
     <h2 class="profile-title">プロフィール設定</h2>
 
     <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
-        @csrf {{-- CSRF対策 --}}
+        @csrf 
         
         <div class="profile-content">
             {{-- 画像アップロードエリア --}}
             <div class="image-upload-area">
-                {{-- 修正: 現在の画像を表示 --}}
                 <img id="current_mypage" 
                      src="{{ $user->mypage && $user->mypage->mypage 
-                ? Storage::url($user->mypage->mypage) 
+                ? Storage::url($user->mypage->mypageimage) 
                 : asset('placeholder-image-path') }}" 
          alt="プロフィール画像"
          style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
          
-                <label for="mypage" class="image-select-button">
+                <label for="mypageimage" class="image-select-button">
                     画像を<br>選択する
                 </label>
                 {{-- 実際には非表示のinput[type="file"] --}}
-                <input type="file" id="mypage" name="mypage" style="display:none;" onchange="previewImage(event);">
-                 @error('mypage')
+                <input type="file" id="mypageimage" name="mypageimage" style="display:none;" onchange="previewImage(event);">
+                 @error('mypageimage')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>

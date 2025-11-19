@@ -12,11 +12,10 @@
     <div class="profile-section">
         <div class="profile-avatar">
             
-            @if ($user->mypage && $user->mypage->mypage)
+            @if ($user->mypage && $user->mypage->mypageimage)
                                 
-            <img src="{{ Storage::url($user->mypage->mypage) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
+            <img src="{{ Storage::url($user->mypage->mypageimage) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
             @else
-            {{-- 画像がない場合のデフォルトのプレースホルダーなどを表示 (CSSで装飾してください) --}}
             <div class="default-avatar-placeholder"></div>
             @endif
         </div>
@@ -29,7 +28,6 @@
     {{-- タブセクション --}}
     <div class="tabs">
         <?php 
-    // 現在のクエリパラメータを取得（デフォルトは 'sell'）
     $currentTab = request()->query('page', 'sell'); 
     ?>
         {{-- アクティブなタブ (出品した商品) --}}

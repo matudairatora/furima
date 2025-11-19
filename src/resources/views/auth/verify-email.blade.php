@@ -38,7 +38,7 @@
             ※実際の認証はメール内のリンクで行いますが、
             ここでは開発用にMailHogを開くリンク、または装飾として配置します。
         --}}
-        <a href="{{ route('profile.edit') }}" class="verify-button">
+        <a href="http://localhost:8025/" target="_blank" rel="noopener noreferrer" class="verify-button">
             認証はこちらから
         </a>
 

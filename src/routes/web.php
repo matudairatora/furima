@@ -50,22 +50,20 @@ Route::post('/address', [ItemController::class, 'updateAddress'])->name('address
 
 
 
-// クライアントサイドの支払いフォームを表示するページ (itemIdをクエリで受け取る)
+
 Route::get('/checkout', function (Request $request) {
-    // クエリパラメータからitemIdを取得
+    
     $itemId = $request->query('itemId'); 
     
-    // 実際に購入する商品を取得（必須）
+    
     $item = \App\Models\Item::findOrFail($itemId);
 
     return view('checkout', [
         'stripePublicKey' => config('services.stripe.public'),
-        'item' => $item, // ★ 商品情報をビューに渡す
+        'item' => $item, 
     ]);
-})->name('checkout'); // ★ name()ヘルパーを追加
+})->name('checkout'); 
 
-// Checkout Sessionを作成するAPIエンドポイント
-// POSTリクエストで商品IDを受け取れるように修正
 Route::post(
     '/create-payment-intent/{itemId}',
      [StripeController::class, 'createPaymentIntent'])

@@ -87,27 +87,23 @@
             <div class="comment-section">
                 <h2 class="section-title comment-title">コメント({{ $item->comments->count() }})</h2>
                 
-                {{-- コメント一覧 (ここでは1つのみ表示) --}}
                 <div class="comment-list">
-                    {{-- コントローラーで取得したコメントコレクションをループ --}}
                     @foreach($item->comments as $comment)
                     <div class="comment-item">
                         <div class="comment-header">
-                            {{-- ★ ユーザー名を表示する ★ --}}
                             <div class="comment-mypage">
                            
-                                @if ($comment->user->mypage && $comment->user->mypage->mypage)
+                                @if ($comment->user->mypage && $comment->user->mypage->mypageimage)
                                 
-                                <img src="{{ Storage::url($comment->user->mypage->mypage) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
+                                <img src="{{ Storage::url($comment->user->mypage->mypageimage) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
                                 @else
-                                {{-- 画像がない場合のデフォルトのプレースホルダーなどを表示 (CSSで装飾してください) --}}
+                                
                                 <div class="default-avatar-placeholder"></div>
                                 @endif
                             </div>
                             <span class="comment-user">{{ $comment->user->name ?? '退会済みユーザー' }}</span>
                         </div>
                         <div class="comment-text-placeholder">
-                            {{-- ★ 実際のコメント内容を表示する ★ --}}
                             {{ $comment->comment }}
                         </div>
                     </div>

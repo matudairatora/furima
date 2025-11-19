@@ -16,15 +16,13 @@ class Mypage extends Model
     
     protected $fillable = [
         'user_id',
-        'mypage',
+        'mypageimage',
         'postcode',
         'address',
         'building',
     ];
 
-    /**
-     * MypageはUserに属する
-     */
+    
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

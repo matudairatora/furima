@@ -15,15 +15,15 @@ class StripeController extends Controller
 {
     public function createPaymentIntent(Request $request, $itemId)
     {
-        // 1. Stripeクライアントの初期化
+        
         Stripe::setApiKey(config('services.stripe.secret'));
 
         try {
-            // 2. データベースから正確な商品情報を取得
+            
             $itemModel = Item::findOrFail($itemId);
             $price = $itemModel->price; 
             
-            // 3. Payment Intentを作成
+            
             $paymentIntent = PaymentIntent::create([
                 'amount' => $price, 
                 'currency' => 'jpy',
@@ -33,7 +33,7 @@ class StripeController extends Controller
                 'metadata' => ['item_id' => $itemId], 
             ]);
             
-            // 4. clientSecret を返す
+            
             return response()->json([
                 'clientSecret' => $paymentIntent->client_secret,
             ]);
@@ -46,17 +46,13 @@ class StripeController extends Controller
         }
     }
 
-    /**
-     * チェックアウト画面
-     */
+    
     public function checkout($itemId)
     {
         return view('checkout', ['itemId' => $itemId]);
     }
 
-    /**
-     * 支払い完了処理
-     */
+    
     public function completePayment(Request $request)
     {
         $paymentIntentId = $request->query('payment_intent');
@@ -65,18 +61,18 @@ class StripeController extends Controller
         
         Stripe::setApiKey(config('services.stripe.secret'));
 
-        // 必須情報の確認
+        
         if ($redirectStatus !== 'succeeded' || !$paymentIntentId || !$itemId) {
             return redirect()->route('auth.index')->with('error', '支払いは完了しませんでした。ステータス: ' . $redirectStatus);
         }
         
         try {
-            // Payment Intentを取得して確認
+            
             $paymentIntent = PaymentIntent::retrieve($paymentIntentId);
             $item = Item::findOrFail($itemId); 
 
             if ($paymentIntent->status === 'succeeded') {
-                // 支払い成功時の処理
+                
                 if (!$item->is_sold) {
                     $item->buyer_id = Auth::id();
                     $item->is_sold = true;

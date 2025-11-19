@@ -40,8 +40,9 @@
 - PHP 8.0
 - Laravel 10.0
 - MySQL 8.0
-- mailhog
+- mailhog v1.0.1
 - Fortify
+- stripe 17.0
 
 ### ER図
 - ![ER図](image/ER図.png)

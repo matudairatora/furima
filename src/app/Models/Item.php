@@ -28,17 +28,16 @@ class item extends Model
     ];
     public function categories()
     {
-        // 中間テーブル名が 'item_category' の場合
         return $this->belongsToMany(Category::class); 
     }
 
-    // 一対多の逆: 商品の状態
+    
     public function condition()
     {
         return $this->belongsTo(Condition::class);
     }
     
-    // 一対多の逆: 出品者
+    
     public function user()
     {
         return $this->belongsTo(User::class);

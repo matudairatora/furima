@@ -18,8 +18,7 @@
             {{-- 郵便番号 --}}
             <div class="form-group">
                 <label for="postcode">郵便番号</label>
-                {{-- ★ 変更: $user->mypage->... ではなく $address->... を使用 --}}
-                {{-- $address が null の場合も考慮して optional() ヘルパーか ?? を使う --}}
+                
                 <input type="text" id="postcode" name="postcode" class="form-input" 
                        value="{{ old('postcode', $address->postcode ?? '') }}">
             </div>
