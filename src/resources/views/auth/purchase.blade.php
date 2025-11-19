@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="purchase-page-container">
-    <h1 class="page-title">購入</h1>
+    
     
     
     <form method="POST" action="{{ route('item.process_purchase', ['itemId' => $item->id]) }}" class="purchase-form">

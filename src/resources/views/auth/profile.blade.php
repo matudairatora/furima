@@ -16,15 +16,9 @@
         <div class="profile-content">
             {{-- 画像アップロードエリア --}}
             <div class="image-upload-area">
-                <img id="current_mypage" 
-                     src="{{ $user->mypage && $user->mypage->mypage 
-                ? Storage::url($user->mypage->mypageimage) 
-                : asset('placeholder-image-path') }}" 
-         alt="プロフィール画像"
-         style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
-         
+                <div class="image"></div>
                 <label for="mypageimage" class="image-select-button">
-                    画像を<br>選択する
+                    画像を選択する
                 </label>
                 {{-- 実際には非表示のinput[type="file"] --}}
                 <input type="file" id="mypageimage" name="mypageimage" style="display:none;" onchange="previewImage(event);">

@@ -28,7 +28,7 @@
 
         {{-- 商品の詳細 --}}
         <section class="form-section">
-            <h2 class="section-title">商品の詳細</h2>
+            <h2 class="section-title-details">商品の詳細</h2>
 
             {{-- カテゴリー --}}
             <div class="form-group">
@@ -100,9 +100,9 @@
         {{-- 販売価格 --}}
         <section class="form-section price-section">
             <h2 class="section-title">販売価格</h2>
-            <div class="form-group price-input-group">
-                <h3 class="subsection-title">¥</h3>
-                <input type="number" name="price" class="form-input price-input" value="{{ old('price') }}" >
+            <div class="form-group price-input-wrapper">
+                <span class="currency-symbol">¥</span>
+                <input type="number" name="price" class="form-input price-input" value="{{ old('price') }}" placeholder="0">
             </div>
             @error('price')
                 <span class="invalid-feedback" role="alert">

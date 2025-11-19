@@ -11,7 +11,7 @@
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    
 }
 
 .item-content-wrap {
@@ -125,7 +125,6 @@
 .section-title {
     font-size: 20px;
     font-weight: bold;
-    border-bottom: 2px solid #333;
     padding-bottom: 5px;
     margin-top: 25px;
     margin-bottom: 15px;
@@ -140,7 +139,7 @@
 
 .info-details p {
     font-size: 15px;
-    color: #333;
+    color: #050505;
     margin-bottom: 5px;
 }
 

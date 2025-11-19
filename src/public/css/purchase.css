@@ -9,33 +9,21 @@
     padding: 40px 20px;
 }
 
-.page-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 30px;
-    text-align: center;
-    /* タイトルは中央寄せが一般的ですが、左寄せなら削除してください */
-}
-
 /* --- メインコンテンツのラップ --- */
 .purchase-content-wrap {
     display: flex;
     gap: 80px;
-    /* 画像に合わせて間隔を広めに */
     align-items: flex-start;
-    /* 上揃え */
 }
 
 /* 左側エリア */
 .purchase-info-area {
     flex: 3;
-    /* 比率調整 */
 }
 
 /* 右側エリア */
 .payment-summary-area {
     flex: 2;
-    /* 比率調整 */
 }
 
 /* --- 商品詳細サマリー --- */
@@ -49,7 +37,6 @@
     width: 120px;
     height: 120px;
     margin-right: 30px;
-    /* 画像があるため背景色は不要または画像の裏として残す */
     background-color: #f0f0f0;
 }
 
@@ -57,7 +44,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* 画像を枠いっぱいに表示 */
 }
 
 .product-name {
@@ -92,20 +78,41 @@
 
 .payment-dropdown {
     width: 100%;
-    /* 幅を親要素に合わせる、あるいは固定幅 */
-    max-width: 300px;
-    padding: 12px;
+    /* もし幅を制限したい場合は max-width: 300px; などを追加 */
+    padding: 10px 40px 10px 10px;
+    /* 矢印分の右余白 */
     border: 1px solid #ccc;
-    border-radius: 6px;
+    box-sizing: border-box;
     font-size: 16px;
-    /* カスタム矢印は維持 */
+    /* または 1rem */
+    border-radius: 0;
+    /* 角丸なし */
+    background-color: #fff;
+    cursor: pointer;
+
+    /* ブラウザ標準の矢印を消す */
     appearance: none;
     -webkit-appearance: none;
-    background-color: #fff;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7%2010L12%2015L17%2010H7Z%22%20fill%3D%22%23333333%22%2F%3E%0A%3C%2Fsvg%3E");
+    -moz-appearance: none;
+
+    /* itemページと同じ自作矢印アイコン */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 10px center;
-    cursor: pointer;
+    background-size: 16px;
+}
+
+/* クリック時の枠線 */
+.payment-dropdown:focus {
+    outline: none;
+    border-color: #555;
+}
+
+/* プルダウンの中身（itemページと同じ配色） */
+.payment-dropdown option {
+    background-color: #545454;
+    color: #ffffff;
+    padding: 10px;
 }
 
 /* --- 配送先セクション --- */

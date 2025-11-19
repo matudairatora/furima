@@ -13,9 +13,8 @@
 .page-title {
     font-size: 1.5rem;
     font-weight: bold;
-    /* 画像では、ページタイトルと最初のセクションの間隔が広い */
+    text-align: center;
     margin-bottom: 40px;
-    border-bottom: 3px solid #000;
     padding-bottom: 5px;
 }
 
@@ -30,15 +29,17 @@
     font-size: 1rem;
     font-weight: bold;
     margin-bottom: 10px;
-    /* 価格入力の「¥」はインライン要素として使用 */
     display: inline;
+}
+.section-title-details{
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 3px solid #ccc ;
 }
 
 .form-section {
-    /* セクションごとに明確な区切り（画像では上部にグレーのライン） */
-    border-top: 1px solid #ccc;
     padding-top: 30px;
-    padding-bottom: 30px;
 }
 
 /* 商品画像エリア */
@@ -136,28 +137,67 @@
     width: 100%;
 }
 
+/* プルダウン本体のスタイル */
 .form-select {
-    /* ドロップダウン矢印をブラウザデフォルトに */
-    appearance: menulist;
+    width: 100%;
+    padding: 10px 40px 10px 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 1rem;
+    border-radius: 0;
+    background-color: #fff;
+    cursor: pointer;
+
+    /* ▼ ブラウザ標準の矢印を消す重要な設定 ▼ */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* ▼ 自作の矢印アイコン（SVG）を背景として設定 ▼ */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #555;
+}
+
+
+.form-select option {
+    background-color: #545454;
+    color: #ffffff;
+    padding: 10px;
 }
 
 
 /* 販売価格セクション */
-.price-input-group {
-    display: flex;
-    align-items: center;
-    /* 「¥」と入力フィールドの間隔 */
-    gap: 10px;
+
+/* ラッパー（基準位置を作る） */
+.price-input-wrapper {
+    position: relative;
+    /* 子要素を絶対配置するための基準 */
+    width: 100%;
 }
 
-.price-input-group .subsection-title {
-    /* 「¥」の文字の高さ調整 */
-    padding-top: 5px;
+/* ¥マークのスタイル */
+.currency-symbol {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    pointer-events: none;
 }
 
+/* 入力欄のスタイル調整 */
 .price-input {
-    /* 価格入力フィールドは幅を小さく */
-    width: calc(100% - 30px);
+    width: 100%;
+    padding-left: 40px;
 }
 
 /* 大きな出品ボタン */
