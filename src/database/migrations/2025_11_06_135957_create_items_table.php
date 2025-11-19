@@ -21,8 +21,7 @@ class CreateItemsTable extends Migration
             $table->integer('price');
             $table->string('brand')->nullable();
             $table->string('explanation');
-            $table->integer('condition_id')->constrained()->cascadeOnDelete();
-            $table->integer('coment_id')->constrained()->cascadeOnDelete()->nullable();
+            $table->foreignId('condition_id')->constrained()->cascadeOnDelete();
             $table->boolean('is_sold')->default(false); 
             $table->foreignId('buyer_id')->nullable()->constrained('users')->after('is_sold');
 
