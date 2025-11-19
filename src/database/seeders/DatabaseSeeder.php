@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
         $this->call([
             // ここに追記
+            UserSeeder::class,
             CategorySeeder::class,
             ConditionSeeder::class,
             ItemSeeder::class,

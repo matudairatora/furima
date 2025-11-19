@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Stripe\Stripe;
-use Stripe\Checkout\Session;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\JsonResponse;
 use Stripe\PaymentIntent;
+use App\Models\SoldItem;
 
 class StripeController extends Controller
 {
@@ -73,10 +72,11 @@ class StripeController extends Controller
 
             if ($paymentIntent->status === 'succeeded') {
                 
-                if (!$item->is_sold) {
-                    $item->buyer_id = Auth::id();
-                    $item->is_sold = true;
-                    $item->save();
+                if (!$item->isSold()) {
+                    SoldItem::create([
+                    'item_id' => $item->id,
+                    'user_id' => Auth::id(),
+                    ]);
                     
                     return redirect()->route('auth.index')->with('success', '商品の購入が完了しました。');
                 }

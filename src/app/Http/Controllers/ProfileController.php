@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Mypage;
 use App\Models\Item;
-use App\Models\User;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProfileRequest;
 
 class ProfileController extends Controller
@@ -41,7 +38,7 @@ if (Auth::check()) {
     }
 
    
-    $items = $query->latest()->get(); 
+    $items = $query->with('soldItem')->latest()->get(); 
 
     
     return view('auth.index', [
@@ -97,30 +94,32 @@ public function edit(Request $request){
         return redirect()->route('auth.index')->with('success', 'プロフィールが更新されました。');
     }
 
-    public function mypage(Request $request)
+   public function mypage(Request $request)
     {
         $user = Auth::user();
        
         $page = $request->query('page', 'sell');
 
-        
         if ($page === 'buy') {
-           
-            $items = Item::where('buyer_id', $user->id)
-                         ->latest()
-                         ->get();
+            $items = Item::whereHas('soldItem', function($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->with('soldItem') 
+            ->latest()
+            ->get();
 
         } elseif($page === 'sell') { 
+            
             $items = Item::where('user_id', $user->id)
+                         ->with('soldItem') 
                          ->latest()
                          ->get();
         }
         
-    return view('auth.mypage', [
+        return view('auth.mypage', [
             'user' => $user,
             'items' => $items, 
         ]);
-
     }
 
 

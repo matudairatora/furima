@@ -27,13 +27,9 @@
                 <div class="item-image">
                     
                 <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" class="item-image-placeholder">
-                @if (request()->query('page', 'sell') === 'buy' && $item->is_sold && $item->buyer_id == $user->id)
-                        
-                        <div class="item-sold-overlay">SOLD</div>
-                    @elseif (request()->query('page', 'sell') === 'sell' && $item->is_sold)
-                        
-                        <div class="item-sold-overlay">SOLD</div>
-                    @endif
+                @if ($item->isSold()) 
+                    <div class="item-sold-overlay">SOLD</div>
+                @endif
                 </div>
             </a>
             {{-- 商品名 --}}

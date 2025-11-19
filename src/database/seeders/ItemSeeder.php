@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 
 class ItemSeeder extends Seeder
@@ -15,7 +16,9 @@ class ItemSeeder extends Seeder
      */
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
         DB::table('items')->truncate();
+        Schema::enableForeignKeyConstraints();
       
         $items = [
         ['name' => '腕時計',
@@ -64,7 +67,7 @@ class ItemSeeder extends Seeder
         'explanation' => '高音質のレコーディング用マイク',
         'condition_id' => 2,
         'image' => 'images/item/6.Music+Mic+4632231.jpg',
-        'user_id' => 1,
+        'user_id' => 2,
         ],
         ['name' => 'ショルダーバッグ',
         'price' => '3500',
@@ -72,7 +75,7 @@ class ItemSeeder extends Seeder
         'explanation' => 'おしゃれなショルダーバッグ',
         'condition_id' => 3,
         'image' => 'images/item/7.Purse+fashion+pocket.jpg',
-        'user_id' => 1,
+        'user_id' => 2,
         ],
         ['name' => 'タンブラー',
         'price' => '500',
@@ -80,7 +83,7 @@ class ItemSeeder extends Seeder
         'explanation' => '使いやすいタンブラー',
         'condition_id' => 4,
         'image' => 'images/item/8.Tumbler+souvenir.jpg',
-        'user_id' => 1,
+        'user_id' => 2,
         ],
         ['name' => 'コーヒーミル',
         'price' => '4000',
@@ -88,7 +91,7 @@ class ItemSeeder extends Seeder
         'explanation' => '手動のコーヒーミル',
         'condition_id' => 1,
         'image' => 'images/item/9.Waitress+with+Coffee+Grinder.jpg',
-        'user_id' => 1,
+        'user_id' => 2,
         ],
         ['name' => 'メイクセット',
         'price' => '2500',
@@ -96,7 +99,7 @@ class ItemSeeder extends Seeder
         'explanation' => '便利なメイクアップセット',
         'condition_id' => 2,
         'image' => 'images/item/10.外出メイクアップセット.jpg',
-        'user_id' => 1,
+        'user_id' => 2,
         ], 
         ];
       

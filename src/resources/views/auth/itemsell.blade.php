@@ -57,9 +57,15 @@
             </div>
 
             {{-- 購入手続きボタン --}}
-            <a href="{{ route('item.purchase', ['itemId' => $item->id]) }}" class="purchase-button-link">
-            <button class="purchase-button">購入手続きへ</button>
-            </a>
+            @if($item->isSold())
+                <div class="sold-button-wrap">
+                <button class="purchase-button disabled" disabled style="background-color: #ccc; cursor: not-allowed;">売り切れ</button>
+                </div>
+            @else
+                <a href="{{ route('item.purchase', ['itemId' => $item->id]) }}" class="purchase-button-link">
+                <button class="purchase-button">購入手続きへ</button>
+                </a>
+            @endif
             {{-- 商品説明 --}}
             <section class="description-section">
                 <h2 class="section-title">商品説明</h2>

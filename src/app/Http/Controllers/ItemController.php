@@ -4,23 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Condition;
-use App\Models\Category;
-use App\Models\User;
 use App\Models\Item;
 use App\Models\Comment;
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Requests\AddressRequest;
 use App\Models\ShippingAddress;
+use App\Models\SoldItem;
+
 
 class ItemController extends Controller
 {
    public function show($id){
 
     
-    $item = Item::with(['comments.user', 'condition', 'categories','favorites'])
-                ->findOrFail($id);
+    $item = Item::with(['comments.user', 'condition', 'categories', 'favorites', 'soldItem'])
+            ->findOrFail($id);
     return view('auth.itemsell', compact('item'));
    } 
    
@@ -156,10 +155,11 @@ public function updateAddress(AddressRequest $request)
         
         switch ($paymentMethod) {
             case 'convenience':
+                SoldItem::create([
+                'item_id' => $item->id,
+                'user_id' => Auth::id(),
+                ]);
                 
-                $item->buyer_id = Auth::id(); 
-                $item->is_sold = true;        
-                $item->save(); 
                 return redirect()->route('auth.index');
             case 'card':
                 

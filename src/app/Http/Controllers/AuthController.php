@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Condition;
 use App\Models\Category;
-use App\Models\User;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ExhibitionRequest;
 
 

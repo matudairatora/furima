@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\User;
 use App\Models\Category;
 
-class item extends Model
+class Item extends Model
 {
     use HasFactory;
      protected $fillable = [
@@ -19,12 +19,7 @@ class item extends Model
         'brand',
         'explanation',
         'condition_id',
-        'coment_id',
         'user_id',
-
-        'is_sold', 
-        'buyer_id',
-
     ];
     public function categories()
     {
@@ -52,6 +47,16 @@ class item extends Model
     {
 
         return $this->belongsToMany(User::class, 'favorites', 'item_id', 'user_id');
+    }
+    
+    public function soldItem()
+    {
+        return $this->hasOne(SoldItem::class);
+    }
+
+        public function isSold()
+    {
+        return $this->soldItem !== null;
     }
 
 }

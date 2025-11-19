@@ -36,6 +36,25 @@
 12. `brew services start mailhog`
 12. `sudo chmod -R 777 *`
 
+### 一般ユーザー
+1.  ユーザー名:`出品者A`
+    email:`user1@example.com`
+    password:`user1syuppin`
+2.  ユーザー名:`出品者B`
+    email:`user2@example.com`
+    password:`user2syuppin`
+1.  ユーザー名:`購入専用ユーザー`
+    email:`user3@example.com`
+    password:`user3kounyu`
+### PHPunitテスト
+1.  `php artisan config:clear`
+2.  `php artisan test tests/Feature/AuthTest.php`
+3.  `php artisan test tests/Feature/ItemTest.php`
+4.  `php artisan test tests/Feature/InteractionTest.php`
+5.  `php artisan test tests/Feature/PurchaseTest.php`
+6.  `php artisan test tests/Feature/ProfileTest.php`
+7.  `php artisan test`
+
 ### 使用技術
 - PHP 8.0
 - Laravel 10.0
@@ -45,7 +64,7 @@
 - stripe 17.0
 
 ### ER図
-- ![ER図](image/ER図.png)
+- ![ER図](src/public/img/ER図.png)
 ### URL
 - 開発環境 http://localhost/
 - phpMyAdmin http://localhost:8080/

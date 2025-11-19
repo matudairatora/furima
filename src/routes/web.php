@@ -45,7 +45,7 @@ Route::post('/purchase/{itemId}', [ItemController::class, 'processPurchase'])->n
 
 Route::get('/address/edit', [ItemController::class, 'showAddressEditForm'])->name('address.edit');
     
-// 住所情報を更新するPOSTルート (新しいルート)
+// 住所情報を更新するPOSTルート
 Route::post('/address', [ItemController::class, 'updateAddress'])->name('address.update');
 
 
