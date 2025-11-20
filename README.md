@@ -34,7 +34,7 @@
 10. `exit`
 11. `brew install mailhog`
 12. `brew services start mailhog`
-12. `sudo chmod -R 777 *`
+13. `sudo chmod -R 777 *`
 
 ### 一般ユーザー
 1.  ユーザー名:`出品者A`
@@ -69,6 +69,12 @@
 6.  `php artisan test tests/Feature/ProfileTest.php`
 7.  `php artisan test tests/Feature/EmailVerificationTest.php`
 8.  `php artisan test`
+
+### stripe設定
+1. .envの中身の一番下にAPIキーを設定します。
+2. STRIPE_SECRET_KEY="" # Stripeダッシュボードから取得
+3. STRIPE_PUBLIC_KEY=""  # Stripeダッシュボードから取得
+- 最初は、私のAPIキーが入っています。
 
 ### 使用技術
 - PHP 8.0

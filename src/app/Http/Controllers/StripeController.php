@@ -46,10 +46,17 @@ class StripeController extends Controller
     }
 
     
-    public function checkout($itemId)
-    {
-        return view('checkout', ['itemId' => $itemId]);
-    }
+    public function checkout(Request $request) 
+{
+    $itemId = $request->query('itemId');
+    
+    $item = Item::findOrFail($itemId);
+
+    return view('checkout', [
+        'stripePublicKey' => config('services.stripe.public'),
+        'item' => $item,
+    ]);
+}
 
     
     public function completePayment(Request $request)

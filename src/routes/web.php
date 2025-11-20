@@ -49,20 +49,7 @@ Route::get('/address/edit', [ItemController::class, 'showAddressEditForm'])->nam
 Route::post('/address', [ItemController::class, 'updateAddress'])->name('address.update');
 
 
-
-
-Route::get('/checkout', function (Request $request) {
-    
-    $itemId = $request->query('itemId'); 
-    
-    
-    $item = \App\Models\Item::findOrFail($itemId);
-
-    return view('checkout', [
-        'stripePublicKey' => config('services.stripe.public'),
-        'item' => $item, 
-    ]);
-})->name('checkout'); 
+Route::get('/checkout', [StripeController::class, 'checkout'])->name('checkout');
 
 Route::post(
     '/create-payment-intent/{itemId}',
