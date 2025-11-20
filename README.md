@@ -40,20 +40,35 @@
 1.  ユーザー名:`出品者A`
     email:`user1@example.com`
     password:`user1syuppin`
+-   郵便番号：`100-0001`
+    住所：`東京都千代田区千代田1-1`
+    建物：`テックハイツ101`
+
 2.  ユーザー名:`出品者B`
     email:`user2@example.com`
     password:`user2syuppin`
-1.  ユーザー名:`購入専用ユーザー`
+-   郵便番号：`530-0001`
+    住所：`大阪府大阪市北区梅田2-2-2`
+    建物：`グランフロント大阪202`
+
+3.  ユーザー名:`購入専用ユーザー`
     email:`user3@example.com`
     password:`user3kounyu`
+-   郵便番号：`810-0001`
+    住所：`福岡県福岡市中央区天神3-3-3`
+    建物：`博多ビル303`
+
+
 ### PHPunitテスト
 1.  `php artisan config:clear`
+-   2~7は、飛ばして、8に行っても大丈夫です。
 2.  `php artisan test tests/Feature/AuthTest.php`
 3.  `php artisan test tests/Feature/ItemTest.php`
 4.  `php artisan test tests/Feature/InteractionTest.php`
 5.  `php artisan test tests/Feature/PurchaseTest.php`
 6.  `php artisan test tests/Feature/ProfileTest.php`
-7.  `php artisan test`
+7.  `php artisan test tests/Feature/EmailVerificationTest.php`
+8.  `php artisan test`
 
 ### 使用技術
 - PHP 8.0

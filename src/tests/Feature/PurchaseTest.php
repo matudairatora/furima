@@ -74,6 +74,52 @@ class PurchaseTest extends TestCase
     }
 
     /**
+     * ID 11: 支払い方法選択機能 - 「カード払い」を選択すると、Stripe決済画面へ遷移する
+     */
+    public function test_selecting_card_payment_redirects_to_stripe_checkout()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create();
+        $this->actingAs($user);
+
+        // カード払い ('card') を選択して送信
+        $response = $this->post(route('item.process_purchase', ['itemId' => $item->id]), [
+            'payment_method' => 'card',
+            'user_address' => 'Test Address',
+        ]);
+
+        // Stripeのチェックアウト画面（またはカード情報入力画面）へリダイレクトされることを確認
+        // ※ItemControllerの実装に合わせてリダイレクト先を確認してください
+        // 例: route('checkout', ['itemId' => $item->id])
+        $response->assertRedirect(route('checkout', ['itemId' => $item->id]));
+    }
+
+    /**
+     * ID 11: 支払い方法選択機能 - 「コンビニ払い」を選択すると、即時購入完了する
+     */
+    public function test_selecting_convenience_payment_completes_purchase_immediately()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create();
+        $this->actingAs($user);
+
+        // コンビニ払い ('convenience') を選択して送信
+        $response = $this->post(route('item.process_purchase', ['itemId' => $item->id]), [
+            'payment_method' => 'convenience',
+            'user_address' => 'Test Address',
+        ]);
+
+        // 購入完了後のトップページへリダイレクトされることを確認
+        $response->assertRedirect(route('auth.index'));
+        
+        // データベースに売上データが作成されている確認
+        $this->assertDatabaseHas('sold_items', [
+            'item_id' => $item->id,
+            'user_id' => $user->id,
+        ]);
+    }
+
+    /**
      * ID 12: 配送先変更機能 - 変更した住所が購入画面に反映される
      */
     public function test_shipping_address_update_reflects_on_purchase_page()
@@ -100,5 +146,42 @@ class PurchaseTest extends TestCase
         $response = $this->get(route('item.purchase', ['itemId' => $item->id]));
         $response->assertSee('999-9999');
         $response->assertSee('New Address City');
+    }
+    /**
+     * ID 12: 配送先変更機能 - 購入した商品に送付先住所が紐づいて登録される
+     */
+    public function test_purchased_item_is_linked_to_shipping_address()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create();
+        $this->actingAs($user);
+
+        // 1. 配送先を変更（登録）する
+        // item_id を指定して POST することで、この商品専用の住所として保存されます
+        $newAddress = [
+            'item_id' => $item->id,
+            'postcode' => '888-8888',
+            'address' => 'Linked City',
+            'building' => 'Linked Building',
+        ];
+
+        $this->post(route('address.update'), $newAddress);
+
+        // 2. 商品を購入する
+        // 変更した住所で購入処理を行います
+        $this->post(route('item.process_purchase', ['itemId' => $item->id]), [
+            'payment_method' => 'convenience',
+            'user_address' => 'Linked City', 
+        ]);
+
+        // 3. データベース確認
+        // shipping_addresses テーブルに、この商品(item_id)と紐づいた住所があるか確認します
+        $this->assertDatabaseHas('shipping_addresses', [
+            'user_id' => $user->id,
+            'item_id' => $item->id,           // ★ここが重要（商品IDと紐づいているか）
+            'postcode' => '888-8888',
+            'address' => 'Linked City',
+            'building' => 'Linked Building',
+        ]);
     }
 }

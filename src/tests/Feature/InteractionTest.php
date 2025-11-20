@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Comment;
 use App\Models\Item;
 use App\Models\User;
+use App\Models\SoldItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -38,6 +39,30 @@ class InteractionTest extends TestCase
             'user_id' => $user->id,
             'item_id' => $item->id,
         ]);
+    }
+
+    /**
+     * ID 8: いいね機能 - 追加済みのアイコンは色が変化する
+     */
+    public function test_like_icon_is_colored_when_item_is_liked()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create();
+        $this->actingAs($user);
+
+        // Arrange: 先にお気に入り登録済みの状態を作っておく
+        $user->favorites()->attach($item->id);
+
+        // Act: 商品詳細ページを開く
+        $response = $this->get("/item/{$item->id}");
+
+        $response->assertStatus(200);
+        
+        
+        $response->assertSee('favorited');
+
+        // Assert: アイコンのクラスが 'fas' (Solid:塗りつぶし) になっているか確認
+        $response->assertSee('fas fa-heart');
     }
 
     /**
@@ -83,6 +108,51 @@ class InteractionTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Liked Item');
         $response->assertDontSee('Not Liked Item');
+    }
+
+    /**
+     * ID 5: マイリスト一覧取得 - 購入済みの場合はマイリストでも「SOLD」と表示される
+     */
+    public function test_sold_items_in_mylist_display_sold_label()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // 1. 商品を作成して「いいね」する
+        $item = Item::factory()->create(['name' => 'Sold Liked Item']);
+        $user->favorites()->attach($item->id);
+
+        // 2. その商品を「売り切れ」状態にする（SoldItemを作成）
+        SoldItem::create([
+            'item_id' => $item->id,
+            'user_id' => User::factory()->create()->id, // 誰かが購入したことにする
+        ]);
+
+        // 3. マイリストタブを表示
+        $response = $this->get(route('auth.index', ['tab' => 'mylist']));
+
+        $response->assertStatus(200);
+        $response->assertSee('Sold Liked Item'); // 商品自体は表示される
+        $response->assertSee('SOLD');            // SOLDラベルが表示される
+    }
+
+    /**
+     * ID 5: マイリスト一覧取得 - ログインされていないユーザー（未認証）の場合は何も表示されない
+     */
+    public function test_guest_sees_nothing_in_mylist()
+    {
+        // 商品を作成しておく（ゲストには見えてはいけない商品）
+        Item::factory()->create(['name' => 'Hidden Item']);
+
+        // ★ actingAs($user) をしない（＝ゲスト状態）
+
+        // マイリストタブを表示
+        $response = $this->get(route('auth.index', ['tab' => 'mylist']));
+
+        $response->assertStatus(200);
+        
+        // 商品が表示されていないことを確認
+        $response->assertDontSee('Hidden Item');
     }
 
     /**

@@ -63,17 +63,30 @@ class AuthTest extends TestCase
     /**
      * ID 1: 会員登録機能 - パスワード文字数不足＆不一致
      */
-    public function test_registration_fails_password_validation()
-    {
-        $response = $this->post('/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'short', // 7文字以下
-            'password_confirmation' => 'mismatch', // 不一致
-        ]);
+    public function test_registration_fails_password_mismatch()
+{
+    $response = $this->post('/register', [
+        'name' => 'Test User',
+        'email' => 'test@example.com',
+        'password' => 'password123',       // 8文字以上 (OK)
+        'password_confirmation' => 'diff_pass', // 不一致 (NG)
+    ]);
 
-        $response->assertSessionHasErrors(['password']);
-    }
+    $response->assertSessionHasErrors(['password']);
+}
+
+public function test_registration_fails_password_length()
+{
+    $response = $this->post('/register', [
+        'name' => 'Test User',
+        'email' => 'test@example.com',
+        'password' => 'short',              // 7文字以下 (NG)
+        'password_confirmation' => 'short', // 一致している (OK)
+    ]);
+
+    $response->assertSessionHasErrors(['password']);
+}
+    
 
     /**
      * ID 2: ログイン機能 - ログイン画面が表示される

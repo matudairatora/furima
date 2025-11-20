@@ -49,8 +49,6 @@ class ProfileTest extends TestCase
         $response->assertSee('Profile Test User'); // 名前
         $response->assertSee('My Selling Item');   // 出品商品
         
-        // プロフィール画像は設定していないのでデフォルト等の挙動を確認
-        // $response->assertSee('default-avatar'); 
     }
 
     /**

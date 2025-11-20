@@ -160,6 +160,9 @@ class ItemTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Apple Watch');
         $response->assertDontSee('Orange Juice');
+
+
+        $response->assertSee('tab=mylist&amp;keyword=Apple', false);
     }
 
     /**
@@ -181,7 +184,7 @@ class ItemTest extends TestCase
         ]);
 
         // カテゴリーを紐付け
-        $item->categories()->attach(1); // ファッション
+        $item->categories()->attach([1, 2]); // ファッション
 
         $response = $this->get("/item/{$item->id}");
 
@@ -190,8 +193,10 @@ class ItemTest extends TestCase
         $response->assertSee('12,345'); // 金額フォーマット
         $response->assertSee('TestBrand');
         $response->assertSee('This is a detail test.');
-        $response->assertSee('ファッション'); // カテゴリー名
         $response->assertSee('良好'); // コンディション名
+
+        $response->assertSee('ファッション'); 
+        $response->assertSee('家電');
     }
 
     /**
@@ -212,7 +217,7 @@ class ItemTest extends TestCase
             'explanation' => 'This is a new item.',
             'price' => 9800,
             'condition' => 1,
-            'categories' => [1, 2], // 複数カテゴリー
+            'categories' => [1, 2], 
             'image' => $image,
         ];
 
