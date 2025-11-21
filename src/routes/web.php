@@ -5,8 +5,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\StripeController;
-use Illuminate\Http\Request;
-use App\Models\Item;
 
 /*
 |--------------------------------------------------------------------------

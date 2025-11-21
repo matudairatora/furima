@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany; 
 use App\Models\Mypage;
 use App\Models\Item;
+use App\Models\Comment;
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -51,9 +53,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Mypage::class);
     }
-
-    public function items(){
-        return $this->hasMany('App\Models\item');
+    
+    public function items(): HasMany // 型定義を追加
+    {
+        
+        return $this->hasMany(Item::class);
     }
 
     public function comments(): HasMany

@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Condition extends Model
 {
-     protected $fillable = [
+    use HasFactory;
+    
+    protected $fillable = [
 
         'condition'
     ];

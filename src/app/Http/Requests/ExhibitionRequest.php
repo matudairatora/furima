@@ -29,7 +29,7 @@ class ExhibitionRequest extends FormRequest
             'image'=>['required','mimes:jpeg,png'],
             'categories' =>['required'],
             'condition' =>['required'],
-            'price'=>['required','numeric','min:0'],
+            'price'=>['required','integer','min:0'],
         ];
     }
     public function messages()
@@ -40,10 +40,10 @@ class ExhibitionRequest extends FormRequest
             'explanation.max'=>'255文字以内で入力してください',
             'image.required'=> '画像をアップロードしてください',
             'image.mimes'=>'jpegかpngの画像をアップロードしてください',
-            'content.required'=>'カテゴリーを選択してください',
+            'categories.required'=>'カテゴリーを選択してください',
             'condition.required'=>'コンディションを入力してください',
             'price.required'=>'価格を入力してください',
-            'price.numeric'=>'数値で入力してください',
+            'price.integer'=>'数値で入力してください',
             'price.min'=>'0円以上を入力してください',
          ];
      }

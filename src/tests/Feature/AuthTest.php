@@ -104,7 +104,8 @@ public function test_registration_fails_password_length()
     {
         // テスト用ユーザーを作成
         $user = User::factory()->create([
-            'password' => Hash::make('password'),
+            'password' =>Hash::make('password'),
+            'email_verified_at' => now(),
         ]);
 
         $response = $this->post('/login', [

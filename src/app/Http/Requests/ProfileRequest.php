@@ -24,10 +24,10 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-         'name' =>['required','max:20'],
-         'mypageimage' =>['mimes:jpeg,png'],
+         'name' =>['required', 'string','max:20'],
+         'mypageimage' =>['image','mimes:jpeg,png'],
          'postcode' =>['required','regex:/^\d{3}-\d{4}$/'],
-         'address' =>['required'],
+         'address' =>['required', 'string', 'max:255'],
         ];
     }
 
