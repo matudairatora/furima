@@ -16,7 +16,14 @@
         <div class="profile-content">
             {{-- 画像アップロードエリア --}}
             <div class="image-upload-area">
-                <div class="image"></div>
+            <div class="image">    
+                @if ($user->mypage && $user->mypage->mypageimage)
+                                
+                <img src="{{ Storage::url($user->mypage->mypageimage) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
+                @else
+                <div class="default-avatar-placeholder"></div>
+                @endif
+                </div>
                 <label for="mypageimage" class="image-select-button">
                     画像を選択する
                 </label>
