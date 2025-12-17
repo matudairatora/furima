@@ -38,7 +38,7 @@ if (Auth::check()) {
     }
 
    
-    $items = $query->with('soldItem')->latest()->get(); 
+    $items = $query->latest()->get();
 
     
     return view('auth.index', [
@@ -77,12 +77,12 @@ public function edit(Request $request){
             'building' => $request->building, 
         ];
         
-        if ($request->hasFile('mypageimage')) {
+        if ($request->hasFile('mypage_image')) {
             
-            $path = $request->file('mypageimage')->store('profile_images', 'public'); 
+            $path = $request->file('mypage_image')->store('profile_images', 'public'); 
             
            
-            $dataToUpdateMypage['mypageimage'] = $path;
+            $dataToUpdateMypage['mypage_image'] = $path;
         }
 
        
@@ -97,28 +97,22 @@ public function edit(Request $request){
    public function mypage(Request $request)
     {
         $user = Auth::user();
-       
         $page = $request->query('page', 'sell');
 
         if ($page === 'buy') {
-            $items = Item::whereHas('soldItem', function($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })
-            ->with('soldItem') 
-            ->latest()
-            ->get();
+            $items = Item::where('buyer_id', $user->id)
+                ->latest()
+                ->get();
 
-        } elseif($page === 'sell') { 
-            
+        } elseif($page === 'sell') {
             $items = Item::where('user_id', $user->id)
-                         ->with('soldItem') 
                          ->latest()
                          ->get();
         }
-        
+
         return view('auth.mypage', [
             'user' => $user,
-            'items' => $items, 
+            'items' => $items,
         ]);
     }
 

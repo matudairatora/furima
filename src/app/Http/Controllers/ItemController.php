@@ -10,7 +10,7 @@ use App\Http\Requests\CommentRequest;
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Requests\AddressRequest;
 use App\Models\ShippingAddress;
-use App\Models\SoldItem;
+
 
 
 class ItemController extends Controller
@@ -18,7 +18,7 @@ class ItemController extends Controller
    public function show($id){
 
     
-    $item = Item::with(['comments.user', 'condition', 'categories', 'favorites', 'soldItem'])
+    $item = Item::with(['comments.user', 'condition', 'categories', 'favorites'])
             ->findOrFail($id);
     return view('auth.itemsell', compact('item'));
    } 
@@ -136,43 +136,34 @@ public function updateAddress(AddressRequest $request)
         return redirect()->route('auth.mypage');
     }
     public function processPurchase(PurchaseRequest $request, $itemId)
-    {   
-        
+    {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        
+
         $item = Item::findOrFail($itemId);
 
-        
-        if ($item->is_sold) {
+        if ($item->isSold()) {
             return back()->with('error', 'この商品は既に売り切れました。');
-        }       
+        }
 
-
-       
         $paymentMethod = $request->input('payment_method');
-        
+
         switch ($paymentMethod) {
             case 'convenience':
-                SoldItem::create([
-                'item_id' => $item->id,
-                'user_id' => Auth::id(),
+                $item->update([
+                    'buyer_id' => Auth::id()
                 ]);
-                
-                return redirect()->route('auth.index');
+
+                return redirect()->route('auth.index'); 
+
             case 'card':
-                
-                return redirect()->route('checkout', [
-                    'itemId' => $item->id,
-                ]);
-            
+                return redirect()->route('checkout', ['itemId' => $item->id]);
+
             default:
-                
                 return redirect()->route('auth.index');
         }
     }
-    
     public function afterpurchasecard()
     {
         

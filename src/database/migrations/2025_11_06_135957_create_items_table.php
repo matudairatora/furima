@@ -22,6 +22,7 @@ class CreateItemsTable extends Migration
             $table->string('brand')->nullable();
             $table->string('explanation');
             $table->foreignId('condition_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('buyer_id')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

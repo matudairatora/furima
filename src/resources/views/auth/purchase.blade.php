@@ -26,7 +26,7 @@
                         <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" class="product-image"> 
                     </div>
                     <div class="product-details">
-                        <h2 class="product-name">{{ $item->name }}</h2>
+                        <h1 class="product-name">{{ $item->name }}</h1>
                         <p class="product-price">¥{{ number_format($item->price) }}</p>
                     </div>
                 </div>
@@ -38,7 +38,8 @@
                     <h2 class="section-title">支払い方法</h2>
                     <div class="payment-selection-wrap">
                         <select class="payment-dropdown" name="payment_method" id="payment-method-select">
-                            <option value="convenience" selected>コンビニ払い</option>
+                            <option value="default" selected>選択してください</option>
+                            <option value="convenience" >コンビニ払い</option>
                             <option value="card">カード払い</option>
                         </select>
                     </div>

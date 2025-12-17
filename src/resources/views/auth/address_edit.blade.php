@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="address-edit-container">
-    <h2 class="address-edit-title">住所の変更</h2>
+    <h1 class="address-edit-title">住所の変更</h1>
 
     <form action="{{ route('address.update') }}" method="POST">
         @csrf

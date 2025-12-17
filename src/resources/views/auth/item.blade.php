@@ -66,7 +66,7 @@
 
         {{-- 商品名と説明 --}}
         <section class="form-section">
-            <h2 class="section-title">商品名と説明</h2>
+            <h2 class="section-title-merchandise">商品名と説明</h2>
 
             {{-- 商品名 --}}
             <div class="form-group">

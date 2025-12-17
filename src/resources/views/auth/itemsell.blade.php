@@ -99,9 +99,9 @@
                         <div class="comment-header">
                             <div class="comment-mypage">
                            
-                                @if ($comment->user->mypage && $comment->user->mypage->mypageimage)
+                                @if ($comment->user->mypage && $comment->user->mypage->mypage_image)
                                 
-                                <img src="{{ Storage::url($comment->user->mypage->mypageimage) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
+                                <img src="{{ Storage::url($comment->user->mypage->mypage_image) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
                                 @else
                                 
                                 <div class="default-avatar-placeholder"></div>

@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo; 
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Item extends Model
 {
@@ -20,6 +20,7 @@ class Item extends Model
         'explanation',
         'condition_id',
         'user_id',
+        'buyer_id',
     ];
     public function categories()
     {
@@ -48,15 +49,16 @@ class Item extends Model
 
         return $this->belongsToMany(User::class, 'favorites', 'item_id', 'user_id');
     }
-    
-    public function soldItem()
+
+      public function buyer()
     {
-        return $this->hasOne(SoldItem::class);
+        return $this->belongsTo(User::class, 'buyer_id');
     }
 
-        public function isSold()
+    // 追加：売り切れかどうかを判定する便利メソッド（HTML表示などで役立ちます）
+    public function isSold()
     {
-        return $this->soldItem !== null;
+        return $this->buyer_id !== null;
     }
 
 }

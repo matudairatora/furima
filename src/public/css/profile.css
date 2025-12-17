@@ -91,10 +91,9 @@
 }
 
 .update-button {
-    width: 250px;
+    width: 400px;
     padding: 15px;
     background-color: #e74c3c;
-    /* 赤色のボタン */
     color: white;
     border: none;
     border-radius: 5px;
@@ -112,23 +111,16 @@
 }
 @media screen and (min-width: 768px) and (max-width: 850px) {
 
-    /* コンテナ全体: 画面の80%程度の幅を使用 */
     .profile-container {
-        /* 元の800pxを維持しても良いが、よりコンパクトにしたい場合 */
         max-width: 750px;
     }
 
-    /* フォーム項目のスタイリング */
     .form-group {
-        /* 入力欄の幅を広げて、タブレットでの操作性を向上 */
         max-width: 500px;
         margin: 0 auto 35px;
-        /* マージンも微調整 */
     }
 
-    /* 画像アップロードエリア */
     .image-upload-area {
         margin-bottom: 60px;
-        /* 上下のスペースを少し広げる */
     }
 }

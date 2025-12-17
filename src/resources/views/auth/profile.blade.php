@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="profile-container">
-    <h2 class="profile-title">プロフィール設定</h2>
+    <h1 class="profile-title">プロフィール設定</h1>
 
     <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
         @csrf 
@@ -17,19 +17,19 @@
             {{-- 画像アップロードエリア --}}
             <div class="image-upload-area">
             <div class="image">    
-                @if ($user->mypage && $user->mypage->mypageimage)
+                @if ($user->mypage && $user->mypage->mypage_image)
                                 
-                <img src="{{ Storage::url($user->mypage->mypageimage) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
+                <img src="{{ Storage::url($user->mypage->mypage_image) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
                 @else
                 <div class="default-avatar-placeholder"></div>
                 @endif
                 </div>
-                <label for="mypageimage" class="image-select-button">
+                <label for="mypage_image" class="image-select-button">
                     画像を選択する
                 </label>
                 {{-- 実際には非表示のinput[type="file"] --}}
-                <input type="file" id="mypageimage" name="mypageimage" style="display:none;" onchange="previewImage(event);">
-                 @error('mypageimage')
+                <input type="file" id="mypage_image" name="mypage_image" style="display:none;" onchange="previewImage(event);">
+                 @error('mypage_image')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>

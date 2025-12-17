@@ -16,7 +16,7 @@ class Mypage extends Model
     
     protected $fillable = [
         'user_id',
-        'mypageimage',
+        'mypage_image',
         'postcode',
         'address',
         'building',

@@ -12,9 +12,9 @@
     <div class="profile-section">
         <div class="profile-avatar">
             
-            @if ($user->mypage && $user->mypage->mypageimage)
+            @if ($user->mypage && $user->mypage->mypage_image)
                                 
-            <img src="{{ Storage::url($user->mypage->mypageimage) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
+            <img src="{{ Storage::url($user->mypage->mypage_image) }}" alt="{{ $user->name ?? 'User' }}のプロフィール画像"  class="profile-avatar-image">
             @else
             <div class="default-avatar-placeholder"></div>
             @endif

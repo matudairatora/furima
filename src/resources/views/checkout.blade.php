@@ -42,7 +42,7 @@
         {{-- 右側：決済フォームエリア --}}
         <div class="payment-section">
             <div class="form-container">
-                <h2>決済情報の入力</h2>
+                <h1>決済情報の入力</h1>
                 
                 <form id="payment-form">
                     <input type="hidden" id="item-id" value="{{ $item->id }}"> 

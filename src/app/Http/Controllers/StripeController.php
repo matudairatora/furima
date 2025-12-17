@@ -8,7 +8,6 @@ use App\Models\Item;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Stripe\PaymentIntent;
-use App\Models\SoldItem;
 
 class StripeController extends Controller
 {
@@ -78,16 +77,14 @@ class StripeController extends Controller
             $item = Item::findOrFail($itemId); 
 
             if ($paymentIntent->status === 'succeeded') {
-                
+
                 if (!$item->isSold()) {
-                    SoldItem::create([
-                    'item_id' => $item->id,
-                    'user_id' => Auth::id(),
+                    $item->update([
+                        'buyer_id' => Auth::id()
                     ]);
-                    
+
                     return redirect()->route('auth.index')->with('success', '商品の購入が完了しました。');
                 }
-
                 return redirect()->route('auth.index')->with('info', 'この商品は既に購入済みでした。');
 
             } else {
