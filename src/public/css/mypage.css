@@ -1,14 +1,8 @@
-/*
- * mypage.css
- * マイページ (mypage.blade.php) のみに適用されるスタイル
- */
-
 /* ======================================================
    メインコンテンツエリア
    ====================================================== */
 .main-container {
     max-width: 1000px;
-    /* マイページ全体の幅を調整 */
     margin: 20px auto;
     padding: 0 20px;
 }
@@ -29,15 +23,16 @@
     width: 100px;
     height: 100px;
     background-color: #e0e0e0;
-    /* 画像の薄いグレーの円を再現 */
     border-radius: 50%;
     margin-right: 30px;
 }
-.profile-avatar-image{
+
+.profile-avatar-image {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     margin-right: 30px;
+    object-fit: cover;
 }
 
 .profile-info {
@@ -56,12 +51,11 @@
 .edit-button {
     padding: 8px 20px;
     color: #e3342f;
-    /* 赤い文字 */
     border: 1px solid #e3342f;
-    /* 赤い枠線 */
     border-radius: 5px;
     font-weight: bold;
     transition: background-color 0.2s;
+    text-decoration: none;
 }
 
 .edit-button:hover {
@@ -80,7 +74,11 @@
     font-size: 16px;
     color: #555;
     cursor: pointer;
+    text-decoration: none;
     transition: color 0.2s;
+    /* バッジを文字の横に並べるための設定 */
+    display: flex;
+    align-items: center;
 }
 
 .tab-item:hover {
@@ -90,12 +88,33 @@
 .tab-item.active {
     color: #000;
     border-bottom: 3px solid #e3342f;
-    /* アクティブタブの下線は赤 */
     font-weight: bold;
 }
 
-/* 商品一覧セクション */
+/* ★修正: タブ横の数字バッジ (正円) */
+.tab-badge {
+    background-color: #ff0000;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
 
+    /* 正円を作る設定 */
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+
+    /* 数字を中央に配置 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-left: 5px;
+    /* 文字との距離 */
+    line-height: 1;
+    /* 縦ズレ防止 */
+}
+
+/* 商品一覧セクション */
 .item-list {
     display: flex;
     flex-wrap: wrap;
@@ -108,12 +127,57 @@
     text-align: left;
 }
 
+/* --- 画像エリアとバッジ --- */
 .item-image {
     position: relative;
-    /* オーバーレイを配置するために必要 */
+    /* バッジを絶対配置する基準 */
     overflow: hidden;
+    width: 100%;
+    /* 正方形のプレースホルダーが必要な場合 */
+    /* aspect-ratio: 1 / 1; */
 }
 
+.item-image-placeholder {
+    width: 100%;
+    background-color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+    margin-bottom: 5px;
+    object-fit: cover;
+    display: block;
+    /* 画像下の隙間防止 */
+}
+
+/* ★修正: 画像上の通知バッジ (正円・左上配置) */
+.notification-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+
+    background-color: #ff0000;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+
+    /* 正円を作る設定 */
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+
+    /* 数字を中央に配置 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    margin: 0;
+    /* 余計なマージンを削除して端に合わせる */
+}
+
+/* SOLD OUT オーバーレイ */
 .item-sold-overlay {
     position: absolute;
     top: 0;
@@ -121,46 +185,54 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    /* 半透明の黒 */
     color: rgb(255, 0, 0);
     font-size: 24px;
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* ソールドアウトの文字を中央に配置 */
     z-index: 10;
-}
-
-
-.item-image-placeholder {
-    width: 100%;
-
-    background-color: #e0e0e0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #666;
-    margin-bottom: 5px;
-    position: relative;
-}
-
-.item-image-placeholder span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 .item-name {
     font-size: 14px;
     color: #333;
+    text-decoration: none;
+    display: block;
+    margin-top: 5px;
+}
+
+/* 星評価エリア */
+.profile-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-rating {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    color: #ffd700;
+    font-size: 18px;
+}
+
+.rating-value {
+    color: #333;
+    font-size: 14px;
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+.star.filled {
+    color: #ffcc00;
+}
+
+.star {
+    color: #ddd;
 }
 
 /* レスポンシブ対応 */
 @media screen and (min-width: 768px) and (max-width: 850px) {
-    /* app.blade.phpのヘッダー関連スタイルは common.css に残します */
-
     .main-container {
         max-width: 100%;
         padding: 0 10px;
@@ -182,6 +254,5 @@
 
     .item-list {
         grid-template-columns: repeat(2, 1fr);
-        /* モバイルでは2列 */
     }
 }

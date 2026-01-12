@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,15 @@ Route::post(
      [StripeController::class, 'createPaymentIntent'])
      ->name('create-payment-intent');
 Route::get('/stripe/complete', [StripeController::class, 'completePayment'])->name('stripe.complete');
+
+    // チャット画面表示
+    Route::get('/chat/{item_id}', [ChatController::class, 'show'])->name('chat.show');
+    // メッセージ送信
+    Route::post('/chat/{item_id}', [ChatController::class, 'store'])->name('chat.store');
+    // 取引完了処理
+    Route::post('/chat/{item_id}/complete', [ChatController::class, 'complete'])->name('chat.complete');
+    // 評価送信
+    Route::post('/review/{item_id}', [ChatController::class, 'sendRating'])->name('review.store');
 
 });
 

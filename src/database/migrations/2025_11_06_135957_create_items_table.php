@@ -23,6 +23,7 @@ class CreateItemsTable extends Migration
             $table->string('explanation');
             $table->foreignId('condition_id')->constrained()->cascadeOnDelete();
             $table->foreignId('buyer_id')->nullable()->constrained('users');
+            $table->boolean('is_completed')->default(false);
             $table->timestamps();
         });
     }
