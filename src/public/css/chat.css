@@ -1,3 +1,8 @@
+/* =========================================
+   chat.css
+   取引チャット画面用スタイルシート
+   ========================================= */
+
 /* 全体のレイアウト */
 .chat-container {
     display: flex;
@@ -105,9 +110,10 @@
 }
 
 .btn-complete {
-    background: #fff;
-    color: #ff5555;
-    border: 1px solid #ff5555;
+    background-color: #ff5555;
+    color: white;
+    border: none;
+
     padding: 8px 20px;
     border-radius: 20px;
     font-weight: bold;
@@ -115,9 +121,9 @@
     font-size: 14px;
     transition: 0.3s;
 }
-
 .btn-complete:hover {
-    background: #ffeaea;
+    background-color: #ff3333;
+        opacity: 0.9;
 }
 
 /* 商品情報エリア */
@@ -203,21 +209,14 @@
     font-weight: bold;
 }
 
-/* ★修正箇所: ここで「見えない改行」と「行間」を徹底的に修正 */
 .message-bubble {
     background-color: #f5f5f5;
     padding: 8px 12px;
     border-radius: 4px;
     font-size: 14px;
     text-align: left;
-
-    /* 重要: 行間をさらに詰める (1.4 -> 1.25) */
     line-height: 1.25;
-
-    /* 重要: pre-wrapを廃止し、Blade側のnl2brだけを有効にする */
     white-space: normal;
-
-    /* 日本語や長い英単語がはみ出さないように強制的に折り返す */
     word-break: break-all;
 }
 
@@ -242,6 +241,63 @@
 .action-link {
     margin-left: 10px;
     cursor: pointer;
+}
+
+/* --- 追加: 編集・削除関連スタイル --- */
+.edit-form {
+    display: none;
+    /* 初期状態は非表示 */
+    width: 100%;
+}
+
+.edit-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.btn-save,
+.btn-cancel {
+    font-size: 12px;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+}
+
+.btn-save {
+    background-color: #ff5555;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: #ccc;
+    color: #333;
+}
+
+.btn-delete-link {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 10px;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.btn-delete-link:hover {
+    text-decoration: underline;
+    color: #ff5555;
 }
 
 
@@ -295,7 +351,7 @@
 }
 
 /* =========================================
-   モーダル (取引完了ポップアップ) - 修正版
+   モーダル (取引完了ポップアップ)
    ========================================= */
 .modal-overlay {
     position: fixed;
@@ -315,25 +371,21 @@
 }
 
 .modal-content {
-    /* クリーム色の背景 */
     background: #ffffe0;
-    /* 枠線と角丸 */
     border: 1px solid #dcdcdc;
     border-radius: 5px;
     width: 90%;
     max-width: 500px;
     text-align: left;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    /* 内部の線を端まで引くためにpaddingは0にする */
     padding: 0;
     overflow: hidden;
 }
 
-/* --- ヘッダーエリア (タイトル + 下線) --- */
+/* ヘッダーエリア */
 .modal-header {
     padding: 20px 25px;
     border-bottom: 1px solid #dcdcdc;
-    /* ★ここの線 */
     background-color: #ffffe0;
 }
 
@@ -344,7 +396,7 @@
     margin: 0;
 }
 
-/* --- ボディエリア (テキスト + 星) --- */
+/* ボディエリア */
 .modal-body {
     padding: 25px;
     background-color: #ffffe0;
@@ -360,41 +412,32 @@
 .star-rating {
     font-size: 80px;
     color: #e0e0e0;
-    /* 未選択の色 */
     cursor: pointer;
     display: flex;
     justify-content: flex-start;
-    /* 左寄せ（画像に合わせるならcenterでも可） */
     gap: 10px;
 }
 
 .star-rating .star.active {
     color: #ffe600;
-    /* 星の色 */
-    /* 少し影をつけてリッチに */
     filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.2));
 }
 
-/* --- フッターエリア (ボタン + 上線) --- */
+/* フッターエリア */
 .modal-footer {
     padding: 15px 25px;
     border-top: 1px solid #dcdcdc;
-    /* ★ここの線 */
     background-color: #ffffe0;
-
-    /* ボタンを右寄せにする設定 */
     display: flex;
     justify-content: flex-end;
 }
 
-/* 送信ボタン (コンパクト・赤色) */
+/* 送信ボタン */
 .btn-modal-submit {
     background-color: #ff5555;
-    /* 赤 */
     color: white;
     border: none;
     padding: 10px 30px;
-    /* 横幅を調整 */
     font-size: 14px;
     font-weight: bold;
     border-radius: 5px;

@@ -1,11 +1,19 @@
 # coachtechフリマ
 ## 環境構築
 ### Dockerビルド
-1. `git clone git@github.com:matudairatora/furima.git`
-2. `docker-compose up -d --build`
+1. ```code
+    git clone git@github.com:matudairatora/furima.git
+    ```
+2. ```code
+    docker-compose up -d --build
+    ```
 #### Laravel環境構築
-1. `docker-compose exec php bash`
-2. `composer install`
+1. ```code
+    docker-compose exec php bash
+    ```
+2. ```code
+    composer install
+    ```
 3. .env.exampleファイルから.envを作成し、環境変数を変更
 4. .envに以下の環境変数を追加
     ``` text
@@ -26,47 +34,103 @@
     MAIL_FROM_NAME="${APP_NAME}"
 
     ```
-5. `composer require stripe/stripe-php:17.0.0`
-6. `php artisan key:generate`
-7. `php artisan migrate:fresh`
-8. `php artisan db:seed`
-9. `php artisan storage:link`
-10. `exit`
-11. `brew install mailhog`
-12. `brew services start mailhog`
-13. `sudo chmod -R 777 *`
+5. ```code
+    composer require stripe/stripe-php:17.0.0
+    ```
+6. ```code
+    php artisan key:generate
+    ```
+7. ```code
+    php artisan migrate:fresh
+    ```
+8. ```code
+    php artisan db:seed
+    ```
+9. ```code
+    php artisan storage:link
+    ```
+10. ```code
+    exit
+    ```
+11. ```code
+    brew install mailhog
+    ```
+12. ```code
+    brew services start mailhog
+    ```
+13. ```code
+    sudo chmod -R 777 *
+    ```
 
 ### 一般ユーザー
 1.  ユーザー名:`出品者A`
-    email:`user1@example.com`
-    password:`user1syuppin`
+    email:
+    ```code
+    user1@example.com
+    ```
+    password:
+    ```code
+    user1syuppin
+    ```
 
 
 2.  ユーザー名:`出品者B`
-    email:`user2@example.com`
-    password:`user2syuppin`
+    email:
+    ```code
+    user2@example.com
+    ```
+    password:
+    ```code
+    user2syuppin
+    ```
 
 3.  ユーザー名:`購入専用ユーザー`
-    email:`user3@example.com`
-    password:`user3kounyu`
+    email:
+    ```code
+    user3@example.com
+    ```
+    password:
+    ```code
+    user3kounyu
+    ```
 
 
 ### PHPunitテスト
-1.  `php artisan config:clear`
--   2~7は、飛ばして、8に行っても大丈夫です。
-2.  `php artisan test tests/Feature/AuthTest.php`
-3.  `php artisan test tests/Feature/ItemTest.php`
-4.  `php artisan test tests/Feature/InteractionTest.php`
-5.  `php artisan test tests/Feature/PurchaseTest.php`
-6.  `php artisan test tests/Feature/ProfileTest.php`
-7.  `php artisan test tests/Feature/EmailVerificationTest.php`
-8.  `php artisan test`
+1.  ```code
+    php artisan config:clear
+    ```
+-   2~7は、飛ばして、9に行っても大丈夫です。
+2.  ```code
+    php artisan test tests/Feature/AuthTest.php
+    ```
+3.  ```code
+    php artisan test tests/Feature/ItemTest.php
+    ```
+4.  ```code
+    php artisan test tests/Feature/InteractionTest.php
+    ```
+5.  ```code
+    php artisan test tests/Feature/PurchaseTest.php
+    ```
+6.  ```code
+    php artisan test tests/Feature/ProfileTest.php
+    ```
+7.  ```code
+    php artisan test tests/Feature/EmailVerificationTest.php
+    ```
+8.  ```code
+    php artisan test tests/Feature/ChatTest.php
+    ```
+9.  ```code
+    php artisan test
+    ```
 
 ### stripe設定
 1. .envの中身の一番下にAPIキーを設定します。
 2. STRIPE_SECRET_KEY="" # Stripeダッシュボードから取得
 3. STRIPE_PUBLIC_KEY=""  # Stripeダッシュボードから取得
 - 最初は、私のAPIキーが入っています。
+- カード情報「4242 4242 4242 4242」月年その他「なんでもOK」
 
 ### 使用技術
 - PHP 8.0

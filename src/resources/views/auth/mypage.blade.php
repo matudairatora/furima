@@ -26,8 +26,7 @@
                     @php
                         // 仮の数値（本来はControllerで計算）
                         $rating = $averageRating ?? 0; 
-                        $fullStars = floor($rating);
-                        $hasHalf = ($rating - $fullStars) >= 0.5;
+                        $fullStars = round($rating);
                     @endphp
                     <span class="stars">
                         @for ($i = 1; $i <= 5; $i++)

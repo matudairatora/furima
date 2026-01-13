@@ -12,7 +12,7 @@ use App\Models\Rating;
 
 class ChatController extends Controller
 {
-    public function show($item_id)
+   public function show($item_id)
     {
         $user = Auth::user();
         $item = Item::findOrFail($item_id);
@@ -25,10 +25,11 @@ class ChatController extends Controller
             ? $item->buyer 
             : $item->user;
 
+        // ... (メッセージ取得や既読処理などはそのまま) ...
         $messages = Message::where('item_id', $item_id)
             ->orderBy('created_at', 'asc')
             ->get();
-
+        
         if (\Schema::hasColumn('messages', 'read_at')) {
             Message::where('item_id', $item_id)
                 ->where('user_id', '!=', $user->id)
@@ -36,26 +37,38 @@ class ChatController extends Controller
                 ->update(['read_at' => now()]);
         }
 
-        // サイドバー用
+        // ... (サイドバー取得処理もそのまま) ...
         $chat_items = Item::where(function($query) use ($user) {
                 $query->where('user_id', $user->id)
                       ->orWhere('buyer_id', $user->id);
             })
             ->whereNotNull('buyer_id')
             ->where('id', '!=', $item_id)
-            ->latest()
+            ->addSelect(['latest_message_time' => Message::select('created_at')
+                ->whereColumn('item_id', 'items.id')
+                ->latest()
+                ->limit(1)
+            ])
+            ->orderByDesc('latest_message_time')
+            ->orderByDesc('created_at')
             ->get();
 
-        // ★追加: 自分が既に評価済みかどうかを確認
+        // 自分が評価済みか
         $hasRated = Rating::where('item_id', $item_id)
                           ->where('rater_id', $user->id)
                           ->exists();
 
-        // hasRated をビューに渡す
-        return view('chat.show', compact('item', 'messages', 'partner', 'chat_items', 'hasRated', 'user'));
-    }
+        // ★追加: 相手が評価済みかを確認
+        $partnerId = ($user->id === $item->user_id) ? $item->buyer_id : $item->user_id;
+        $partnerHasRated = Rating::where('item_id', $item_id)
+                          ->where('rater_id', $partnerId)
+                          ->exists();
 
-    // ★修正: 取引完了ボタン（モーダル表示用）
+        // ビューに $partnerHasRated を渡す
+        return view('chat.show', compact('item', 'messages', 'partner', 'chat_items', 'hasRated', 'partnerHasRated', 'user'));
+    }
+    
+    
     public function complete($item_id)
     {
         $item = Item::findOrFail($item_id);
@@ -115,15 +128,20 @@ class ChatController extends Controller
             $item->save();
         }
 
-        return redirect()->route('auth.mypage')->with('success', '評価を送信しました！');
+        return redirect()->route('auth.index')->with('success', '評価を送信しました！');
     }
     
     // store メソッドは変更なしのため省略
     public function store(Request $request, $item_id)
     {
         $request->validate([
-            'content' => 'required_without:image|max:400',
-            'image' => 'nullable|image|mimes:jpeg,png|max:2048',
+            'content' => 'required|max:400',
+            'image' => 'nullable|image|mimes:jpeg,png',
+        ], [
+            'content.max' => '本文は400文字以内で入力してください',
+            'content.required' => '本文を入力してください',
+            'image.image' => '「.png」または「.jpeg」形式でアップロードしてください',
+            'image.mimes' => '「.png」または「.jpeg」形式でアップロードしてください',
         ]);
 
         $message = new Message();
@@ -159,6 +177,12 @@ class ChatController extends Controller
     {
         $request->validate([
             'content' => 'required|max:400',
+            'image' => 'nullable|image|mimes:jpeg,png',
+        ], [
+            'content.max' => '本文は400文字以内で入力してください',
+            'content.required' => '本文を入力してください',
+            'image.image' => '「.png」または「.jpeg」形式でアップロードしてください',
+            'image.mimes' => '「.png」または「.jpeg」形式でアップロードしてください',
         ]);
 
         $message = Message::findOrFail($message_id);
