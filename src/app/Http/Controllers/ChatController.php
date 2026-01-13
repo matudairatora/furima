@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail; // ★追加
+use App\Mail\TransactionCompletedEmail; // ★追加
 use App\Models\Item;
 use App\Models\Message;
 use App\Models\Rating;
@@ -79,7 +81,7 @@ class ChatController extends Controller
         $item = Item::findOrFail($item_id);
         $user = Auth::user();
         
-        // 二重投稿防止（既に評価済みならリダイレクト）
+        // 二重投稿防止
         if (Rating::where('item_id', $item_id)->where('rater_id', $user->id)->exists()) {
              return redirect()->route('auth.mypage');
         }
@@ -93,10 +95,21 @@ class ChatController extends Controller
             'rating' => $request->rating,
         ]);
 
-        // ★ロジック追加: 評価が2件（双方）揃ったら、取引を完了にする
+        // ★★★ 追加: メール送信処理 (FN016) ★★★
+        // 「操作した人が購入者」であれば、「出品者」にメールを送る
+        if ($user->id === $item->buyer_id) {
+            // 出品者を取得
+            $seller = $item->user; 
+            
+            // 出品者のメールアドレスがあれば送信
+            if ($seller && $seller->email) {
+                Mail::to($seller->email)->send(new TransactionCompletedEmail($item, $user));
+            }
+        }
+
+        // 評価が2件（双方）揃ったら、取引を完了にする
         $ratingCount = Rating::where('item_id', $item->id)->count();
 
-        // 出品者と購入者の2名分の評価があれば完了
         if ($ratingCount >= 2) {
             $item->is_completed = true;
             $item->save();
