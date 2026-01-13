@@ -37,7 +37,7 @@
                             @endif
                         @endfor
                     </span>
-                    <span class="rating-value">{{ number_format($rating, 1) }}</span>
+                    
                 </div>
             </div>
             <a href="{{ route('profile.edit') }}" class="edit-button">プロフィールを編集</a>

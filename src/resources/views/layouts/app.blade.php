@@ -14,47 +14,49 @@
 <header>
     <div class="header-container">
         <div class="header-content">
-            {{-- ロゴエリア (画像上部の黒帯部分) --}}
+            {{-- ロゴエリア (常に表示) --}}
             <div class="logo-area">
                 <a href="/">
                     <img src="{{ asset('img/logo.svg') }}" alt="COACHTECH Logo" class="logo">
                 </a>
             </div>
 
-            {{-- 検索エリア --}}
-            <div class="search-area">
-                <form action="{{ route('auth.index') }}" method="GET">
-                
-                    {{-- value属性を追加し、リクエストにキーワードがあれば表示する --}}
-                    <input type="text" 
-                        name="keyword" 
-                        placeholder="なにをお探しですか？" 
-                        class="search-input" 
-                        value="{{ request('keyword') }}"
-                    >
-                </form>
-            </div>
+            @if (!request()->routeIs('chat.show'))
 
-            {{-- ナビゲーションエリア --}}
-            <div class="nav-area">
-                @auth
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
+                {{-- 検索エリア --}}
+                <div class="search-area">
+                    <form action="{{ route('auth.index') }}" method="GET">
+                        <input type="text" 
+                            name="keyword" 
+                            placeholder="なにをお探しですか？" 
+                            class="search-input" 
+                            value="{{ request('keyword') }}"
+                        >
                     </form>
-                    <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
-                    <a href="{{ route('auth.mypage') }}" class="nav-link">マイページ</a>
-                @else
-                    <a href="{{ route('login') }}" class="nav-link" onclick="event.">ログイン</a>
-                    <a href="{{ route('auth.mypage') }}" class="nav-link">マイページ</a>
-                @endauth    
-                    <a href="{{ route('auth.item') }}" class="submit-button">出品</a>
-            </div>
+                </div>
+
+                {{-- ナビゲーションエリア --}}
+                <div class="nav-area">
+                    @auth
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                        </form>
+                        <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
+                        <a href="{{ route('auth.mypage') }}" class="nav-link">マイページ</a>
+                    @else
+                        <a href="{{ route('login') }}" class="nav-link">ログイン</a>
+                        <a href="{{ route('auth.mypage') }}" class="nav-link">マイページ</a>
+                    @endauth    
+                        <a href="{{ route('auth.item') }}" class="submit-button">出品</a>
+                </div>
+
+            @endif
+
         </div>
     </div>
 </header>
 
 <main class="main-container">
-    
     @yield('content')
 </main>
  @stack('scripts')

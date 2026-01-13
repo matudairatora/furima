@@ -73,7 +73,7 @@
                         </form>
                     @else
                         {{-- 購入者がまだ評価していない -> 待機メッセージ --}}
-                        <span class="status-waiting" style="color:#666; font-size:12px; font-weight:bold;">購入者の受取評価待ち</span>
+                        <span class="status-waiting" style="color:#666; font-size:12px; font-weight:bold;"></span>
                     @endif
 
                 @endif
