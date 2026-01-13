@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\ShippingAddress;
-use App\Models\SoldItem;
+// use App\Models\SoldItem; // ★削除
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,7 +21,7 @@ class PurchaseTest extends TestCase
     }
 
     /**
-     * ID 10: 商品購入機能 - 購入処理が完了し、SoldItemに追加される
+     * ID 10: 商品購入機能 - 購入処理が完了し、itemsテーブルのbuyer_idが更新される
      */
     public function test_user_can_purchase_item()
     {
@@ -40,10 +40,10 @@ class PurchaseTest extends TestCase
         // トップページ等へリダイレクト
         $response->assertRedirect(route('auth.index'));
 
-        // sold_items テーブルにレコードがあるか
-        $this->assertDatabaseHas('sold_items', [
-            'item_id' => $item->id,
-            'user_id' => $buyer->id,
+        // ★修正: sold_items ではなく items テーブルの buyer_id を確認
+        $this->assertDatabaseHas('items', [
+            'id' => $item->id,
+            'buyer_id' => $buyer->id,
         ]);
 
         // 商品一覧で「SOLD」表示になっているか
@@ -58,11 +58,9 @@ class PurchaseTest extends TestCase
         $user = User::factory()->create();
         $item = Item::factory()->create();
         
-        // 購入履歴作成（SoldItemを手動作成）
-        SoldItem::create([
-            'item_id' => $item->id,
-            'user_id' => $user->id,
-        ]);
+        // ★修正: 購入履歴作成（itemsテーブルのbuyer_idを更新）
+        $item->buyer_id = $user->id;
+        $item->save();
 
         $this->actingAs($user);
 
@@ -90,7 +88,6 @@ class PurchaseTest extends TestCase
 
         // Stripeのチェックアウト画面（またはカード情報入力画面）へリダイレクトされることを確認
         // ※ItemControllerの実装に合わせてリダイレクト先を確認してください
-        // 例: route('checkout', ['itemId' => $item->id])
         $response->assertRedirect(route('checkout', ['itemId' => $item->id]));
     }
 
@@ -112,10 +109,10 @@ class PurchaseTest extends TestCase
         // 購入完了後のトップページへリダイレクトされることを確認
         $response->assertRedirect(route('auth.index'));
         
-        // データベースに売上データが作成されている確認
-        $this->assertDatabaseHas('sold_items', [
-            'item_id' => $item->id,
-            'user_id' => $user->id,
+        // ★修正: itemsテーブルのbuyer_idを確認
+        $this->assertDatabaseHas('items', [
+            'id' => $item->id,
+            'buyer_id' => $user->id,
         ]);
     }
 
@@ -147,6 +144,7 @@ class PurchaseTest extends TestCase
         $response->assertSee('999-9999');
         $response->assertSee('New Address City');
     }
+
     /**
      * ID 12: 配送先変更機能 - 購入した商品に送付先住所が紐づいて登録される
      */
@@ -157,7 +155,6 @@ class PurchaseTest extends TestCase
         $this->actingAs($user);
 
         // 1. 配送先を変更（登録）する
-        // item_id を指定して POST することで、この商品専用の住所として保存されます
         $newAddress = [
             'item_id' => $item->id,
             'postcode' => '888-8888',
@@ -168,17 +165,15 @@ class PurchaseTest extends TestCase
         $this->post(route('address.update'), $newAddress);
 
         // 2. 商品を購入する
-        // 変更した住所で購入処理を行います
         $this->post(route('item.process_purchase', ['itemId' => $item->id]), [
             'payment_method' => 'convenience',
             'user_address' => 'Linked City', 
         ]);
 
         // 3. データベース確認
-        // shipping_addresses テーブルに、この商品(item_id)と紐づいた住所があるか確認します
         $this->assertDatabaseHas('shipping_addresses', [
             'user_id' => $user->id,
-            'item_id' => $item->id,           // ★ここが重要（商品IDと紐づいているか）
+            'item_id' => $item->id,
             'postcode' => '888-8888',
             'address' => 'Linked City',
             'building' => 'Linked Building',

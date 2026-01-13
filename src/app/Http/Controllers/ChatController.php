@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail; // ★追加
-use App\Mail\TransactionCompletedEmail; // ★追加
+use Illuminate\Support\Facades\Mail; 
+use App\Mail\TransactionCompletedEmail; 
 use App\Models\Item;
 use App\Models\Message;
 use App\Models\Rating;
@@ -25,7 +25,7 @@ class ChatController extends Controller
             ? $item->buyer 
             : $item->user;
 
-        // ... (メッセージ取得や既読処理などはそのまま) ...
+        
         $messages = Message::where('item_id', $item_id)
             ->orderBy('created_at', 'asc')
             ->get();
@@ -37,7 +37,7 @@ class ChatController extends Controller
                 ->update(['read_at' => now()]);
         }
 
-        // ... (サイドバー取得処理もそのまま) ...
+       
         $chat_items = Item::where(function($query) use ($user) {
                 $query->where('user_id', $user->id)
                       ->orWhere('buyer_id', $user->id);
@@ -53,18 +53,18 @@ class ChatController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        // 自分が評価済みか
+        
         $hasRated = Rating::where('item_id', $item_id)
                           ->where('rater_id', $user->id)
                           ->exists();
 
-        // ★追加: 相手が評価済みかを確認
+        
         $partnerId = ($user->id === $item->user_id) ? $item->buyer_id : $item->user_id;
         $partnerHasRated = Rating::where('item_id', $item_id)
                           ->where('rater_id', $partnerId)
                           ->exists();
 
-        // ビューに $partnerHasRated を渡す
+        
         return view('chat.show', compact('item', 'messages', 'partner', 'chat_items', 'hasRated', 'partnerHasRated', 'user'));
     }
     
@@ -77,14 +77,13 @@ class ChatController extends Controller
             abort(403);
         }
 
-        // ★重要: ここではまだ is_completed = true にしない！
-        // 単に評価モーダルを出すフラグを立ててリダイレクトするだけ
+        
         
         return redirect()->route('chat.show', ['item_id' => $item_id])
             ->with('transaction_completed', true);
     }
 
-    // ★修正: 評価送信
+    
     public function sendRating(Request $request, $item_id)
     {
         $request->validate([
@@ -108,8 +107,7 @@ class ChatController extends Controller
             'rating' => $request->rating,
         ]);
 
-        // ★★★ 追加: メール送信処理 (FN016) ★★★
-        // 「操作した人が購入者」であれば、「出品者」にメールを送る
+        
         if ($user->id === $item->buyer_id) {
             // 出品者を取得
             $seller = $item->user; 
@@ -120,7 +118,7 @@ class ChatController extends Controller
             }
         }
 
-        // 評価が2件（双方）揃ったら、取引を完了にする
+        
         $ratingCount = Rating::where('item_id', $item->id)->count();
 
         if ($ratingCount >= 2) {
@@ -131,7 +129,7 @@ class ChatController extends Controller
         return redirect()->route('auth.index')->with('success', '評価を送信しました！');
     }
     
-    // store メソッドは変更なしのため省略
+    
     public function store(Request $request, $item_id)
     {
         $request->validate([

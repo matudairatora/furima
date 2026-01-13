@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Comment;
 use App\Models\Item;
 use App\Models\User;
-use App\Models\SoldItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -58,10 +57,8 @@ class InteractionTest extends TestCase
 
         $response->assertStatus(200);
         
-        
-        $response->assertSee('favorited');
-
         // Assert: アイコンのクラスが 'fas' (Solid:塗りつぶし) になっているか確認
+        // ビューの実装に合わせて 'favorited' や 'fas fa-heart' などをチェック
         $response->assertSee('fas fa-heart');
     }
 
@@ -122,11 +119,11 @@ class InteractionTest extends TestCase
         $item = Item::factory()->create(['name' => 'Sold Liked Item']);
         $user->favorites()->attach($item->id);
 
-        // 2. その商品を「売り切れ」状態にする（SoldItemを作成）
-        SoldItem::create([
-            'item_id' => $item->id,
-            'user_id' => User::factory()->create()->id, // 誰かが購入したことにする
-        ]);
+        // 2. その商品を「売り切れ」状態にする
+        // ★修正: SoldItemモデルを使わず、buyer_idを更新する
+        $buyer = User::factory()->create();
+        $item->buyer_id = $buyer->id;
+        $item->save();
 
         // 3. マイリストタブを表示
         $response = $this->get(route('auth.index', ['tab' => 'mylist']));

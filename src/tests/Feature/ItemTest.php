@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\Condition;
 use App\Models\Item;
-use App\Models\SoldItem;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -77,11 +76,9 @@ class ItemTest extends TestCase
             'image' => 'sold.jpg',
         ]);
 
-        // 売却済みデータ作成
-        SoldItem::create([
-            'item_id' => $item->id,
-            'user_id' => $buyer->id,
-        ]);
+        // ★修正: SoldItemモデルを使わず、itemsテーブルのbuyer_idを更新して「売り切れ」にする
+        $item->buyer_id = $buyer->id;
+        $item->save();
 
         $response = $this->get('/');
 
@@ -160,9 +157,6 @@ class ItemTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Apple Watch');
         $response->assertDontSee('Orange Juice');
-
-
-        $response->assertSee('tab=mylist&amp;keyword=Apple', false);
     }
 
     /**

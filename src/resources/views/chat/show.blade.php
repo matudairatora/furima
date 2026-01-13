@@ -45,7 +45,7 @@
                 <span class="user-name">「{{ $partner->name }}」さんとの取引画面</span>
             </div>
 
-            {{-- ★修正: ステータス/完了ボタンの出し分け --}}
+            {{--  ステータス/完了ボタンの出し分け --}}
             @if($item->is_completed)
                 <span class="status-completed" style="font-weight:bold; color:#666;">取引完了済み</span>
             
@@ -176,7 +176,7 @@
                        value="{{ old('content') }}">
                 
                 <label class="btn-image-add">
-                    画像を追加
+                    
                     <input type="file" name="image" accept="image/png, image/jpeg" style="display:none;">
                 </label>
                 
@@ -235,7 +235,7 @@
 @endif
 
 <script>
-    // ページ読み込み時に最下部へスクロール
+    
     const container = document.getElementById('message-container');
     if(container) container.scrollTop = container.scrollHeight;
 

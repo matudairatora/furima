@@ -22,7 +22,6 @@ class ChatTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        // コンディションとカテゴリーのシーダー
         $this->seed(\Database\Seeders\ConditionSeeder::class);
         $this->seed(\Database\Seeders\CategorySeeder::class);
     }
@@ -368,7 +367,6 @@ class ChatTest extends TestCase
             'rating' => 4,
         ]);
 
-        // ★修正: 型キャストを追加 (MySQL/SQLiteの戻り値 `1` を true と比較するため)
         $this->assertTrue((bool)$item->fresh()->is_completed);
     }
 

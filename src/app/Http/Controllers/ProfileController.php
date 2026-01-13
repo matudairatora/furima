@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
-use App\Models\Rating;   // 追加: 評価モデル
-use App\Models\Message;  // 追加: メッセージモデル
+use App\Models\Rating;   
+use App\Models\Message;  
 use App\Http\Requests\ProfileRequest;
 
 class ProfileController extends Controller
@@ -18,12 +18,12 @@ class ProfileController extends Controller
 
         $query = Item::query();
 
-        // ログインしている場合、自分の商品は除外
+        
         if (Auth::check()) {
             $query->where('user_id', '!=', Auth::id());
         }
 
-        // マイリスト（お気に入り）タブの処理
+       
         if ($tab === 'mylist') {
             if (Auth::check()) {
                 $user = Auth::user();
@@ -31,18 +31,18 @@ class ProfileController extends Controller
                     $q->where('user_id', $user->id);
                 });
             } else {
-                // ログインしていない場合は何も表示しない
+                
                 $query->whereRaw('1 = 0');
             }
         }
 
-        // キーワード検索
+       
         if (!empty($keyword)) {
             $query->where('name', 'LIKE', '%' . $keyword . '%');
         }
 
-        // 出品完了していないものだけを表示する場合（任意）
-        // $query->whereNotNull('buyer_id'); // 売り切れを除外したい場合はここを調整
+        
+        
 
         $items = $query->latest()->get();
 
@@ -93,14 +93,13 @@ class ProfileController extends Controller
         $user = Auth::user();
         $page = $request->query('page', 'sell');
 
-        // 1. ユーザー評価の平均値
+        
         $averageRating = 0;
         if (class_exists(Rating::class)) {
             $averageRating = Rating::where('user_id', $user->id)->avg('rating');
         }
 
-        // 2. 「取引中」の全アイテムを取得して、未読メッセージの合計を算出 (タブのバッジ用)
-        // ※現在のページが何であれ、タブのバッジ用に計算が必要です
+        
         $tradingItemsQuery = Item::where(function ($query) use ($user) {
             $query->where('user_id', $user->id)
                   ->orWhere('buyer_id', $user->id);
@@ -108,7 +107,7 @@ class ProfileController extends Controller
         ->whereNotNull('buyer_id')
         ->where('is_completed', false);
 
-        // クエリの結果を取得（複製して使うため get() しておく）
+        
         $allTradingItems = $tradingItemsQuery->get();
         
         $totalUnread = 0;
@@ -120,7 +119,7 @@ class ProfileController extends Controller
                     ->whereNull('read_at')
                     ->count();
                 
-                // アイテムオブジェクトにプロパティとして一時保存（tradingタブ表示時に使用）
+                
                 $tItem->unread_count = $count;
                 
                 // 合計に加算
@@ -145,7 +144,6 @@ class ProfileController extends Controller
 
         } elseif ($page === 'trading') {
             // 取引中の商品
-            // 先ほど計算済みのコレクションを使用（未読数プロパティ付き）
             $items = $allTradingItems;
         }
 
@@ -153,7 +151,7 @@ class ProfileController extends Controller
             'user' => $user,
             'items' => $items,
             'averageRating' => $averageRating,
-            'totalUnread' => $totalUnread, // ★追加: タブ表示用の合計未読数
+            'totalUnread' => $totalUnread, 
         ]);
     }
 }

@@ -20,7 +20,7 @@
         <div class="profile-info">
             <div class="profile-text">
                 <span class="username">{{ $user->name ?? ''}}</span>
-                {{-- ★★★ 評価（星）の表示 (FN005) ★★★ --}}
+                {{-- ★★★ 評価（星）の表示  ★★★ --}}
                 <div class="user-rating">
                     {{-- コントローラーで $averageRating を計算して渡す想定 --}}
                     @php
@@ -47,7 +47,7 @@
     {{-- タブセクション --}}
     <div class="tabs">
         <?php 
-        // デフォルトを 'sell' にしつつ、trading も受け付ける
+        
         $currentTab = request()->query('page', 'sell'); 
         ?>
         <a href="{{ route('auth.mypage', ['page' => 'sell']) }}" 
@@ -83,7 +83,7 @@
                         <div class="item-sold-overlay">SOLD</div>
                     @endif
 
-                    {{-- ★★★ 画像上の通知バッジ (スタイルを直接指定) ★★★ --}}
+                    
                     @if($currentTab === 'trading' && isset($item->unread_count) && $item->unread_count > 0)
                         {{-- ここで強制的に赤丸スタイルを適用 --}}
                         <div class="notification-badge" style="position: absolute; top: 0; left: 0; background-color: #ff0000; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 12px; font-weight: bold; z-index: 20; box-shadow: 1px 1px 3px rgba(0,0,0,0.3);">
