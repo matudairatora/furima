@@ -3,20 +3,16 @@
     display: flex;
     width: 100%;
     max-width: 1400px;
-    /* 画面幅いっぱいに近づける */
     margin: 0 auto;
     height: calc(100vh - 100px);
-    /* ヘッダー分を引いた高さ */
     background: #fff;
     border: none;
-    /* 外枠削除 */
 }
 
 /* 左側サイドバー */
 .chat-sidebar {
     width: 250px;
     background-color: #888;
-    /* 画像に近い濃いグレー */
     color: #fff;
     padding: 20px 0;
     display: flex;
@@ -42,7 +38,6 @@
     align-items: center;
     padding: 10px 15px;
     background: #fff;
-    /* 白背景のカード */
     text-decoration: none;
     color: #333;
     margin: 0 10px;
@@ -67,7 +62,7 @@
     position: relative;
 }
 
-/* ヘッダーエリア（ユーザー名と完了ボタン） */
+/* ヘッダーエリア */
 .chat-header-user {
     display: flex;
     justify-content: space-between;
@@ -115,7 +110,6 @@
     border: 1px solid #ff5555;
     padding: 8px 20px;
     border-radius: 20px;
-    /* 丸みをつける */
     font-weight: bold;
     cursor: pointer;
     font-size: 14px;
@@ -174,18 +168,16 @@
 
 .message-row {
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     align-items: flex-start;
 }
 
 .row-self {
     justify-content: flex-end;
-    /* 自分は右寄せ */
 }
 
 .row-partner {
     justify-content: flex-start;
-    /* 相手は左寄せ */
 }
 
 .message-body {
@@ -207,24 +199,30 @@
 .msg-sender-name {
     font-size: 12px;
     color: #333;
-    margin: 0 0 5px 0;
+    margin: 0 0 2px 0;
     font-weight: bold;
 }
 
+/* ★修正箇所: ここで「見えない改行」と「行間」を徹底的に修正 */
 .message-bubble {
     background-color: #f5f5f5;
-    /* 薄いグレー */
-    padding: 15px;
+    padding: 8px 12px;
     border-radius: 4px;
     font-size: 14px;
-    line-height: 1.6;
     text-align: left;
-    white-space: pre-wrap;
+
+    /* 重要: 行間をさらに詰める (1.4 -> 1.25) */
+    line-height: 1.25;
+
+    /* 重要: pre-wrapを廃止し、Blade側のnl2brだけを有効にする */
+    white-space: normal;
+
+    /* 日本語や長い英単語がはみ出さないように強制的に折り返す */
+    word-break: break-all;
 }
 
 .row-self .message-bubble {
     background-color: #e6e6e6;
-    /* 自分のメッセージもグレー（画像準拠） */
 }
 
 .msg-image {
@@ -234,9 +232,8 @@
     border-radius: 4px;
 }
 
-/* 編集・削除リンク */
 .msg-actions {
-    margin-top: 5px;
+    margin-top: 2px;
     font-size: 10px;
     color: #888;
     text-align: right;
@@ -295,21 +292,22 @@
 
 .btn-send svg path {
     fill: #888;
-    /* アイコン色 */
 }
 
-/* モーダル */
+/* =========================================
+   モーダル (取引完了ポップアップ) - 修正版
+   ========================================= */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 1000;
 }
 
 .modal-overlay.show {
@@ -317,23 +315,95 @@
 }
 
 .modal-content {
-    background: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    width: 400px;
-    text-align: center;
+    /* クリーム色の背景 */
+    background: #ffffe0;
+    /* 枠線と角丸 */
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    width: 90%;
+    max-width: 500px;
+    text-align: left;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    /* 内部の線を端まで引くためにpaddingは0にする */
+    padding: 0;
+    overflow: hidden;
+}
+
+/* --- ヘッダーエリア (タイトル + 下線) --- */
+.modal-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid #dcdcdc;
+    /* ★ここの線 */
+    background-color: #ffffe0;
+}
+
+.modal-header h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+/* --- ボディエリア (テキスト + 星) --- */
+.modal-body {
+    padding: 25px;
+    background-color: #ffffe0;
+}
+
+.modal-body p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+    text-align: left;
 }
 
 .star-rating {
-    font-size: 30px;
-    color: #ddd;
+    font-size: 80px;
+    color: #e0e0e0;
+    /* 未選択の色 */
     cursor: pointer;
-    margin: 20px 0;
+    display: flex;
+    justify-content: flex-start;
+    /* 左寄せ（画像に合わせるならcenterでも可） */
+    gap: 10px;
 }
 
 .star-rating .star.active {
-    color: gold;
+    color: #ffe600;
+    /* 星の色 */
+    /* 少し影をつけてリッチに */
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.2));
+}
+
+/* --- フッターエリア (ボタン + 上線) --- */
+.modal-footer {
+    padding: 15px 25px;
+    border-top: 1px solid #dcdcdc;
+    /* ★ここの線 */
+    background-color: #ffffe0;
+
+    /* ボタンを右寄せにする設定 */
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* 送信ボタン (コンパクト・赤色) */
+.btn-modal-submit {
+    background-color: #ff5555;
+    /* 赤 */
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    /* 横幅を調整 */
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-modal-submit:hover {
+    opacity: 0.8;
 }
 
 @media screen and (max-width: 768px) {

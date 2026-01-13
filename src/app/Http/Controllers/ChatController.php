@@ -127,4 +127,37 @@ class ChatController extends Controller
 
         return redirect()->route('chat.show', ['item_id' => $item_id]);
     }
+    public function destroyMessage($message_id)
+    {
+        $message = Message::findOrFail($message_id);
+
+        // 自分のメッセージでなければエラー
+        if ($message->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $message->delete();
+
+        return back(); // 元の画面に戻る
+    }
+
+    // ★追加: メッセージ更新処理
+    public function updateMessage(Request $request, $message_id)
+    {
+        $request->validate([
+            'content' => 'required|max:400',
+        ]);
+
+        $message = Message::findOrFail($message_id);
+
+        // 自分のメッセージでなければエラー
+        if ($message->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $message->content = $request->input('content');
+        $message->save();
+
+        return back(); // 元の画面に戻る
+    }
 }

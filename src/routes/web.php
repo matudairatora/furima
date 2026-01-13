@@ -64,7 +64,10 @@ Route::get('/stripe/complete', [StripeController::class, 'completePayment'])->na
     Route::post('/chat/{item_id}/complete', [ChatController::class, 'complete'])->name('chat.complete');
     // 評価送信
     Route::post('/review/{item_id}', [ChatController::class, 'sendRating'])->name('review.store');
-
+    // チャットメッセージの削除機能
+    Route::delete('/chat/message/{message_id}', [ChatController::class, 'destroyMessage'])->name('chat.message.destroy');
+    // チャットメッセージの更新機能
+    Route::patch('/chat/message/{message_id}', [ChatController::class, 'updateMessage'])->name('chat.message.update');
 });
 
 

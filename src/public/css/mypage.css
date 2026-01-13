@@ -86,9 +86,9 @@
 }
 
 .tab-item.active {
-    color: #000;
-    border-bottom: 3px solid #e3342f;
+    color: #ff0000;
     font-weight: bold;
+    border-bottom: none;
 }
 
 /* ★修正: タブ横の数字バッジ (正円) */

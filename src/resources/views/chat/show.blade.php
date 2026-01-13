@@ -4,6 +4,56 @@
 
 @section('css')
 <link href="{{ asset('css/chat.css') }}" rel="stylesheet">
+<style>
+    /* 編集フォーム用の追加スタイル */
+    .edit-form {
+        display: none; /* 初期状態は非表示 */
+        width: 100%;
+    }
+    .edit-textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        resize: vertical;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    .edit-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 5px;
+    }
+    .btn-save, .btn-cancel {
+        font-size: 12px;
+        padding: 4px 8px;
+        cursor: pointer;
+        border-radius: 4px;
+        border: none;
+    }
+    .btn-save {
+        background-color: #ff5555;
+        color: white;
+    }
+    .btn-cancel {
+        background-color: #ccc;
+        color: #333;
+    }
+    /* 削除ボタンの見た目をリンク風にするリセットCSS */
+    .btn-delete-link {
+        background: none;
+        border: none;
+        color: #888;
+        font-size: 10px;
+        cursor: pointer;
+        padding: 0;
+        margin-left: 10px; /* デザイン画に合わせる */
+    }
+    .btn-delete-link:hover {
+        text-decoration: underline;
+        color: #ff5555;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -41,15 +91,10 @@
 
             {{-- ステータス表示 --}}
             @if($item->is_completed)
-                {{-- 双方が評価完了済み --}}
                 <span class="status-completed">取引完了済み</span>
-            
             @elseif($hasRated)
-                {{-- 自分は評価したが、相手がまだ --}}
                 <span class="status-waiting" style="color:#666; font-size:12px; font-weight:bold;">評価済み（相手の評価待ち）</span>
-            
             @else
-                {{-- まだ取引中（自分が完了ボタンを押していない） --}}
                 <form action="{{ route('chat.complete', $item->id) }}" method="POST" onsubmit="return confirm('取引を完了しますか？');">
                     @csrf
                     <button type="submit" class="btn-complete">取引を完了する</button>
@@ -72,6 +117,8 @@
         <div class="chat-messages" id="message-container">
             @foreach($messages as $msg)
                 <div class="message-row {{ $msg->user_id === Auth::id() ? 'row-self' : 'row-partner' }}">
+                    
+                    {{-- 相手のアイコン --}}
                     @if($msg->user_id !== Auth::id())
                         <div class="msg-avatar">
                             @if($partner->mypage && $partner->mypage->mypage_image)
@@ -81,18 +128,54 @@
                             @endif
                         </div>
                     @endif
+
                     <div class="message-body">
-                        {{-- ★修正: 自分の場合は $user->name、相手の場合は $partner->name を表示 --}}
+                        {{-- 送信者名 --}}
                         <p class="msg-sender-name">
                             {{ $msg->user_id === Auth::id() ? ($user->name ?? '') : ($partner->name ?? '') }}
                         </p>
+
                         <div class="message-bubble">
                             @if($msg->image)
                                 <img src="{{ Storage::url($msg->image) }}" class="msg-image">
                             @endif
-                            {!! nl2br(e($msg->content)) !!}
+                            
+                            {{-- ★修正: 表示用テキストエリア --}}
+                            <div class="msg-text" id="msg-text-{{ $msg->id }}">
+                                {!! nl2br(e($msg->content)) !!}
+                            </div>
+
+                            {{-- ★追加: 編集用フォーム（自分のメッセージのみ） --}}
+                            @if($msg->user_id === Auth::id())
+                                <form action="{{ route('chat.message.update', $msg->id) }}" method="POST" class="edit-form" id="edit-form-{{ $msg->id }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <textarea name="content" class="edit-textarea" rows="3">{{ $msg->content }}</textarea>
+                                    <div class="edit-actions">
+                                        <button type="button" class="btn-cancel" onclick="cancelEdit({{ $msg->id }})">キャンセル</button>
+                                        <button type="submit" class="btn-save">保存</button>
+                                    </div>
+                                </form>
+                            @endif
                         </div>
+
+                        {{-- ★追加: 編集・削除リンクエリア（自分のメッセージのみ表示） --}}
+                        @if($msg->user_id === Auth::id())
+                            <div class="msg-actions" id="msg-actions-{{ $msg->id }}">
+                                {{-- 編集ボタン --}}
+                                <span class="action-link" onclick="startEdit({{ $msg->id }})">編集</span>
+
+                                {{-- 削除ボタン（フォームで実装） --}}
+                                <form action="{{ route('chat.message.destroy', $msg->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('本当に削除しますか？');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-delete-link">削除</button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
+
+                    {{-- 自分のアイコン --}}
                     @if($msg->user_id === Auth::id())
                         <div class="msg-avatar">
                              @if(Auth::user()->mypage && Auth::user()->mypage->mypage_image)
@@ -132,27 +215,41 @@
 @if(session('transaction_completed'))
 <div class="modal-overlay show">
     <div class="modal-content">
-        <h3>取引が完了しました</h3>
-        <p>今回の取引相手はどうでしたか？</p>
+        {{-- ヘッダー（タイトルと下線） --}}
+        <div class="modal-header">
+            <h3>取引が完了しました。</h3>
+        </div>
+
         <form action="{{ route('review.store', $item->id) }}" method="POST">
             @csrf
-            <div class="star-rating">
-                <span class="star" data-value="1">★</span>
-                <span class="star" data-value="2">★</span>
-                <span class="star" data-value="3">★</span>
-                <span class="star" data-value="4">★</span>
-                <span class="star" data-value="5">★</span>
+            {{-- ボディ（説明文と星） --}}
+            <div class="modal-body">
+                <p>今回の取引相手はどうでしたか？</p>
+                <div class="star-rating">
+                    <span class="star" data-value="1">★</span>
+                    <span class="star" data-value="2">★</span>
+                    <span class="star" data-value="3">★</span>
+                    <span class="star" data-value="4">★</span>
+                    <span class="star" data-value="5">★</span>
+                </div>
+                <input type="hidden" name="rating" id="ratingInput" value="5">
             </div>
-            <input type="hidden" name="rating" id="ratingInput" value="5">
-            <button type="submit" class="btn-complete" style="width:100%; margin-top:10px;">評価を送信</button>
+
+            {{-- フッター（上線と右寄せボタン） --}}
+            <div class="modal-footer">
+                <button type="submit" class="btn-modal-submit">送信する</button>
+            </div>
         </form>
     </div>
 </div>
 @endif
+
 <script>
+    // メッセージエリアの最下部へスクロール
     const container = document.getElementById('message-container');
     if(container) container.scrollTop = container.scrollHeight;
 
+    // 星評価のスクリプト
     const stars = document.querySelectorAll('.star-rating .star');
     const ratingInput = document.getElementById('ratingInput');
     
@@ -171,6 +268,23 @@
                 updateStars(val);
             });
         });
+    }
+
+    // ★追加: 編集モード切り替え用スクリプト
+    function startEdit(id) {
+        // テキストと編集/削除リンクを隠す
+        document.getElementById('msg-text-' + id).style.display = 'none';
+        document.getElementById('msg-actions-' + id).style.display = 'none';
+        // 編集フォームを表示する
+        document.getElementById('edit-form-' + id).style.display = 'block';
+    }
+
+    function cancelEdit(id) {
+        // テキストと編集/削除リンクを表示する
+        document.getElementById('msg-text-' + id).style.display = 'block';
+        document.getElementById('msg-actions-' + id).style.display = 'block';
+        // 編集フォームを隠す
+        document.getElementById('edit-form-' + id).style.display = 'none';
     }
 </script>
 @endsection
