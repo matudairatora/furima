@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ChatRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail; 
 use App\Mail\TransactionCompletedEmail; 
@@ -64,8 +65,15 @@ class ChatController extends Controller
                           ->where('rater_id', $partnerId)
                           ->exists();
 
-        
-        return view('chat.show', compact('item', 'messages', 'partner', 'chat_items', 'hasRated', 'partnerHasRated', 'user'));
+        // ★★★ 追加: モーダルを自動表示するかどうかの判定 ★★★
+        // 条件: 自分が出品者 && 自分がまだ評価していない && 相手(購入者)が既に評価している
+        $showRatingModal = false;
+        if ($user->id === $item->user_id && !$hasRated && $partnerHasRated) {
+            $showRatingModal = true;
+        }
+
+        // viewに $showRatingModal を渡す
+        return view('chat.show', compact('item', 'messages', 'partner', 'chat_items', 'hasRated', 'partnerHasRated', 'user', 'showRatingModal'));
     }
     
     
@@ -130,17 +138,9 @@ class ChatController extends Controller
     }
     
     
-    public function store(Request $request, $item_id)
+    public function store(ChatRequest $request, $item_id)
     {
-        $request->validate([
-            'content' => 'required|max:400',
-            'image' => 'nullable|image|mimes:jpeg,png',
-        ], [
-            'content.max' => '本文は400文字以内で入力してください',
-            'content.required' => '本文を入力してください',
-            'image.image' => '「.png」または「.jpeg」形式でアップロードしてください',
-            'image.mimes' => '「.png」または「.jpeg」形式でアップロードしてください',
-        ]);
+        
 
         $message = new Message();
         $message->user_id = Auth::id();
@@ -171,17 +171,9 @@ class ChatController extends Controller
     }
 
     // ★追加: メッセージ更新処理
-    public function updateMessage(Request $request, $message_id)
+    public function updateMessage(ChatRequest $request, $message_id)
     {
-        $request->validate([
-            'content' => 'required|max:400',
-            'image' => 'nullable|image|mimes:jpeg,png',
-        ], [
-            'content.max' => '本文は400文字以内で入力してください',
-            'content.required' => '本文を入力してください',
-            'image.image' => '「.png」または「.jpeg」形式でアップロードしてください',
-            'image.mimes' => '「.png」または「.jpeg」形式でアップロードしてください',
-        ]);
+        
 
         $message = Message::findOrFail($message_id);
 

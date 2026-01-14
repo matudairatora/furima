@@ -119,12 +119,19 @@ class ProfileController extends Controller
                     ->whereNull('read_at')
                     ->count();
                 
-                
                 $tItem->unread_count = $count;
                 
                 // 合計に加算
                 $totalUnread += $count;
+
+                // ★追加: 並び替えのために最新メッセージの日時を取得
+                $latestMsg = Message::where('item_id', $tItem->id)->latest()->first();
+                // メッセージがあればその日時、なければ商品の作成日時を使用
+                $tItem->last_activity_at = $latestMsg ? $latestMsg->created_at : $tItem->created_at;
             }
+
+            // ★追加: 最新メッセージ順（降順）に並び替える
+            $allTradingItems = $allTradingItems->sortByDesc('last_activity_at');
         }
 
         // 3. 表示するアイテムリストの切り替え
@@ -143,7 +150,7 @@ class ProfileController extends Controller
                 ->get();
 
         } elseif ($page === 'trading') {
-            // 取引中の商品
+            // 取引中の商品 (並び替え済みのものを使用)
             $items = $allTradingItems;
         }
 

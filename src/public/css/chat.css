@@ -7,11 +7,19 @@
 .chat-container {
     display: flex;
     width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0;
+
     height: calc(100vh - 100px);
     background: #fff;
     border: none;
+}
+
+.main-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+    max-width: 100% !important;
 }
 
 /* 左側サイドバー */

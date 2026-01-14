@@ -170,25 +170,22 @@
         <div class="chat-footer">
             <form action="{{ route('chat.store', $item->id) }}" method="POST" enctype="multipart/form-data" class="chat-form">
                 @csrf
-                {{-- 入力保持: value="{{ old('content') }}" --}}
+                {{-- old()はエラー時の保持用。JavaScriptでブラウザバック時の保持を補完する --}}
                 <input type="text" name="content" class="chat-input-text" 
                        placeholder="取引メッセージを記入してください" 
                        value="{{ old('content') }}">
                 
                 <label class="btn-image-add">
-                    
-                    <input type="file" name="image" accept="image/png, image/jpeg" style="display:none;">
+                    <input type="file" name="image" accept="image/png, image/jpeg" style="display:none;">画像を追加
                 </label>
                 
                 <button type="submit" class="btn-send">
-                    {{-- 紙飛行機アイコン --}}
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="#666"/>
                     </svg>
                 </button>
             </form>
             
-            {{-- エラーメッセージ表示 --}}
             @error('content')
                 <p style="color:red; font-size:12px; margin-top:5px;">{{ $message }}</p>
             @enderror
@@ -201,17 +198,14 @@
 </div>
 
 {{-- 評価モーダル --}}
-@if(session('transaction_completed'))
+@if(session('transaction_completed') || (isset($showRatingModal) && $showRatingModal))
 <div class="modal-overlay show">
     <div class="modal-content">
-        {{-- ヘッダー --}}
         <div class="modal-header">
             <h3>取引が完了しました。</h3>
         </div>
-
         <form action="{{ route('review.store', $item->id) }}" method="POST">
             @csrf
-            {{-- ボディ --}}
             <div class="modal-body">
                 <p>今回の取引相手はどうでしたか？</p>
                 <div class="star-rating">
@@ -221,11 +215,8 @@
                     <span class="star" data-value="4">★</span>
                     <span class="star" data-value="5">★</span>
                 </div>
-                {{-- 星の値を格納する隠しフィールド --}}
                 <input type="hidden" name="rating" id="ratingInput" value="5">
             </div>
-
-            {{-- フッター --}}
             <div class="modal-footer">
                 <button type="submit" class="btn-modal-submit">送信する</button>
             </div>
@@ -233,13 +224,10 @@
     </div>
 </div>
 @endif
-
 <script>
-    
     const container = document.getElementById('message-container');
     if(container) container.scrollTop = container.scrollHeight;
 
-    // 星評価の制御
     const stars = document.querySelectorAll('.star-rating .star');
     const ratingInput = document.getElementById('ratingInput');
     
@@ -251,7 +239,6 @@
     }
     
     if(stars.length > 0) {
-        // 初期値5
         updateStars(5);
         stars.forEach(star => {
             star.addEventListener('click', function() {
@@ -262,7 +249,6 @@
         });
     }
 
-    // メッセージ編集モードの切り替え
     function startEdit(id) {
         document.getElementById('msg-text-' + id).style.display = 'none';
         document.getElementById('msg-actions-' + id).style.display = 'none';
@@ -274,5 +260,38 @@
         document.getElementById('msg-actions-' + id).style.display = 'block';
         document.getElementById('edit-form-' + id).style.display = 'none';
     }
+
+    // ★★★ 追加: 入力内容の一時保存機能 (LocalStorage使用) ★★★
+    // 画面遷移しても、戻ってきたときに入力内容を復元します
+    document.addEventListener('DOMContentLoaded', function() {
+        const contentInput = document.querySelector('input[name="content"]');
+        // 取引IDごとにキーを分ける (例: chat_draft_item_5)
+        const currentItemId = "{{ $item->id }}";
+        const storageKey = "chat_draft_item_" + currentItemId;
+
+        if (contentInput) {
+            // 1. ページ読み込み時: 保存された内容があれば復元
+            // ただし、サーバー側でバリデーションエラーがあった場合(old値がある場合)はそちらを優先
+            const serverOldValue = "{{ old('content') }}";
+            const savedValue = localStorage.getItem(storageKey);
+
+            if (!serverOldValue && savedValue) {
+                contentInput.value = savedValue;
+            }
+
+            // 2. 入力時: LocalStorageへ保存
+            contentInput.addEventListener('input', function() {
+                localStorage.setItem(storageKey, this.value);
+            });
+
+            // 3. 送信時: 保存内容をクリア (送信後は空にするため)
+            const chatForm = document.querySelector('.chat-form');
+            if (chatForm) {
+                chatForm.addEventListener('submit', function() {
+                    localStorage.removeItem(storageKey);
+                });
+            }
+        }
+    });
 </script>
 @endsection
